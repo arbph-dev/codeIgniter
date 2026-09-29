@@ -1,5 +1,5 @@
 <?php
-
+//vendor/codeigniter4/shield/src/Entities/User.php
 declare(strict_types=1);
 
 /**
