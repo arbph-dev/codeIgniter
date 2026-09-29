@@ -1,0 +1,26 @@
+
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Transmettre le header Authorization à PHP
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+    # Fichiers et dossiers existants → servis directement
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Tout le reste → index.php
+    RewriteRule ^.*$ index.php [L]
+
+    FallbackResource /index.php
+    Options -Indexes
+    DirectoryIndex index.php
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 index.php
+</IfModule>
+

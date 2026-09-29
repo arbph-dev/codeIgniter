@@ -1,0 +1,72 @@
+[
+    { 
+	    "id": 1,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH01.svg",
+	    "nom": "Matières explosibles",
+	    "puce": "🔴",
+	    "risque": "Explosion violente même sans contact avec l'air",
+	    "uind": "SGH01"
+	},
+    { 
+	    "id": 2,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH02.svg",
+	    "nom": "Inflammable",
+	    "puce": "🟠",
+	    "risque": "Inflammation rapide au contact d'une source d'énergie",
+	    "uind": "SGH02"
+	},
+    { 
+	    "id": 3,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH03.svg",
+	    "nom": "Comburant",
+	    "puce": "🟡",
+	    "risque": "Accélération de la combustion d'autres substances",
+	    "uind": "SGH03"
+	},
+    { 
+	    "id": 4,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH04.svg",
+	    "nom": "Gaz sous pression",
+	    "puce": "🟢",
+	    "risque": "Explosion sous chaleur ou rupture de contenant",
+	    "uind": "SGH04"
+	},
+    { 
+	    "id": 5,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH05.svg",
+	    "nom": "Corrosif",
+	    "puce": "⚫",
+	    "risque": "Brûlures graves de la peau, des yeux, corrosion des métaux", "uind": "SGH05" },
+    { 
+	    "id": 6,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH06.svg",
+	    "nom": "Toxique aigu (mortel)",
+	    "puce": "⚠️",
+	    "risque": "Toxicité très élevée même à faible dose",
+	    "uind": "SGH06"
+	},
+    { 
+	    "id": 7,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH07.svg",
+	    "nom": "Toxique aigu (irritant ou nocif)",
+	    "puce": "⚠️",
+	    "risque": "Irritation cutanée, sensibilisation, somnolence",
+	    "uind": "SGH07"
+	},
+    { 
+	    "id": 8,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH08.svg",
+	    "nom": "Danger pour la santé à long terme",
+	    "puce": "☣️",
+	    "risque": "Cancers, mutations, stérilité, effets sur les organes",
+	    "uind": "SGH08"
+	},
+    { 
+	    "id": 9,
+	    "logo": "/public/img/SECURITE/CHIMIE/pictogram-SGH09.svg",
+	    "nom": "Danger pour l'environnement aquatique",
+	    "puce": "🐠",
+	    "risque": "Très toxique pour les organismes aquatiques",
+	    "uind": "SGH09"
+	}
+]

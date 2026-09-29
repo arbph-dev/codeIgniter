@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Recherche Mot API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        label, input, button { font-size: 1em; margin: 0.5em 0; }
+        #result { margin-top: 1em; white-space: pre-wrap; background: #f0f0f0; padding: 1em; border-radius: 4px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+<h2>Recherche Mot API</h2>
+
+<form id="motForm">
+    <label for="idInput">ID (optionnel) :</label><br />
+    <input type="number" id="idInput" name="id" min="1" /><br />
+
+    <label for="qInput">Mot (optionnel) :</label><br />
+    <input type="text" id="qInput" name="q" /><br />
+
+    <button type="submit">Rechercher</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+document.getElementById('motForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('idInput').value.trim();
+    const q = document.getElementById('qInput').value.trim();
+
+    if (!id && !q) {
+        showResult('Veuillez saisir un ID ou un mot.', true);
+        return;
+    }
+
+    let url = '/api/mot?';
+    if (id) {
+        url += 'id=' + encodeURIComponent(id);
+    } else {
+        url += 'q=' + encodeURIComponent(q);
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            const resultDiv = document.getElementById('result');
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    const json = JSON.parse(xhr.responseText);
+                    showResult(JSON.stringify(json, null, 2), false);
+                } catch (err) {
+                    showResult('Erreur lors du parsing de la réponse JSON.', true);
+                }
+            } else {
+                showResult('Erreur ' + xhr.status + ': ' + xhr.statusText, true);
+            }
+        }
+    };
+
+    xhr.send();
+});
+
+function showResult(message, isError) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = message;
+    if (isError) {
+        resultDiv.classList.add('error');
+    } else {
+        resultDiv.classList.remove('error');
+    }
+}
+</script>
+
+</body>
+</html>

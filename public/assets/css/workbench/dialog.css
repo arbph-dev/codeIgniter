@@ -1,0 +1,183 @@
+/* =============================================================================
+   DIALOG — /assets/css/workbench/dialog.css
+   Charger après workbench.css (dépend de ses var(--wb-*)).
+
+   Couvre :
+     1. <dialog> natif (.cp_picker_dialog)
+     2. Structure interne du picker (header / search / results)
+     3. Champ relation dans Form.js (.wb_relation_wrapper)
+   ============================================================================= */
+
+
+/* =============================================================================
+   1. <dialog> natif
+   ============================================================================= */
+
+dialog.cp_picker_dialog
+{
+    /* Reset navigateur */
+    border   : none;
+    padding  : 0;
+    outline  : none;
+
+    /* Dimensions */
+    width      : min(560px, 92vw);
+    max-height : 80vh;
+
+    /* Aspect */
+    background    : var(--wb-panel-bg);
+    border-radius : var(--wb-radius);
+    box-shadow    : 0 8px 32px rgba(0, 0, 0, .18);
+
+    /* Flex vertical pour que la zone results soit scrollable */
+    display        : flex;
+    flex-direction : column;
+    overflow       : hidden;
+}
+
+/* Centrage natif sur les navigateurs qui ne le font pas automatiquement */
+dialog.cp_picker_dialog:not([open])
+{
+    display : none;
+}
+
+/* Fond semi-transparent derrière la modale */
+dialog.cp_picker_dialog::backdrop
+{
+    background : rgba(0, 0, 0, .45);
+}
+
+
+/* =============================================================================
+   2. Structure interne du picker
+   ============================================================================= */
+
+/* ── Header ── */
+.cp_picker_header
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : space-between;
+    flex-shrink     : 0;
+
+    padding    : var(--wb-panel-header-pad);
+    background : var(--wb-panel-header-bg);
+}
+
+.cp_picker_header h2
+{
+    font-size   : 1rem;
+    font-weight : 600;
+    color       : var(--wb-panel-header-fg);
+    margin      : 0;
+}
+
+.cp_picker_close
+{
+    background : none;
+    border     : none;
+    color      : var(--wb-panel-header-fg);
+    font-size  : 1.1rem;
+    line-height: 1;
+    padding    : .2rem .4rem;
+    cursor     : pointer;
+    border-radius : 3px;
+    transition : opacity .15s;
+}
+
+.cp_picker_close:hover  { opacity : .7; }
+.cp_picker_close:focus-visible
+{
+    outline        : 2px solid var(--wb-panel-header-fg);
+    outline-offset : 2px;
+}
+
+/* ── Barre de recherche ── */
+.cp_picker_search
+{
+    flex-shrink   : 0;
+    padding       : .75rem 1rem;
+    border-bottom : 1px solid var(--wb-border);
+}
+
+.cp_picker_search input[type="search"]
+{
+    display      : block;
+    width        : 100%;
+    padding      : .4rem .75rem;
+    font-size    : .875rem;
+    font-family  : inherit;
+    border       : 1px solid var(--wb-input-border);
+    border-radius: 4px;
+    background   : var(--wb-input-bg);
+    color        : var(--wb-text);
+    transition   : border-color .15s, box-shadow .15s;
+}
+
+.cp_picker_search input[type="search"]:focus
+{
+    outline      : none;
+    border-color : var(--wb-input-focus);
+    box-shadow   : 0 0 0 3px var(--wb-input-focus-ring);
+}
+
+/* ── Zone résultats (scrollable) ── */
+.cp_picker_results
+{
+    flex       : 1;
+    overflow-y : auto;
+    min-height : 120px;
+    max-height : calc(80vh - 130px); /* header + search ~ 130px */
+}
+
+/* La table cp_table hérite des styles de workbench.css */
+.cp_picker_results .cp_table tbody tr:last-child td
+{
+    border-bottom : none;
+}
+
+/* Notice hint / loading / empty / error — déjà stylé via workbench.css (.cp_notice) */
+
+
+/* =============================================================================
+   3. Champ relation dans Form.js
+   ============================================================================= */
+
+/* Wrapper [input readonly] [btn 🔍] */
+.wb_relation_wrapper
+{
+    display : flex;
+    gap     : .35rem;
+    align-items : stretch;
+}
+
+/* Input d'affichage — readonly, fond légèrement différent pour signaler l'état */
+.wb_relation_display
+{
+    flex       : 1;
+    min-width  : 0;
+    background : var(--wb-table-header-bg) !important;
+    cursor     : default;
+    color      : var(--wb-text);
+}
+
+.wb_relation_display:focus
+{
+    outline      : none;
+    border-color : var(--wb-input-focus);
+    box-shadow   : 0 0 0 3px var(--wb-input-focus-ring);
+}
+
+/* Bouton loupe — même hauteur que l'input adjacent */
+.wb_relation_btn
+{
+    flex-shrink : 0;
+    padding     : 0 .7rem;
+    font-size   : .85rem;
+}
+
+.wb_relation_btn:focus-visible
+{
+    outline        : 2px solid var(--wb-input-focus);
+    outline-offset : 2px;
+}

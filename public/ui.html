@@ -1,0 +1,796 @@
+<!-- 
+    2026-09-09 : modificaton 
+    2026-09-10 : voir pour supprimer les ul vide dans le menu nav ligne 66 et suivantes
+    2026-09-23 : intégrtion vox ligne 316 
+  -->
+<!DOCTYPE html>
+<html lang="fr" data-theme="marine">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Automates industriels - comparaison et caractéristiques</title>
+    <meta name="description" content="Comparatif d'automates et contrôleurs industriels communicants : Schneider Modicon M221, WAGO, Crouzet Millenium EVO, Siemens LOGO! 8 et LACROIX Sofrel YDRIX.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="/assets/css/uistyle.css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <!-- Leaflet -->    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="/assets/css/GpPluginLeaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-tilelayer-wmts@1.0.0/dist/leaflet-tilelayer-wmts.js"></script>
+    <!-- Extension Géoplateforme pour Leaflet -->
+    <script src="/assets/js/plugins/GpPluginLeaflet.js"></script>
+
+
+
+
+</head>
+
+<body>
+    <!-- ====   HEADER ================================================================ -->
+    <header id="header">
+        <div class="title-layout">
+            <h1 id="appTitle">Automates industriels communicants</h1>
+            <span id="appSubtitle">Comparaison, caractéristiques techniques et avis</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="rwdnav" type="button" onclick="openNav()" aria-label="Ouvrir le menu">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <button id="themeBtn" type="button">Thème nature</button>
+            <button id="fullscreenBtn" type="button">Plein écran</button>
+        </div>
+
+        <div class="header-auth">
+            
+        </div>
+    </header>
+    <!-- ==== SIDEBAR ============================================================== 
+    on va devoir 
+        initialiser ref dom sur stack
+
+
+        
+    -->
+
+    <nav id="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" aria-label="Fermer le menu">&times;</a>
+
+
+    </nav>
+    <!-- ====  CONTENU PRINCIPAL    ========================== -->
+    <main id="stack">
+
+        <!-- ── AUTH BOARDS (hors menu / pagination) ── -->
+        <div class="panel-card hidden" data-role="admin" data-index="-2">
+            <h2 class="panel-title">Administration</h2>
+            <p class="panel-description">Tableau de bord administrateur</p>
+            <div class="section-tab">
+                <div class="tab-headers"></div>
+                <div id="admin-home" class="tab-content active">
+                    <h3>Admin</h3>
+                    <div id="admin-board-body"><!-- contenu ultérieur --></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel-card hidden" data-role="user" data-index="-1">
+            <h2 class="panel-title">Mon espace</h2>
+            <p class="panel-description">Profil et inscription</p>
+            <div class="section-tab">
+                <div class="tab-headers"></div>
+                <div id="user-home" class="tab-content active">
+                    <h3>Espace utilisateur</h3>
+                    <div id="user-board-body"><!-- formulaire register OU dashboard user --></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ====  0 - COMPOSANTS JAVASCRIPT ===================== -->
+        <div class="panel-card" data-index="0">
+
+            <h2 class="panel-title">Composants javascipt</h2>
+        
+            <p class="panel-description">
+            <b>2026-09-18</b> : On reprend l'intégration des composants dans un front pure html.<br/>
+            <b>2026-09-19</b> : On documente les points clefs avant intégration d'une api
+            </p>
+
+            <div class="section-tab">
+                <div class="tab-headers"></div>
+                
+                <div id="apex-0" class="tab-content active">
+                    <h3>Apex</h3>
+                      <p>Revoir les graphiques disponible</p>
+                    
+                      <h4>line</h4>
+                      <div id="APEX_LIGNE_1" class="cp_apex" data-chart="line"></div>
+  
+                </div>
+
+                <div id="mermaid-0" class="tab-content">
+                    <h3>Mermaid</h3>
+                    <p>Mermaid fait partie de l'ecostyeme Obsidian</p>
+                    <p>On intégre des ressources pour les essais</p>
+                    <p>Revoir les graphiques disponible</p>
+
+                    <h4>test-0</h4>
+                    <div id="mermaid_grf1">
+                        <pre class="mermaid" id="mmG1">
+                            sequenceDiagram
+                            autonumber
+                            
+                            participant window.load
+                            participant eventBus.forms
+                            box Purple features mot
+                            participant mot.form.js
+                            participant mot.controller.js
+                            participant mot.service.js
+                            participant mot.renderer.js
+                            end
+                            participant window.validateForm
+                            participant ui
+                            
+                            rect rgb(191, 223, 255)
+                                window.load--)mot.form.js: initMotForm()
+                                mot.form.js->>eventBus.forms : souscrit a forms:submit
+                                note right of window.load: Initialisation.
+                                
+                                window.load--)mot.controller.js: initMotController()  
+                                mot.controller.js->>eventBus.forms : souscrit a forms:search
+                            
+                                window.load--)mot.renderer.js : initMotRenderer()
+                                mot.renderer.js->>eventBus.forms : souscrit a mot:loading
+                                mot.renderer.js->>eventBus.forms : souscrit a mot:loaded
+                                mot.renderer.js->>eventBus.forms : souscrit a mot:error
+                            end
+                            
+                            rect rgb(255, 223, 191)
+                                note left of ui: Validation formulaire
+                                ui--)window.validateForm: evt submit src motForm  
+                                window.validateForm->>eventBus.forms : publie forms:submit
+                                eventBus.forms->>+mot.form.js : forms:submit
+                                mot.form.js-->mot.form.js : validation
+                            end
+                            
+                            rect rgb(191, 223, 255)
+                                mot.form.js->>-eventBus.forms : publie forms:search
+                                eventBus.forms->>mot.controller.js: forms:search
+                            end
+                            
+                            rect rgb(255, 223, 191)
+                                mot.controller.js->>eventBus.forms : publie mot:loading 1
+                                eventBus.forms->>+mot.renderer.js : mot:loading
+                                mot.renderer.js--)-ui : affichage chargement
+                            end
+                            
+                            rect rgb(191, 223, 255)	
+                                note left of mot.service.js : requete
+                                mot.controller.js->>+mot.service.js : fetch()
+                                mot.service.js-->mot.service.js : response
+                                mot.service.js->>-mot.controller.js :result
+                                mot.controller.js->>eventBus.forms : publie mot:loaded
+                                eventBus.forms->>+mot.renderer.js: mot:loaded
+                                mot.controller.js->>eventBus.forms : publie mot:loading 0
+                            end
+                            
+                            rect rgb(255, 223, 191)
+                                mot.renderer.js--)-ui : affichage des données en tableau
+                            end
+                        </pre>
+                      
+                        <button id="executeButton" name="executeButton" onclick="mermaid_Run('mmG1')">Exécuter</button>
+
+
+                    </div>                    
+                </div>
+
+                <div id="apex-1" class="tab-content">
+                  <h3>Apex</h3>
+                    <p>Revoir les graphiques disponible</p>
+
+                    <h4>line</h4>
+                    <div id="APEX_LIGNE_2" class="cp_apex" data-chart="moteurCouple"></div>
+
+                </div>
+
+                <div id="codeval-0" class="tab-content">
+                    <h3>Codeval</h3>
+                        <p>proposer des exemples avec api</p>
+                    
+                        <h4>Correction volume gaz</h4>
+                        On dispose des index compteurs IDX1 et IDX2.<br/>   
+                        On connait P2 pression et T2 température du gaz distribué<br/>
+                        On a des conditions de référence P1 et T1<br/>
+                        <br/>
+                        On ramène le volume distribué à un volume normal. F est le facteur de conversion pour retrouver le volume corrigé 
+                        <div id="CODEVAL_CVG5" class="cp_codeval">
+                            <div id="CODEVAL_CVG5_SCRIPTCODE" class="scriptcode">
+                                <textarea rows="14">
+        const P2_rel_bar = 0.3
+        const P2_abs_bar = P2_rel_bar + 1
+        const P2_abs_pa = P2_abs_bar * 101325
+        const P1_abs_pa = 101325
+        const T2_degc = 20
+        const T1_K = 288.15
+        const T2_K = T2_degc + 273.15
+        const IDX1 = 2500420
+        const IDX2 = 2500620
+        const V2 = IDX2 - IDX1
+        const F = ( P2_abs_pa / P1_abs_pa ) * ( T1_K / T2_K)
+        const V1 = V2 * F
+        const result = "Volume corrigé = " + V1 + " Nm3 ; F = " + F
+                                </textarea>
+                            </div>
+                        
+                            <div id="CODEVAL_CVG5_RESULT" class="result"></div>
+                        
+                            <div class="cp_toolbar">
+                                <button onclick="window.eventBusPublish(event,'codeval:toggle','CVG5')">
+                                    Show
+                                </button>
+                        
+                                <button onclick="window.eventBusPublish(event,'codeval:eval','CVG5')">
+                                    Run
+                                </button>
+                            </div>
+                        </div>
+    
+                </div>
+
+                <div id="apex-codeval-0" class="tab-content">
+                    <h3>Apex et Codeval</h3>
+                      <p>Lier script et rendu graphique</p>
+                    
+                      <h4>Moteur asynchrone</h4>
+                      <div id="CODEVAL_MS1" class="cp_codeval">
+                        <div id="CODEVAL_MS1_SCRIPTCODE" class="scriptcode">
+                            <textarea rows="32">
+    let sTemp = null
+
+    const moteurExemple = new api.PHYS.MoteurAsynchrone(
+        1500, // Puissance nominale (W) - Exemple: 1.5 kW
+        230, // Tension nominale (V)
+        50, // Fréquence (Hz)
+        4, // Nombre de pôles (ex: 4 pôles pour 1500 RPM à 50Hz)
+        0.5, // Resistance Stator (Ω)
+        1.0, // Reactance Stator (Ω)
+        0.4, // Resistance Rotor (Ω)
+        0.9 // Reactance Rotor (Ω)
+    );
+    
+    // Affichage de la vitesse de synchronisme
+    sTemp = `Vitesse de synchronisme: ${moteurExemple.vitesseSynchronisme.toFixed(2)} RPM\n`;
+
+    // Génération des données pour la courbe de couple
+    //const donneesCouple = moteurExemple.genererCourbeCouple(20);
+    const donneesCouple = moteurExemple.genererCourbeCouple(100, -1.0, 1.0)
+    
+    api.plot('APEX_LIGNE_3', { data: donneesCouple });    
+
+    // Affichage des premiers points de la courbe
+    sTemp += "Premiers points de la courbe Couple-Vitesse:\n";
+    donneesCouple.slice(0, 5).forEach(point => {
+        sTemp += `Vitesse: ${point.vitesse.toFixed(2)} RPM, Couple: ${point.couple.toFixed(2)} Nm\n`;
+    });
+    const result = sTemp; 
+                            </textarea>
+                        </div>
+                    
+                        <div id="CODEVAL_MS1_RESULT" class="result"></div>
+                    
+                        <div class="cp_toolbar">
+                            <button onclick="window.eventBusPublish(event,'codeval:toggle','MS1')">
+                                Show
+                            </button>
+                    
+                            <button onclick="window.eventBusPublish(event,'codeval:eval','MS1')">
+                                Run
+                            </button>
+                        </div>
+                    </div>                      
+
+                      <h4>line</h4>
+                      <div id="APEX_LIGNE_3" class="cp_apex" data-chart="moteurCouple"></div>
+  
+                </div>
+
+                <div id="callout-0" class="tab-content">
+                    <h3>Callout</h3>
+                      <p>4 types disponibles</p>
+                    
+                      <h4>info</h4>
+                      <div id="CO_1" class="cp_callout cp_callout--info">
+                          <strong class="cp_callout_title" style="cursor: pointer;">Attention</strong>
+                          <div class="cp_callout_content" style="display: block;">Ceci est un callout de test de type <strong>info</strong>.2026-07-07 : Mise en production. Ajouter initCallout dans le bootstrap</div>
+                      </div>
+                      <h4>warning</h4>
+                      <div id="CO_2" class="cp_callout cp_callout--warning">
+                          <strong class="cp_callout_title" style="cursor: pointer;">Attention</strong>
+                          <div class="cp_callout_content" style="display: block;">Ceci est un callout de test de type <strong>warning</strong>.2026-07-07 : Mise en production. Ajouter initCallout dans le bootstrap</div>
+                      </div>
+                      <h4>danger</h4>
+                      <div id="CO_3" class="cp_callout cp_callout--danger">
+                          <strong class="cp_callout_title" style="cursor: pointer;">Attention</strong>
+                          <div class="cp_callout_content" style="display: block;">Ceci est un callout de test de type <strong>danger</strong>.2026-07-07 : Mise en production. Ajouter initCallout dans le bootstrap</div>
+                      </div>
+                      <h4>tip</h4>
+                      <div id="CO_4" class="cp_callout cp_callout--tip">
+                          <strong class="cp_callout_title" style="cursor: pointer;">Attention</strong>
+                          <div class="cp_callout_content" style="display: block;">Ceci est un callout de test de type <strong>tip</strong>.2026-07-07 : Mise en production. Ajouter initCallout dans le bootstrap</div>
+                      </div>
+  
+                </div>                
+
+                <div id="leaflet-0" class="tab-content">
+                    <h3>Leaflet</h3>
+                        <p>cartographie</p>
+                    
+                        <h4>carte 1</h4>
+                        <div id="MAP_1" class="cp_leaflet" data-lat="47.82" data-lng="-4.3" data-zoom="14"></div>
+
+                        <button onclick="window.leafletList()">Liste</button>
+
+                        
+                </div>
+
+                <div id="vox-0" class="tab-content">
+                    <h3>Vox</h3>
+                        <p>Synthèse vocale (event bus)</p>
+                       
+                        <div>
+                           <textarea class="cp_voxzone_textarea" id="TXT_VOX_1" rows="8">
+Juliette: Bonjour, je suis Juliette.
+Romeo: Bonjour, je suis Roméo.
+                           </textarea>
+                           <br><br>	
+                           <div id="VOX_STATUS">—</div>			
+                        </div>
+                        <aside>
+                             <button onclick="window.eventBusPublish(event, 'vox:speak', { targetId:'TXT_VOX_1', statusId:'VOX_STATUS' })">Lire</button>
+                             <button onclick="window.eventBusPublish(event,'vox:pause')">Pause</button>
+                             <button onclick="window.eventBusPublish( event, 'vox:resume' )">Resume</button>
+                             <button onclick="window.eventBusPublish( event, 'vox:stop' )">Stop</button>
+                             <br><br>
+                             <label>Rate</label><input type="range" min="0.5" max="2" step="0.1" value="0.9" onchange="window.eventBusPublish( event, 'vox:rate',{value:this.value})">	
+                             <br><br>
+                             <label>Volume</label><input type="range" min="0" max="1" step="0.1" value="1" onchange="window.eventBusPublish( event,'vox:volume',{ value:this.value })">	
+                             <br><br>
+                             <button onclick="window.eventBusPublish( event,'vox:getVoices')">Configurer les voix</button>
+                             <h3>Voix disponibles</h3>  
+                             <div id="VOX_VOICES_LIST"></div>
+                        </aside>
+
+                        
+                </div>
+
+                
+                <div id="scene-0" class="tab-content">
+                    <div class="cp_scene" style="background-image: url('https://picsum.photos/seed/verona/1200/500');">
+                        <div class="cp_actor cp_actor--left" data-alias="Romeo">
+                            <img src="https://picsum.photos/seed/romeo/300/450" alt="Roméo — Frank Dicksee 1884">
+                            <span class="cp_actor__name">Roméo</span>
+                        </div>
+
+                        <div class="cp_actor cp_actor--right" data-alias="Juliette">
+                            <img src="https://picsum.photos/seed/juliette/300/450" alt="Juliette — Waterhouse 1898">
+                            <span class="cp_actor__name">Juliette</span>
+                        </div>
+
+                        <div id="VOX_RJ_STATUS" class="cp_scene__subtitles"></div>
+                    </div>
+
+                    <h3>Balcon de Vérone</h3>
+                    <textarea class="cp_voxzone_textarea2" id="TXT_VOX_RJ" rows="10">
+Juliette: Roméo, Roméo, pourquoi es-tu Roméo ?
+Romeo: Mon nom, chère sainte, est une haine pour moi.
+Juliette: Ni murs ni profondeur ne sauraient m'arrêter.
+Romeo: Je suis plus en danger de ton regard que de vingt épées.
+                    </textarea>
+                    <br>
+                    <button onclick="window.eventBusPublish(event, 'vox:speak', { targetId:'TXT_VOX_RJ', statusId:'VOX_RJ_STATUS' })">▶ Lire</button>
+                    <button onclick="window.eventBusPublish(event, 'vox:pause')">⏸ Pause</button>
+                    <button onclick="window.eventBusPublish(event, 'vox:resume')">▶▶ Resume</button>
+                    <button onclick="window.eventBusPublish(event, 'vox:stop')">⏹ Stop</button>
+                    <br><br>
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+
+        <!-- ====  0 - SCHNEIDER MODICON M221 ===================== -->
+        <div class="panel-card hidden" data-index="1">
+            <h2 class="panel-title">Schneider Modicon M221</h2>
+            <p class="panel-description">
+                Le Modicon M221 est un contrôleur logique destiné aux
+                architectures d'automatisme communicantes simples. La gamme
+                existe en plusieurs configurations et peut recevoir des
+                modules d'extension d'E/S.
+            </p>
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+
+                <div id="presentation-0" class="tab-content active">
+                    <h3>Présentation du Modicon M221</h3>
+                    <p>
+                        Le Modicon M221 de Schneider Electric est conçu pour
+                        les applications d'automatisme qui nécessitent une
+                        solution compacte, programmable et communicante.
+                    </p>
+                    <p>
+                        Schneider indique notamment la présence d'un port
+                        Ethernet, d'un port USB, d'une liaison série et de
+                        deux entrées analogiques intégrées sur la gamme.
+                        D'autres E/S peuvent être ajoutées au moyen de
+                        modules d'extension.
+                    </p>
+                    <p>
+                        Le M221 constitue ainsi une solution intéressante
+                        pour les petites machines, les installations
+                        techniques et les équipements nécessitant une
+                        communication avec une supervision ou d'autres
+                        équipements.
+                    </p>
+                </div>
+
+                <div id="caracteristiques-0" class="tab-content">
+                    <h3>Caractéristiques techniques</h3>
+                    <table>
+                        <tr>
+                            <th>Entrées numériques</th>
+                            <td>Selon référence</td>
+                        </tr>
+                        <tr>
+                            <th>Sorties numériques</th>
+                            <td>Selon référence</td>
+                        </tr>
+                        <tr>
+                            <th>Entrées analogiques</th>
+                            <td>2 intégrées sur la gamme</td>
+                        </tr>
+                        <tr>
+                            <th>Sorties analogiques</th>
+                            <td>Selon référence et extensions</td>
+                        </tr>
+                        <tr>
+                            <th>Ethernet</th>
+                            <td>1 port intégré</td>
+                        </tr>
+                        <tr>
+                            <th>RS485 / liaison série</th>
+                            <td>Liaison série selon référence</td>
+                        </tr>
+                        <tr>
+                            <th>Communication</th>
+                            <td>Ethernet, Modbus selon configuration</td>
+                        </tr>
+                        <tr>
+                            <th>Logiciel</th>
+                            <td>EcoStruxure Machine Expert - Basic</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="conclusion-0" class="tab-content">
+                    <h3>Conclusion et avis</h3>
+                    <p>
+                        Le M221 est particulièrement adapté lorsque
+                        l'installation demande davantage qu'un simple
+                        relais programmable tout en restant dans une
+                        architecture compacte.
+                    </p>
+                    <p>
+                        Son intérêt principal réside dans son intégration
+                        dans l'écosystème Schneider Electric et dans la
+                        possibilité d'étendre les E/S selon les besoins.
+                    </p>
+                    <p>
+                        Pour comparer plusieurs références, il faudra
+                        distinguer précisément le nombre et le type d'E/S
+                        intégrées à chaque variante.
+                    </p>
+                </div>
+                 
+            </div>
+        </div>
+
+        <!-- ==== 1 - WAGO ========================================================================= -->
+
+        <div class="panel-card hidden" data-index="2">
+            <h2 class="panel-title">WAGO</h2>
+            <p class="panel-description">
+                WAGO propose des solutions d'automatisme modulaires et
+                communicantes. La plateforme dépend fortement de la
+                référence du contrôleur et des modules d'E/S associés.
+            </p>
+
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+
+                <div id="presentation-1" class="tab-content active">
+                    <h3>Présentation de la solution WAGO</h3>
+                    <p>
+                        L'offre WAGO repose notamment sur une architecture
+                        modulaire permettant d'associer contrôleur,
+                        interfaces de communication et modules d'entrées /
+                        sorties.
+                    </p>
+                    <p>
+                        Cette philosophie est particulièrement intéressante
+                        lorsqu'une installation doit évoluer progressivement
+                        ou lorsqu'un grand nombre de signaux différents doit
+                        être raccordé.
+                    </p>
+                    <p>
+                        La référence 750-891 constitue par exemple un
+                        contrôleur Modbus TCP avec deux interfaces Ethernet.
+                    </p>
+                </div>
+
+                <div id="caracteristiques-1" class="tab-content">
+                    <h3>Caractéristiques techniques</h3>
+                    <table>
+                        <tr>
+                            <th>Entrées numériques</th>
+                            <td>Selon modules d'E/S</td>
+                        </tr>
+                        <tr>
+                            <th>Sorties numériques</th>
+                            <td>Selon modules d'E/S</td>
+                        </tr>
+                        <tr>
+                            <th>Entrées analogiques</th>
+                            <td>Selon modules d'E/S</td>
+                        </tr>
+                        <tr>
+                            <th>Sorties analogiques</th>
+                            <td>Selon modules d'E/S</td>
+                        </tr>
+                        <tr>
+                            <th>Ethernet</th>
+                            <td>Selon contrôleur ; 2 sur WAGO 750-891</td>
+                        </tr>
+                        <tr>
+                            <th>RS485</th>
+                            <td>Disponible par module d'interface</td>
+                        </tr>
+                        <tr>
+                            <th>Modbus</th>
+                            <td>Modbus TCP / RTU selon configuration</td>
+                        </tr>
+                        <tr>
+                            <th>Architecture</th>
+                            <td>Modulaire</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="conclusion-1" class="tab-content">
+                    <h3>Conclusion et avis</h3>
+                    <p>
+                        WAGO est particulièrement pertinent lorsqu'on
+                        recherche une architecture flexible avec beaucoup
+                        d'extensions d'E/S et plusieurs possibilités de
+                        communication.
+                    </p>
+                    <p>
+                        En contrepartie, la comparaison de prix et de
+                        capacités doit être effectuée sur une configuration
+                        complète et non uniquement sur le contrôleur.
+                    </p>
+                    <p>
+                        Pour un futur comparateur, WAGO se prête donc bien à
+                        une présentation par référence et par composition
+                        de modules.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- === 2 - CROUZET MILLENIUM EVO ======================================================== -->
+        <div class="panel-card hidden" data-index="3">
+            <h2 class="panel-title">Crouzet Millenium EVO</h2>
+            <p class="panel-description">
+                Le Millenium EVO est un contrôleur logique communicant
+                destiné aux petits projets d'automatisation, avec Ethernet,
+                Modbus, USB et Bluetooth selon la configuration.
+            </p>
+
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+
+                <div id="presentation-2" class="tab-content active">
+                    <h3>Présentation du Millenium EVO</h3>
+                    <p>Crouzet présente le Millenium EVO comme un contrôleur logique communiquant destiné aux petits projets d'automatisation.</p>
+                    <p>La version Ethernet annoncée par Crouzet fonctionne en 24 V DC et intègre 16 entrées et 8 sorties. La gamme peut être étendue avec des modules d'E/S.</p>
+                    <p>Le système prend notamment en charge Ethernet et Modbus, ainsi que l'USB et le Bluetooth pourcertaines opérations de configuration et de programmation.</p>
+                </div>
+
+                <div id="caracteristiques-2" class="tab-content">
+                    <h3>Caractéristiques techniques</h3>
+                    <table>
+                        <tr>
+                            <th>Alimentation</th><td>24 V DC</td>
+                        </tr>
+                        <tr>
+                            <th>Entrées numériques</th><td>16 sur la version Ethernet indiquée</td>
+                        </tr>
+                        <tr>
+                            <th>Sorties numériques</th><td>8 sur la version Ethernet indiquée</td>
+                        </tr>
+                        <tr>
+                            <th>Extensions</th><td>Modules d'extension disponibles</td>
+                        </tr>
+                        <tr>
+                            <th>Ethernet</th><td>Oui</td>
+                        </tr>
+                        <tr>
+                            <th>RS485</th><td>Disponible via interface Modbus</td>
+                        </tr>
+                        <tr>
+                            <th>Protocoles</th><td>Ethernet, Modbus</td>
+                        </tr>
+                        <tr>
+                            <th>Logiciel</th><td>Crouzet Soft</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="conclusion-2" class="tab-content">
+                    <h3>Conclusion et avis</h3>
+                    <p>
+                        Le Millenium EVO est une solution intéressante pour
+                        les applications compactes qui demandent une
+                        programmation graphique et une connectivité réseau
+                        sans passer immédiatement à un automate industriel
+                        plus lourd.
+                    </p>
+                    <p>
+                        Son format, son environnement de programmation et
+                        ses possibilités de communication constituent ses
+                        principaux avantages.
+                    </p>
+                    <p>
+                        Pour une installation plus importante, il faut
+                        naturellement comparer les possibilités d'extension
+                        et le nombre réel d'E/S requis.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel-card hidden" data-index="4">
+            <h2 class="panel-title">Actualités</h2>
+            <p class="panel-description">
+                Evolution du refactoring
+            </p>
+
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+
+                <div id="daily-0" class="tab-content active">
+                    <h3>Travaux en cours</h3>
+
+                    <p>2026-09-22 : Workbench</p>
+                        
+                    <p>2026-09-21 : Authentification</p>
+
+
+                    <p>2026-09-20 : intégration du refactoring</p>
+                    <ul>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/tree/main/assets">/assets/</a></li>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/js/components/apex_js.md">/assets/js/components/apex_js.md</a></li>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/js/components/codeval_js.md">/assets/js/components/codeval_js.md</a></li>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/js/components/leaflet_js.md">/assets/js/components/leaflet_js.md</a></li>
+                    </ul>
+                        
+                    <ul>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/blob/main/WebUI/index.md">/WebUI/index.md</a></li>
+                    </ul>
+                        
+                </div>
+
+                <div id="note-leaflet-0" class="tab-content">
+                    <h3>Note leaflet</h3>
+                    <p>Le composant est fonctionnel</p>
+                    <ul>
+                        <li><a href="https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/js/components/leaflet_js.md">/assets/js/components/leaflet_js.md</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel-card hidden" data-index="5">
+
+            <h2 class="panel-title">Adresses</h2>
+        
+            <p class="panel-description">
+                Recherche et consultation des adresses.
+            </p>
+
+
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+                
+                <div id="adresses-0" class="tab-content active">
+                    <h3>Travaux en cours</h3>
+                </div>
+
+                <div id="adresses-1" class="tab-content">
+                    <h3>Travaux en cours</h3>
+                    <div id="adresse-workbench" class="workbench" data-workbench="adresse"></div>
+                </div>                    
+            </div> 
+        
+        </div>                
+        <!-- === N - Template ======================================================== 
+        replace 
+        - N
+        - TITLE
+        - DESCRIPTION
+            <div id="SECTION_ID" class="tab-content active">
+                <h3>SECTION_TITLE</h3>
+
+        <div class="panel-card hidden" data-index="N">
+            <h2 class="panel-title">TITLE</h2>
+            <p class="panel-description">
+                DESCRIPTION
+            </p>
+
+            <div class="section-tab">
+
+                <div class="tab-headers"></div>
+
+                <div id="presentation-2" class="tab-content active">
+                    <h3>Présentation du Millenium EVO</h3>
+                    <p></p>
+                </div>
+
+                <div id="caracteristiques-2" class="tab-content">
+                    <h3>Caractéristiques techniques</h3>
+                    <p></p>
+                </div>
+
+                <div id="conclusion-2" class="tab-content">
+                    <h3>Conclusion et avis</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        -->
+
+    </main>
+
+    <div class="pagination-buttons"></div>
+    <!-- ====   FOOTER  ================================================ -->
+
+    <footer>
+        <div id="statusBar">
+            Automate actif : Schneider Modicon M221
+        </div> 
+    </footer>
+
+    <script type="module" src="/assets/js/uiapp.js"></script>
+
+</body>
+
+</html>

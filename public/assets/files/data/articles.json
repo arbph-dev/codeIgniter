@@ -1,0 +1,15 @@
+{
+  "type": "article",
+  "title": "PWM",
+  "sections": [
+    {
+      "title": "Principe",
+      "content": "Description du contneu de l'article",
+      "aside": {
+        "type": "chart",
+        "provider": "apex",
+        "data": { "x" : 12 , "y" : 24 }
+      }
+    }
+  ]
+}

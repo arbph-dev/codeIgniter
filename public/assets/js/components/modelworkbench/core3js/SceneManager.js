@@ -1,0 +1,183 @@
+/**
+ * /assets/js/components/modelworkbench/core3js/SceneManager.js
+ *
+ * --------------------------------------------------------------------
+ * ModelWorkbench — Commit 4 / Step 3
+ *
+ * Nouveauté : addMixer() + mise à jour des mixers dans _animate().
+ * Le delta de SceneTimer est maintenant consommé.
+ * --------------------------------------------------------------------
+ */
+
+import * as THREE            from 'three';
+import { OrbitControls }     from 'three/addons/controls/OrbitControls.js';
+import { SceneTimer }        from '/assets/js/shared/three/SceneTimer.js';
+import { LightManager }      from './LightManager.js';
+import { GridManager }       from './GridManager.js';
+import { AxisManager }       from './AxisManager.js';
+
+export class SceneManager
+{
+    constructor({ container })
+    {
+        this.container = container;
+
+        this.scene    = null;
+        this.camera   = null;
+        this.renderer = null;
+        this.controls = null;
+        this.clock    = new SceneTimer();
+
+        this.lightManager = null;
+        this.gridManager  = null;
+        this.axisManager  = null;
+
+        this._mixers      = [];
+        this._animationId = null;
+
+        this._onResize = this._onResize.bind(this);
+
+        this.initialize();
+    }
+
+    // ─── Initialisation ───────────────────────────────────────────────────────
+
+    initialize()
+    {
+        this._createScene();
+        this._createCamera();
+        this._createRenderer();
+        this._createManagers();
+        this._createControls();
+        this._initResize();
+        this._start();
+    }
+
+    _createScene()
+    {
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x1a1a2e);
+    }
+
+    _createCamera()
+    {
+        const w = this.container.clientWidth  || 800;
+        const h = this.container.clientHeight || 600;
+
+        this.camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
+        this.camera.position.set(0, 2, 5);
+    }
+
+    _createRenderer()
+    {
+        const w = this.container.clientWidth  || 800;
+        const h = this.container.clientHeight || 600;
+
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setSize(w, h);
+
+        this.container.appendChild(this.renderer.domElement);
+    }
+
+    _createManagers()
+    {
+        this.lightManager = new LightManager({ scene: this.scene });
+        this.lightManager.initialize();
+
+        this.gridManager = new GridManager({ scene: this.scene });
+        this.gridManager.initialize();
+
+        this.axisManager = new AxisManager({ scene: this.scene });
+        this.axisManager.initialize();
+    }
+
+    _createControls()
+    {
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enableDamping = true;
+    }
+
+    // ─── Mixers ───────────────────────────────────────────────────────────────
+
+    /**
+     * Enregistre un AnimationMixer pour qu'il soit mis à jour dans la boucle.
+     * Appelé par ModelWorkbench après chaque chargement GLTF animé.
+     *
+     * @param {THREE.AnimationMixer} mixer
+     */
+    addMixer(mixer)
+    {
+        this._mixers.push(mixer);
+    }
+
+    removeMixer(mixer)
+    {
+        this._mixers = this._mixers.filter(m => m !== mixer);
+    }
+
+    // ─── Resize ───────────────────────────────────────────────────────────────
+
+    _initResize()
+    {
+        window.addEventListener('resize', this._onResize);
+    }
+
+    _onResize()
+    {
+        const w = this.container.clientWidth;
+        const h = this.container.clientHeight;
+
+        if (w === 0 || h === 0) return;
+
+        this.camera.aspect = w / h;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(w, h);
+    }
+
+    // ─── Boucle d'animation ───────────────────────────────────────────────────
+
+    _start()
+    {
+        this.clock.start();
+        this._animate();
+    }
+
+    _animate()
+    {
+        this._animationId = requestAnimationFrame(() => this._animate());
+
+        const delta = this.clock.tick();
+
+        // Animations GLTF
+        this._mixers.forEach(m => m.update(delta));
+
+        this.controls.update();
+
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    // ─── Cycle de vie ─────────────────────────────────────────────────────────
+
+    destroy()
+    {
+        cancelAnimationFrame(this._animationId);
+
+        window.removeEventListener('resize', this._onResize);
+
+        this.lightManager?.destroy();
+        this.gridManager?.destroy();
+        this.axisManager?.destroy();
+
+        this._mixers.forEach(m => m.stopAllAction());
+        this._mixers = [];
+
+        this.controls?.dispose();
+        this.renderer?.dispose();
+
+        if (this.renderer?.domElement?.parentNode === this.container)
+        {
+            this.container.removeChild(this.renderer.domElement);
+        }
+    }
+}

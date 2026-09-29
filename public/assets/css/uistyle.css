@@ -1,0 +1,1063 @@
+/*
+2026-09-20 : Ajout callout 
+*/
+
+/* Définition des thèmes */
+:root[data-theme="marine"] {
+  --bg-main: #f0f4f8;
+  --bg-header: #1e293b;
+  --bg-sidebar: #0f172a;
+  --bg-card: #ffffff;
+  --bg-nav: #ffffff;  
+  --text-main: #334155;
+  --text-header: #f8fafc;
+  --text-sidebar: #f8fafc;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border-color: #cbd5e1;
+
+  --col-danger           : #f01313;
+  --col-danger-secondary : #fdd8d0;
+  --col-info             : #0000ff;
+  --col-info-secondary   : #d0d8fd;
+  --col-note             : #0b9d14;
+  --col-note-secondary   : #d0f0da;        
+  --col-warning          : #f79503;
+  --col-warning-secondary: #fdf3d0;
+  /* ── Espacements ─────────────────────────────────────────────────────────── */
+  --wb-gap:        1rem;
+  --wb-padding:    1rem;
+  --wb-radius:     8px;
+  --wb-shadow:     0 2px 12px rgba(0,0,0,.08);
+
+  /* ── Panel ───────────────────────────────────────────────────────────────── */
+  --wb-panel-bg:          var(--wb-white);
+  --wb-panel-header-bg:   var(--wb-navy);
+  --wb-panel-header-fg:   var(--wb-yellow);
+  --wb-panel-header-pad:  .875rem 1rem;
+  --wb-panel-body-pad:    1rem;
+  --wb-left-width:        360px;
+}
+
+:root[data-theme="nature"] {
+  --bg-main: #f4f7f4;
+  --bg-header: #1b382b;
+  --bg-sidebar: #0f2319;
+  --bg-card: #ffffff;
+  --bg-nav: #ffffff;
+  --text-main: #27352a;
+  --text-header: #f0fdf4;
+  --text-sidebar: #f0fdf4;
+  --accent: #16a34a;
+  --accent-hover: #15803d;
+  --border-color: #bbf7d0;
+
+  --col-danger           : #f01313;
+  --col-danger-secondary : #fdd8d0;
+  --col-info             : #0000ff;
+  --col-info-secondary   : #d0d8fd;
+  --col-note             : #0b9d14;
+  --col-note-secondary   : #d0f0da;        
+  --col-warning          : #f79503;
+  --col-warning-secondary: #fdf3d0;    
+  /* ── Espacements ─────────────────────────────────────────────────────────── */
+  --wb-gap:        1rem;
+  --wb-padding:    1rem;
+  --wb-radius:     8px;
+  --wb-shadow:     0 2px 12px rgba(0,0,0,.08);
+
+  /* ── Panel ───────────────────────────────────────────────────────────────── */
+  --wb-panel-bg:          var(--wb-white);
+  --wb-panel-header-bg:   var(--wb-navy);
+  --wb-panel-header-fg:   var(--wb-yellow);
+  --wb-panel-header-pad:  .875rem 1rem;
+  --wb-panel-body-pad:    1rem;
+  --wb-left-width:        360px;  
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* Header */
+#header {
+  height: 60px;
+  background-color: var(--bg-header);
+  color: var(--text-header);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 22px;
+}
+
+#appTitle { font-size: 1.1rem; font-weight: bold; }
+#appSubtitle { font-size: 0.8rem; opacity: 0.8; }
+
+.header-actions button {
+  padding: 6px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+
+/* Layout Principal */
+#contentLayout { flex: 1; display: flex; overflow: hidden; }
+
+
+/* =============================================================================
+   NAVIGATION — MOBILE FIRST
+============================================================================= */
+
+nav {
+  background-color: var(--bg-sidebar);
+
+  display: flex;
+  flex-direction: column;
+
+  inset: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  position: fixed;
+
+  transform: translateX(-100%);
+  transition: transform .3s ease;
+
+  z-index: 1000;
+}
+
+
+nav {
+  color: var(--text-sidebar);
+}
+
+nav.open {
+  transform: translateX(0);
+}
+
+
+/* =============================================================================
+   FERMETURE MOBILE
+============================================================================= */
+
+nav a.closebtn {
+  align-self: flex-end;
+
+  padding: 8px 16px;
+
+  font-size: 2rem;
+  line-height: 1;
+
+  text-decoration: none;
+}
+
+
+/* =============================================================================
+   ARTICLE
+============================================================================= */
+
+.nav-article {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.nav-article .nav-header-row {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+}
+
+
+/* =============================================================================
+   TITRE PRINCIPAL
+============================================================================= */
+
+.nav-article .nav-title {
+  flex: 1 1 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-height: 48px;
+
+  padding: 12px 16px;
+
+  font-size: 17px;
+
+  color: inherit;
+  text-decoration: none;
+
+  transition:
+    background-color .2s ease,
+    color .2s ease;
+}
+
+.nav-article .nav-title:hover,
+.nav-article .nav-title.active {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+
+/* =============================================================================
+   BOUTON CHEVRON — MOBILE
+============================================================================= */
+
+.nav-article .nav-toggle {
+  flex: 0 0 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  background: transparent;
+  border: none;
+
+  color: inherit;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
+
+  line-height: 1;
+
+  transition:
+    transform .25s ease,
+    background-color .2s ease;
+}
+
+.nav-article .nav-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+.nav-article.open .nav-toggle {
+  transform: rotate(90deg);
+}
+
+
+/* =============================================================================
+   TABLE DES MATIÈRES
+============================================================================= */
+
+.nav-article .nav-toc {
+  display: none;
+
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+}
+
+.nav-article.open .nav-toc {
+  display: block;
+}
+
+
+/* =============================================================================
+   LIENS DU TOC
+============================================================================= */
+
+.nav-article .nav-toc a {
+  display: block;
+
+  padding: 8px 16px 8px 24px;
+
+  font-size: 0.9em;
+
+  color: inherit;
+  text-decoration: none;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition:
+    background-color .2s ease,
+    color .2s ease;
+}
+
+.nav-article .nav-toc a:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+
+.nav-article .nav-toc ul {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav-article .nav-toc ul a {
+  padding-left: 36px;
+  font-size: 0.85em;
+}
+
+.nav-article .nav-toc ul ul a {
+  padding-left: 50px;
+
+  font-size: 0.8em;
+
+  opacity: 0.85;
+}
+
+
+/* =============================================================================
+   BOUTON HAMBURGER
+============================================================================= */
+
+.rwdnav {
+  text-align: right;
+}
+
+
+/* ───  Zone authentification dans le header ───────────────────────────────── */
+
+.header-auth {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    /* color : var(--col-A) */
+}
+
+/* Pseudo-classe d'accessibilité : masquer les labels visuellement */
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Connecté ── */
+.auth-username {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.auth-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+.auth-link:hover { opacity: 0.75; }
+
+
+
+/* ── Formulaire de connexion ── */
+.auth-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.auth-form input {
+    padding: 4px 8px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    background: rgba(255,255,255,0.15);
+    color: inherit;
+    min-width: 0;
+    width: 130px;
+}
+
+.auth-form input::placeholder { opacity: 0.6; }
+
+.auth-form button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.auth-loading {
+    color: inherit;
+    font-size: 1.2rem;
+    padding: 0 8px;
+}
+.auth-error {
+    background: rgba(231,76,60,0.15);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#authSubmitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Sur mobile : champs et label cachés, seul le bouton icône reste */
+/* Sur mobile : masquer le texte, ne garder que l'icône */
+@media (max-width: 767px) {
+    .auth-link span, .auth-username { display: none; }
+    .auth-link { padding: 4px 6px; }
+    .auth-form input { display: none; }
+    .auth-form button span { display: none; }
+    .auth-form button { padding: 6px 8px; }
+
+}
+
+
+/* --------------------------------------------------------------- */
+
+.adm-detail-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.adm-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; background: var(--accent, #0057b8); color: #fff;
+}
+.adm-dl { display: grid; grid-template-columns: 8rem 1fr; gap: .35rem 1rem; }
+.adm-dl dt { opacity: .7; }
+.adm-badge {
+    display: inline-block; padding: .15rem .45rem; margin: .1rem;
+    border-radius: 4px; font-size: .8rem; background: #333; color: #eee;
+}
+.adm-badge--admin, .adm-badge--superadmin { background: #8b0000; }
+.adm-badge--user { background: #1a4a1a; }
+.adm-badge--none { opacity: .5; }
+.panel-hint { margin-top: 1rem; opacity: .6; font-size: .85rem; }
+
+
+
+
+
+
+
+/*-------------------------------------------------*/
+.cp_voxzone_textarea {
+  width: 100%;
+  min-height: 150px;
+  font-family: monospace;
+  font-size: 1em;
+  margin-top: 1em;
+}
+
+.cp_voxzone_textarea2 {
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  border-radius: 6px;
+  padding: .8rem;
+}
+
+.cp_scene {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 1rem;
+}
+.cp_scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+.cp_actor {
+  position: relative;
+  z-index: 1;
+}
+.cp_actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 220px;
+}
+
+.cp_actor img {
+  max-height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(2px 4px 8px rgba(0,0,0,.7));
+}
+
+.cp_actor__name {
+  color: #fff;
+  font-style: italic;
+  text-shadow: 1px 1px 4px #000;
+  margin-top: .4rem;
+}
+
+/* flip Juliette pour qu'elle "regarde" Roméo */
+.cp_actor--right img { transform: scaleX(-1); }
+
+/* Transition douce sur toutes les propriétés visuelles des acteurs */
+.cp_actor img { transition: filter 0.35s ease; }
+.cp_actor__name { transition: color 0.35s ease, text-shadow 0.35s ease, font-weight 0s; }
+
+/* ── Acteur en train de parler : géré par vox.renderer.js ─────────────────── */
+/*    bus event vox:start → setActorSpeaking(alias) → toggle .cp_actor--speaking */
+.cp_actor--speaking img {
+  filter:
+    drop-shadow(0 0 18px rgba(255, 204, 0, 0.90))
+    drop-shadow(0 0  8px rgba(255, 160, 0, 0.60))
+    drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.70));
+}
+
+.cp_actor--speaking .cp_actor__name {
+  color       : #ffcc00;
+  font-weight : bold;
+  text-shadow :
+      0 0 10px rgba(255, 204, 0, 0.70),
+      1px 1px 4px #000;
+}            
+.cp_scene__subtitles {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  padding: .5rem 1rem;
+  border-radius: 6px;
+  min-height: 2.5rem;
+  z-index: 2;
+}
+
+/* le mot en cours mis en rouge par vox.js */
+.cp_scene__subtitles span {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------ */
+.workbench {
+  width: 100%;
+  min-width: 0;
+}
+
+.wb-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.wb-body {
+  width: 100%;
+  min-width: 0;
+}
+
+.wb-content {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =============================================================================
+  WORKBENCH Detail — vue lecture (dl)
+   ============================================================================= */
+
+.cp_detail {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: .75rem;
+    row-gap: .3rem;
+    font-size: .875rem;
+    margin-bottom: 1rem;
+}
+
+.cp_detail dt {
+    font-weight: 600;
+    color: var(--wb-muted);
+    white-space: nowrap;
+}
+
+.cp_detail dd {
+    color: var(--wb-text);
+}
+
+/* =============================================================================
+   WORKBENCH ADRESSE — /assets/css/workbench/workbench_adresse.css
+   Charger après workbench.css (dépend de ses var(--wb-*)).
+   Leaflet CSS chargé séparément dans la vue PHP.
+   ============================================================================= */
+
+
+/* =============================================================================
+   Layout 3 zones
+   ============================================================================= */
+
+.wb_adresse_layout {
+    display   : flex;
+    align-items : flex-start;
+    gap       : var(--wb-gap);
+    width     : 100%;
+    min-height: calc(100vh - 2 * var(--wb-padding));
+}
+
+.wb_adresse_left {
+    flex    : 0 0 300px;
+    min-width: 0;
+}
+
+.wb_adresse_center {
+    flex    : 0 0 360px;
+    min-width: 0;
+}
+
+.wb_adresse_right {
+    flex    : 1;
+    min-width: 0;
+}
+
+
+/* =============================================================================
+   Map Panel
+   ============================================================================= */
+
+.wb_map_panel {
+    background    : var(--wb-panel-bg);
+    border-radius : var(--wb-radius);
+    box-shadow    : var(--wb-shadow);
+    overflow      : hidden;
+}
+
+.wb_map_body {
+    padding : 0;    /* la carte occupe tout le body sans padding */
+}
+
+.wb_map_container {
+    width  : 100%;
+    height : 480px; /* hauteur fixe — Leaflet nécessite des dimensions définies */
+    display: block;
+}
+
+/* Assure que les contrôles Leaflet passent au-dessus du reste */
+.wb_map_container .leaflet-control {
+    z-index: 400;
+}
+
+
+/* =============================================================================
+   Responsive
+   ============================================================================= */
+
+@media (max-width: 1100px)
+{
+    .wb_adresse_layout {
+        flex-wrap : wrap;
+    }
+
+    .wb_adresse_left {
+        flex  : none;
+        width : 100%;
+    }
+
+    .wb_adresse_center,
+    .wb_adresse_right {
+        flex      : 1;
+        min-width : 280px;
+    }
+
+    .wb_map_container {
+        height : 360px;
+    }
+}
+
+@media (max-width: 768px)
+{
+    .wb_adresse_center,
+    .wb_adresse_right {
+        flex  : none;
+        width : 100%;
+    }
+
+    .wb_map_container {
+        height : 300px;
+    }
+}
+
+
+/* =============================================================================
+   COMPOSANTS 
+============================================================================= */
+.cp_codeval { 
+
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  overflow: hidden; 
+  display: block;
+}
+
+.cp_codeval .titre { 
+  background-color: var(--accent);
+  color: var(--text-header);
+  cursor: pointer;
+  padding: 10px; 
+}
+
+.cp_codeval .result { display: none; padding: 10px; }
+
+.cp_codeval .scriptcode { display: block ; padding: 10px; }
+
+.cp_codeval .scriptcode textarea { height: 200px; width: 100%; overflow-y: auto; }
+
+
+/* ======   callout - Structure     ============================================== */
+
+.cp_callout {
+    border: 1px solid #5f5e5e;
+    margin: 1rem 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.cp_callout_title {
+    display: block;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+.cp_callout_content {
+    padding: 10px 12px;
+}
+
+/* ========= callout -    Variantes  ============================================ */
+
+/*  ---- info ---- */
+.cp_callout--info {
+    border-color: var(--col-info);
+}
+
+.cp_callout--info .cp_callout_title {
+    background: var(--col-info);
+    color: var(--col-info-secondary);
+}
+.cp_callout--info .cp_callout_content {
+    background: var(--col-info-secondary);
+    color: var(--col-info);
+}
+
+/* ---- warning ----- */
+
+.cp_callout--warning {
+    border-color: var(--col-warning);
+}
+.cp_callout--warning .cp_callout_title {
+    background  : var(--col-warning);
+    color       : var(--col-warning-secondary);
+}
+.cp_callout--warning .cp_callout_content {
+    background  : var(--col-warning-secondary);
+    color       : var(--col-warning);
+}
+
+/* ---- danger ----- */
+.cp_callout--danger {
+    border-color: var(--col-danger);
+}
+.cp_callout--danger .cp_callout_title {
+    background  : var(--col-danger);
+    color       : var(--col-danger-secondary);
+}
+.cp_callout--danger .cp_callout_content {
+    background  : var(--col-danger-secondary);
+    color       : var(--col-danger);
+}
+
+
+/* ---- tip ----- */
+.cp_callout--tip {
+    border-color: var(--col-note);
+}
+.cp_callout--tip .cp_callout_title {
+    background  : var(--col-note);
+    color       : var(--col-note-secondary);
+}
+.cp_callout--tip .cp_callout_content {
+    background  : var(--col-note-secondary);
+    color       : var(--col-note);
+}
+
+
+
+/* leaflet voir /refactoring/assets/css/components/leaflet.css ------------------------------------------------ */
+
+.cp_leaflet { width:100%; height:400px; }
+
+
+
+
+/* =============================================================================
+   DESKTOP
+============================================================================= */
+
+@media (min-width: 768px) {
+
+  nav {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    position: relative;
+
+    width: 100%;
+
+    overflow: visible;
+
+    transform: translateX(0);
+
+    z-index: 100;
+  }
+
+
+  nav a.closebtn {
+    display: none;
+  }
+
+
+  .nav-article {
+    position: relative;
+
+    flex-direction: row;
+    align-items: stretch;
+
+    width: auto;
+  }
+
+
+  .nav-article .nav-header-row {
+    height: 100%;
+  }
+
+
+  .nav-article .nav-title {
+    height: 100%;
+
+    white-space: nowrap;
+  }
+
+
+  .nav-article .nav-toggle {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------------------------
+     DROPDOWN
+  ------------------------------------------------------------------------- */
+
+  .nav-article .nav-toc {
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    min-width: 260px;
+    max-height: 75vh;
+
+    overflow-y: auto;
+
+    background-color: var(--bg-sidebar);
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+    z-index: 200;
+  }
+
+
+  /*  plus de hover un click est nécessaire
+  .nav-article:hover .nav-toc {
+    display: block;
+  }
+  */
+
+  /* 2026-09-13  */
+  .nav-article.open .nav-toc {
+    display: block;
+  }
+
+
+
+
+  /* Hover visuel du menu principal */
+
+  .nav-article:hover .nav-title {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+
+  /* Liens dropdown */
+
+  .nav-article .nav-toc a {
+    padding: 8px 16px;
+
+    font-size: 0.88em;
+  }
+
+
+  .nav-article .nav-toc ul a {
+    padding-left: 30px;
+  }
+
+
+  .nav-article .nav-toc ul ul a {
+    padding-left: 46px;
+  }
+
+
+  .rwdnav {
+    display: none;
+  }
+}
+
+/* = DESKTOP END ========================================================================== */
+
+
+/* Zone d'affichage (Stack) */
+
+#stack {
+  flex: 1;
+  padding: 28px;
+  overflow-y: auto;
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel-card.hidden { display: none; }
+
+.panel-title { font-size: 1.5rem; }
+
+/* Styles des Onglets HTML (<details> ou boutons d'onglets) */
+.tab-headers {
+  display: flex;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 14px;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-btn.active {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.tab-content { display: none; padding-top: 10px; }
+.tab-content.active { display: block; }
+
+/* Formulaires */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+input[type="text"], input[type="number"], select {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+}
+
+
+.pagination-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+
+.primary-button {
+  padding: 10px 18px;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.primary-button:hover { background-color: var(--accent-hover); }
+
+/* Barre de statut */
+#statusBar {
+  height: 24px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 2px 12px;
+  font-size: 0.8rem;
+}
