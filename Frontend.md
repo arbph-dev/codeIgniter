@@ -145,7 +145,7 @@ main#stack
 
 
 | variable | référence | Note |
-| --- | --- | ---+ |
+| --- | --- | --- |
 | _footer | footer | reference sur name , footer du body |
 | _footer_status | footer / div#statusBar | reference sur selecteur css depuis _footer |
 | _header_actions_btn_fullscreen | header#header > div.header-actions > button#fullscreenBtn | reference sur selecteur css |
