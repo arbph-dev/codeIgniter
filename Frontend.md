@@ -52,40 +52,48 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
 
 
+
+
+Helper DOM
+- boot
+- [fullscreenSwitch](#fullscreenSwitch)
+- onload
+- [readPage](#readPage)
+- [setPageRef](#setPageRef)
+- [statusWrite](#statusWrite)
+	- Ecrit dans le footer en utilisant **_footer_status**, si **_footer_status** est null  fallback vers console
+- [themeSwitch](#themeSwitch)
+- typeofObj
+	- a sortir vers domHelper
+ 	- `console.log( typeofObj( _menu ) )`
+
+Navigation
+
 - [initMenu](#initMenu)
 - [initNavigation](#initNavigation)
 - [initPagination](#initPagination)
 
 - [openMenuPanel](#openMenuPanel)
 
-- [readPage](#readPage)
-- [setPageRef](#setPageRef)
-- typeofObj
-	- a sortir vers domHelper
- 	- `console.log( typeofObj( _menu ) )`
 
-Navigation
 - Sidebar
 	- [closeSidebar](#closeSidebar)
 	- [initSidebar](#initSidebar)
 	- [openSidebar](#openSidebar)
 
-
-```
-- themeSwitch
-- fullscreenSwitch
-- switchPanel
-- switchSection
-- statusWrite
-
 - openMenuPanel
-
-
-
 - openNav
 - closeNav
 
-- boot
+
+show/hide boards
+- switchPanel
+- switchSection
+
+```
+
+
+
 - getAuthBoards
 - hideAuthBoards
 
@@ -97,7 +105,7 @@ Navigation
 - mountUserBoard
 
 - noAuth
-- onload
+
 
 
 - show
@@ -189,6 +197,7 @@ main#stack
 
 
 ## Helper de rendu
+Rendu minimal board user / admin
 - function badgeGroups(groups)
 - function badgePerms(permissions)
 - function renderUserCard(user, { title = 'Mon profil' } = {})
