@@ -64,6 +64,12 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 	- a sortir vers domHelper
  	- `console.log( typeofObj( _menu ) )`
 
+Navigation
+- Sidebar
+	- [closeSidebar](#closeSidebar)
+	- [initSidebar](#initSidebar)
+	- [openSidebar](#openSidebar)
+
 
 ```
 - themeSwitch
@@ -75,9 +81,6 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 - openMenuPanel
 
 
-- openSidebar
-- closeSidebar
-- initSidebar
 
 - openNav
 - closeNav
@@ -216,7 +219,31 @@ Pour chaque page contenue dans _pages
 Pour chaque section d'une page
  Le code génère un élément de liste (<li>) et l'ajoute au sous-menu.
 
-## Gestion de la navigation (clic sur une section)
+# Gestion de la navigation 
+
+## sidebar
+
+#### closeSidebar
+exploite la référence **_menu**
+```js
+function closeSidebar() { _menu.classList.remove("open") }
+```
+#### initSidebar
+```js
+function initSidebar() {
+    bus.subscribe('sidebar:open', openSidebar)
+    bus.subscribe('sidebar:close', closeSidebar)    
+    window.openNav = () => { bus.publish('sidebar:open') }
+    window.closeNav = () => { bus.publish('sidebar:close') }
+}
+```
+#### openSidebar
+exploite la référence **_menu**
+```js
+function openSidebar() { _menu.classList.add("open") }
+```
+
+(clic sur une section)
 Lorsqu'un utilisateur clique sur un élément du sous-menu :
 L'action par défaut et la propagation de l'événement sont stoppées (preventDefault, stopPropagation).
 
