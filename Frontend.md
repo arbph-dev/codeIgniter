@@ -3,6 +3,26 @@
 - RESSOURCES :
  -  https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md
 
+Premiere priorité stabiliser l' ihm 
+ 
+Stop à la construction dynamique à réserver au workbench ou composant 
+  
+## Gestion des panneaux 
+Les panels sont décrits ici : https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md#structure
+
+On a introduit deux types de panels
+[admin](/public/ui.html#L69 )
+[user](/public/ui.html#L82)
+La liste des Panels du menu est une liste sans panneau admin,user
+que l' on a dissocier mais il y a un bug à l' affichage 
+ 
+La fonction qui gère les panneaux doit cacher tout les Panels et se séparer de l affichage 
+ 
+La liste des Panels du menu est une liste sans panneau admin,user
+La liste des panels a masqué c est toute la liste 
+Pour l affichage une div panel-card est dans la liste des pages, on utilise un offset 2 car deux panels admin user selon auth user
+
+
 /uiapp.js#L185
  
  
