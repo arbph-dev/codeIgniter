@@ -173,63 +173,48 @@ class AuthController extends BaseController
     /**
      * POST /api/auth/register
      *
-     * INSCRIPTION
-     * -----------
+     * INSCRIPTION API
+     * ----------------
      *
-     * ATTENTION :
+     * Cette route crée un User Shield et prépare l'action "register".
      *
-     * Cette méthode est actuellement une implémentation personnalisée
-     * de l'inscription Shield.
+     * Le workflow Shield natif est :
      *
-     * Le contrôleur natif Shield RegisterController fait déjà :
+     *   RegisterController
+     *       ↓
+     *   création User
+     *       ↓
+     *   groupe par défaut
+     *       ↓
+     *   Events::trigger('register')
+     *       ↓
+     *   startLogin()
+     *       ↓
+     *   startUpAction('register')
+     *       ↓
+     *   ActionController
+     *       ↓
+     *   EmailActivator
      *
-     *   - validation
-     *   - création du User
-     *   - ajout au groupe par défaut
-     *   - événement `register`
-     *   - startLogin()
-     *   - startUpAction('register')
-     *   - traitement de l'Action
-     *   - activation
-     *   - completeLogin()
+     * Ici nous sommes dans une API JSON :
+     * nous ne pouvons pas simplement faire la redirection HTML
+     * du RegisterController natif.
      *
-     * Notre code ci-dessous reproduit donc une partie de cette mécanique.
+     * Nous préparons donc l'action Shield puis appelons son traitement
+     * pour déclencher l'envoi du mail d'activation.
      *
-     * C'est un point à nettoyer.
-     *
-     * Objectif futur :
-     *
-     *     /register
-     *         -> Shield natif
-     *
-     * et ne conserver ici que si nous avons réellement besoin d'une
-     * variante API JSON de l'inscription.
+     * IMPORTANT :
+     * user_profils est volontairement absent.
+     * Cette partie sera traitée séparément ultérieurement.
      */
     public function register()
     {
-        /*
-         * TODO NETTOYAGE :
-         *
-         * Les champs client_profil_* appartiennent à l'ancien système
-         * UserProfil.
-         *
-         * Ils ne font pas partie de Shield.
-         *
-         * Nous avons décidé de mettre user_profils de côté pour le moment.
-         * Cette partie sera donc retirée dans une étape séparée.
-         */
         $rules = [
             'shield_username' => 'required|min_length[3]|max_length[30]|is_unique[users.username]',
             'shield_email'    => 'required|valid_email|is_unique[auth_identities.secret]',
             'shield_password' => 'required|min_length[8]',
-
-            // ANCIEN PROFIL UTILISATEUR : à supprimer lors du nettoyage.
-            'client_profil_tel'    => 'permit_empty|max_length[20]',
-            'client_profil_mobile' => 'permit_empty|max_length[20]',
-            'client_profil_persid' => 'permit_empty|is_natural_no_zero',
-            'client_profil_orgid'  => 'permit_empty|is_natural',
         ];
-
+    
         if (! $this->validate($rules)) {
             return $this->response
                 ->setStatusCode(422)
@@ -237,209 +222,157 @@ class AuthController extends BaseController
                     'errors' => $this->validator->getErrors(),
                 ]);
         }
-
+    
         $username = $this->request->getVar('shield_username');
         $email    = $this->request->getVar('shield_email');
         $password = $this->request->getVar('shield_password');
-
-        /*
-         * ANCIEN UserProfil :
-         * cette partie ne concerne pas Shield et sera supprimée.
-         */
-        $telFixe     = $this->request->getVar('client_profil_tel') ?: null;
-        $telMobile   = $this->request->getVar('client_profil_mobile') ?: null;
-        $personneId  = $this->request->getVar('client_profil_persid') ?: null;
-
-        $rawOrg = $this->request->getVar('client_profil_orgid');
-
-        $organisationId = (
-            $rawOrg !== null &&
-            $rawOrg !== '' &&
-            (int) $rawOrg > 0
-        ) ? (int) $rawOrg : null;
-
-        $db = \Config\Database::connect();
-
-        $db->transStart();
-
+    
         try {
-
-            /*
-             * 1. Création du User Shield.
-             *
-             * Cette partie correspond directement au travail effectué
-             * par le UserProvider / UserModel de Shield.
-             */
+            // -------------------------------------------------------------
+            // 1. Création du User Shield
+            // -------------------------------------------------------------
+            //
+            // Le UserModel reste celui fourni par Shield.
+            // Aucune table métier n'intervient dans l'inscription.
+            //
             $userModel = model(\CodeIgniter\Shield\Models\UserModel::class);
-
-            $user = new User([
+    
+            $user = new \CodeIgniter\Shield\Entities\User([
                 'username' => $username,
                 'email'    => $email,
                 'password' => $password,
             ]);
-
+    
             $userModel->save($user);
-
+    
+            // Récupération du User réellement enregistré.
             $user = $userModel->findById($userModel->getInsertID());
-
-            /*
-             * Shield affecte le groupe par défaut.
-             *
-             * C'est une mécanique native Shield.
-             */
-            $userModel->addToDefaultGroup($user);
-
-
-            /*
-             * 2. ANCIEN UserProfil
-             *
-             * Cette partie n'est pas une mécanique Shield.
-             *
-             * Elle sera supprimée dans le nettoyage suivant puisque
-             * user_profils est actuellement mis de côté.
-             */
-            $profilModel = model(\App\Models\UserProfilModel::class);
-
-            $existing = $profilModel->findByUserAndOrg(
-                (int) $user->id,
-                $organisationId
-            );
-
-            if ($existing) {
-                $db->transRollback();
-
-                return $this->response
-                    ->setStatusCode(409)
-                    ->setJSON([
-                        'error' => 'Un profil existe déjà pour cette organisation.',
-                    ]);
-            }
-
-            $profilModel->insert([
-                'user_id'         => $user->id,
-                'tel_fixe'        => $telFixe,
-                'tel_mobile'      => $telMobile,
-                'personne_id'     => $personneId,
-                'adresse_id'      => null,
-                'organisation_id' => $organisationId,
-                'defaut'          => 1,
-            ]);
-
-
-            /*
-             * 3. Validation transaction.
-             */
-            $db->transComplete();
-
-            if ($db->transStatus() === false) {
+    
+            if (! $user instanceof \CodeIgniter\Shield\Entities\User) {
                 return $this->response
                     ->setStatusCode(500)
                     ->setJSON([
-                        'error' => 'Erreur lors de la création du compte.',
+                        'error' => 'Impossible de récupérer le compte créé.',
                     ]);
             }
-
-
-            /*
-             * 4. ACTION REGISTER SHIELD
-             *
-             * Ici nous reproduisons manuellement une partie du
-             * RegisterController natif de Shield.
-             *
-             * Shield fait normalement :
-             *
-             *     startLogin($user)
-             *     startUpAction('register', $user)
-             *
-             * puis laisse l'ActionController traiter l'action.
-             *
-             * Notre code appelle directement $action->show().
-             *
-             * Cela fonctionne, mais c'est précisément la partie
-             * que nous voulons éviter de maintenir nous-mêmes.
-             */
+    
+            // -------------------------------------------------------------
+            // 2. Groupe Shield par défaut
+            // -------------------------------------------------------------
+            //
+            // Même opération que le RegisterController natif Shield.
+            //
+            $userModel->addToDefaultGroup($user);
+    
+            // -------------------------------------------------------------
+            // 3. Événement Shield "register"
+            // -------------------------------------------------------------
+            //
+            // Le RegisterController natif déclenche cet événement après
+            // la création du User et son affectation au groupe par défaut.
+            //
+            \CodeIgniter\Events\Events::trigger('register', $user);
+    
+            // -------------------------------------------------------------
+            // 4. Action d'inscription / activation
+            // -------------------------------------------------------------
+            //
+            // Shield peut avoir une action "register" configurée.
+            //
+            // Si elle existe, nous suivons le mécanisme d'authentification
+            // Session de Shield pour placer le User en "pending login".
+            //
             $registerAction = setting('Auth.actions')['register'] ?? null;
-
+    
             if ($registerAction !== null) {
-
+    
+                /** @var \CodeIgniter\Shield\Authentication\Authenticators\Session $authenticator */
                 $authenticator = auth('session')->getAuthenticator();
-
-                /*
-                 * Le register natif Shield démarre ici le pending login.
-                 */
+    
+                // Même étape que RegisterController::registerAction().
                 $authenticator->startLogin($user);
-
+    
                 /*
-                 * startUpAction() prépare l'action dans l'état
-                 * d'authentification Shield.
+                 * Prépare l'action "register" dans l'état Session Shield.
                  *
-                 * Il ne faut pas appeler plusieurs fois cette séquence.
+                 * IMPORTANT :
+                 * startUpAction() ne constitue pas l'envoi du mail.
+                 * L'action EmailActivator s'en charge ensuite.
                  */
-                $hasAction = $authenticator->startUpAction('register', $user);
-
+                $hasAction = $authenticator->startUpAction(
+                    'register',
+                    $user
+                );
+    
                 if ($hasAction) {
-
+    
                     /*
-                     * Appel manuel de l'action Shield.
+                     * Le contrôleur natif ferait :
                      *
-                     * Le mécanisme natif passe normalement par
-                     * ActionController.
+                     *     return redirect()->route('auth-action-show');
+                     *
+                     * Dans notre API nous ne voulons pas retourner une page HTML.
+                     *
+                     * Nous exécutons donc l'action Shield directement afin
+                     * de conserver son mécanisme d'envoi d'email.
                      */
-                    $actionClass = setting('Auth.actions')['register'];
-
                     /** @var \CodeIgniter\Shield\Authentication\Actions\ActionInterface $action */
-                    $action = \CodeIgniter\Config\Factories::actions($actionClass);
-
+                    $action = \CodeIgniter\Config\Factories::actions(
+                        $registerAction
+                    );
+    
+                    /*
+                     * EmailActivator::show() :
+                     *
+                     * - récupère le pending User ;
+                     * - crée l'identité d'activation ;
+                     * - génère le code ;
+                     * - envoie l'email ;
+                     * - retourne normalement la vue d'information.
+                     *
+                     * Nous ignorons volontairement ici le HTML retourné :
+                     * notre contrat est JSON.
+                     */
                     $action->show();
-
+    
                     return $this->response
-                        ->setStatusCode(200)
+                        ->setStatusCode(201)
                         ->setJSON([
                             'message'        => 'Compte créé. Vérifiez votre email pour activer votre compte.',
                             'email_verified' => false,
                         ]);
                 }
             }
-
-
-            /*
-             * 5. PAS D'ACTION REGISTER
-             *
-             * Si aucune action d'activation n'est configurée :
-             *
-             *     activation immédiate
-             *     génération d'un token API
-             *
-             * Là encore, cette branche est une extension API,
-             * pas le workflow Session natif de Shield.
-             */
+    
+            // -------------------------------------------------------------
+            // 5. Aucun mécanisme d'activation configuré
+            // -------------------------------------------------------------
+            //
+            // Dans ce cas Shield n'attend pas d'action d'activation.
+            // Le compte peut être activé directement.
+            //
             $user->activate();
-
-            $token = $user->generateAccessToken('webapp');
-
+    
             return $this->response
                 ->setStatusCode(201)
                 ->setJSON([
                     'message'        => 'Compte créé avec succès.',
                     'email_verified' => true,
-                    'token'          => $token->raw_token,
-                    'user'            => [
+                    'user'           => [
                         'id'       => $user->id,
                         'username' => $user->username,
                         'email'    => $user->email,
                         'groups'   => $user->getGroups(),
                     ],
                 ]);
-
+    
         } catch (\Throwable $e) {
-
-            $db->transRollback();
-
+    
             log_message(
                 'error',
                 '[register] ' . $e->getMessage()
             );
-
+    
             return $this->response
                 ->setStatusCode(500)
                 ->setJSON([
