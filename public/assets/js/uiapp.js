@@ -150,8 +150,8 @@ function readPage(){
   let strTemp = null
 
   if ( _main && _menu) { 
-  _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
-  //_main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
+  // _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
+  _main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
   
   _main_panels.forEach((  panel , index ) => {
 
