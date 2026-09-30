@@ -30,7 +30,7 @@ On a introduit deux types de panels
 
 
 
-[/assets/js/uiapp.js#L185](public/assets/js/uiapp.js#L185)
+
 
 La liste des Panels du menu est une liste sans panneau admin,user que l' on a dissocier mais il y a un bug à l' affichage 
  
@@ -58,8 +58,6 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 - typeofObj
 
 - openMenuPanel
-- initMenu
-
 - setPageRef
 
 - openSidebar
@@ -94,9 +92,8 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 ```
 
 
-Ce code JavaScript initialise dynamiquement un menu de navigation déroulant ou accordéon à partir d'un tableau de données nommé **_pages**.
 
-//2026-09-27-002 - Modifier readPage() pour ignorer les panels auth :
+## readPage
 ```js
 function readPage(){
 
@@ -108,9 +105,12 @@ function readPage(){
   _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
   //_main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
 ```
+**2026-09-27-002**
+- Modifier readPage() pour ignorer les panels auth :
+**2026-09-30-001**
+- offset readpage à formaliser
 
-offset readpage 
-show/hide boards
+## show/hide boards
 - Modifier readPage() pour ignorer les panels auth :
 - ajout function getAuthBoards()
 - ajout function hideAuthBoards()
@@ -157,7 +157,21 @@ Les fonctions **switchPanel(index)** et **switchSection(sindex)** sont exécuté
 
 Le menu se ferme automatiquement (en retirant la classe 'open' sur grand écran ou en appelant closeSidebar() sur mobile).
 
+
+
+
+### initMenu
+- [/assets/js/uiapp.js - initMenu - #L193](public/assets/js/uiapp.js#L193)
+
+
+Ce code JavaScript initialise dynamiquement un menu de navigation déroulant ou accordéon à partir d'un tableau de données nommé **_pages**.
+
+
+
+
+
 ## Interactions avec le panneau principal :
 Au clic : Ouvre ou bascule le panneau via openMenuPanel(index).
+- [/assets/js/uiapp.js - openMenuPanel - #L181](public/assets/js/uiapp.js#L181)
 Survol / Sortie de la souris (mouseleave) : 
  Sur écran d'ordinateur (largeur > 768px), le panneau se ferme automatiquement dès que la souris quitte sa zone.
