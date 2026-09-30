@@ -48,6 +48,7 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 # fonctions principales
 
 - readPage
+- typeofObj
 
 ```
 - themeSwitch
@@ -55,7 +56,7 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 - switchPanel
 - switchSection
 - statusWrite
-- typeofObj
+
 
 - openMenuPanel
 - setPageRef
@@ -161,17 +162,22 @@ Le menu se ferme automatiquement (en retirant la classe 'open' sur grand écran 
 
 
 ### initMenu
+Ce code JavaScript initialise dynamiquement un menu de navigation déroulant ou accordéon à partir d'un tableau de données nommé **_pages** initialisé par [readPage](#readPage)
+
 - [/assets/js/uiapp.js - initMenu - #L193](public/assets/js/uiapp.js#L193)
 
 
-Ce code JavaScript initialise dynamiquement un menu de navigation déroulant ou accordéon à partir d'un tableau de données nommé **_pages**.
+
 
 
 
 
 
 ## Interactions avec le panneau principal :
+
+### openMenuPanel
 Au clic : Ouvre ou bascule le panneau via openMenuPanel(index).
 - [/assets/js/uiapp.js - openMenuPanel - #L181](public/assets/js/uiapp.js#L181)
+
 Survol / Sortie de la souris (mouseleave) : 
  Sur écran d'ordinateur (largeur > 768px), le panneau se ferme automatiquement dès que la souris quitte sa zone.
