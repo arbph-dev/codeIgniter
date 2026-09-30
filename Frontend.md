@@ -4,9 +4,12 @@
  -  https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md
 
 Premiere priorité stabiliser l' ihm 
- 
+
 Stop à la construction dynamique à réserver au workbench ou composant 
-  
+
+
+
+
 ## Gestion des panneaux 
 Les panels sont décrits ici : 
 - https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md#structure
@@ -50,11 +53,16 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
 
 - [initMenu](#initMenu)
+- [initNavigation](#initNavigation)
 - [initPagination](#initPagination)
+
 - [openMenuPanel](#openMenuPanel)
+
 - [readPage](#readPage)
+- [setPageRef](#setPageRef)
 - typeofObj
 	- a sortir vers domHelper
+ 	- `console.log( typeofObj( _menu ) )`
 
 
 ```
@@ -64,9 +72,8 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 - switchSection
 - statusWrite
 
-
 - openMenuPanel
-- setPageRef
+
 
 - openSidebar
 - closeSidebar
@@ -75,17 +82,12 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 - openNav
 - closeNav
 
-
-
-
-
 - boot
 - getAuthBoards
 - hideAuthBoards
 
 - initAuthBoards
-- initNavigation
-- initPagination
+
 
 - mountAdminBoard
 - mountApplication
@@ -104,20 +106,76 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
 ### readPage
 ```js
-function readPage(){
-
-  let articleObj = null  
-  let panelSections = null
-  let strTemp = null
-
-  if ( _main && _menu) { 
   _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
   //_main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
+```
+
+```js
+
 ```
 **2026-09-27-002**
 - Modifier readPage() pour ignorer les panels auth :
 **2026-09-30-001**
 - offset readpage à formaliser
+
+### setPageRef
+Initialise des références aux principaux elements
+- certains ne servent qu'une fois donc les déplacer en init pour minimiser la mémoire
+
+Appelle [readPage](#readPage) pour initialiser le tableau 
+
+Appele les différentes initialisation des éléments de la navigation
+- [initMenu](#initMenu)
+- [initNavigation](#initNavigation)
+- [initPagination](#initPagination)
+
+#### Structure du contenu
+```
+main#stack
+	div.panel-card  = article
+		h2.panel-title
+		p.panel-description 
+		div.section-tab
+			div.tab-headers
+			div.tab-content = section
+				h3
+				p
+```
+
+
+
+| variable | référence | Note |
+| --- | --- | ---+ |
+| _footer | footer | reference sur name , footer du body |
+| _footer_status | footer / div#statusBar | reference sur selecteur css depuis _footer |
+| _header_actions_btn_fullscreen | header#header > div.header-actions > button#fullscreenBtn | reference sur selecteur css |
+| _header_actions_btn_theme | header#header > div.header-actions > button#themeBtn | reference sur selecteur css |
+| _main | main | reference sur name, norme dit main est unique , id stack ne sert a rien |
+| _menu | nav | reference sur name , nav du body |
+
+**header#header** n'est pas référencé
+
+**byName** retourne une collection
+
+```js
+  _main = byName("main")[0]
+  _menu = byName( "nav", document )[0]
+
+  _footer = byName("footer" , document )[0]
+  _footer_status = qs( "div#statusBar" , _footer )
+  
+  _header_actions_btn_fullscreen = qs( "header#header > div.header-actions > button#fullscreenBtn")
+  _header_actions_btn_fullscreen.addEventListener("click", fullscreenSwitch );// Gestion du plein écran
+
+  _header_actions_btn_theme = qs( "header#header > div.header-actions > button#themeBtn")
+  _header_actions_btn_theme.addEventListener("click", themeSwitch );// Gestion du thème - click header
+
+  if ( !readPage() ) { return }
+  
+  initPagination()    
+  initNavigation()
+  initMenu()
+```
 
 ## show/hide boards
 - Modifier readPage() pour ignorer les panels auth :
@@ -172,10 +230,14 @@ Ce code JavaScript initialise dynamiquement un menu de navigation déroulant ou 
 
 - [/assets/js/uiapp.js - initMenu - #L193](public/assets/js/uiapp.js#L193)
 
+### initNavigation
+on ajoute dans chaque panel contenues dans **_pages** la barrre de navigations panel
+un panel 
+"div.section-tab > div.tab-headers"
 
-‎### initPagination‎
-
-
+### initPagination‎
+utilise **_pages** initialisé par [readPage](#readPage)
+- doit disparaitre a terme
 
 ## Interactions avec le panneau principal :
 
