@@ -8,8 +8,10 @@ Premiere priorité stabiliser l' ihm
 Stop à la construction dynamique à réserver au workbench ou composant 
   
 ## Gestion des panneaux 
-Les panels sont décrits ici : https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md#structure
-
+Les panels sont décrits ici : 
+- https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md#structure
+- https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md#css-associ%C3%A9
+- 
 On a introduit deux types de panels
 [admin](/public/ui.html#L69 )
 [user](/public/ui.html#L82)
