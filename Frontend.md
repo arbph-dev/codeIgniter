@@ -1,5 +1,5 @@
 **Fichiers**
-- REPO : (/ui.html)[/public/ui.html]
+- REPO : [/ui.html](/public/ui.html)
 - RESSOURCES :
  -  https://github.com/arbph-dev/codeIgniter-appCms/blob/main/assets/ui_html.md
 
