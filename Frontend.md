@@ -94,7 +94,7 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
 
 
-## readPage
+### readPage
 ```js
 function readPage(){
 
