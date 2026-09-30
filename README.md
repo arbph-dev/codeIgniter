@@ -42,3 +42,39 @@ logout() API : trop de travail manuel
 - Shield sait déjà gérer le token courant ;
 et auth()->logout() tue en plus la session, ce qui mélange les deux mécanismes.
 
+------
+
+# ui
+on retire les div panel-card 
+- data-role="admin" data-index="-2"
+- data-role="user" data-index="-1"
+  
+```
+        <!-- ── AUTH BOARDS (hors menu / pagination) ── -->
+        <div class="panel-card hidden" data-role="admin" data-index="-2">
+            <h2 class="panel-title">Administration</h2>
+            <p class="panel-description">Tableau de bord administrateur</p>
+            <div class="section-tab">
+                <div class="tab-headers"></div>
+                <div id="admin-home" class="tab-content active">
+                    <h3>Admin</h3>
+                    <div id="admin-board-body"><!-- contenu ultérieur --></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel-card hidden" data-role="user" data-index="-1">
+            <h2 class="panel-title">Mon espace</h2>
+            <p class="panel-description">Profil et inscription</p>
+            <div class="section-tab">
+                <div class="tab-headers"></div>
+                <div id="user-home" class="tab-content active">
+                    <h3>Espace utilisateur</h3>
+                    <div id="user-board-body"><!-- formulaire register OU dashboard user --></div>
+                </div>
+            </div>
+        </div>
+```
+
+
