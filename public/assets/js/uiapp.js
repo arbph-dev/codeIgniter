@@ -39,6 +39,12 @@ let _currentSection = 0
 let sidebar = null
 let adresseWorkbench = null
 
+
+const PANEL_ADMIN = 0
+const PANEL_USER = 1
+const PANEL_OFFSET = 2
+
+
 /*  ======================================================================================================================  */
 // Gestion du thème
 function themeSwitch(){
@@ -47,10 +53,17 @@ function themeSwitch(){
   _header_actions_btn_theme.textContent = currentTheme === "marine" ? "Thème nature" : "Thème marine";
 }
 
-/*  ======================================================================================================================  */
+/*  ======================================================================================================================
+switchPanel n'utilise pas _pages
+- switchPanel(PANEL_ADMIN)
+- switchPanel(PANEL_USER)
+*/
 function switchPanel(index) {
+
   _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== index) })
+  
   _currentPanel = index
+  
   statusWrite( `Onglet actif : ${_pages[index].title}` )
 }
 /*  ======================================================================================================================  */
@@ -98,8 +111,38 @@ function typeofObj( Obj ){
   
 }
 
-/*  ======================================================================================================================  */
+/*  ======================================================================================================================  
 //2026-09-27-002 - Modifier readPage() pour ignorer les panels auth :
+intilise
+  _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
+  // 0-5
+
+  _main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
+  // -2 -1 0 5
+
+pour chaque panel p de _main_panels
+  on recherche le panel actif par defaut 0 n'a pas de classe hidden
+  // _currentPanel = 0 ou 2 selon _main_panels
+  on recherche le titre h2 du panel p
+  on recherche les div.section-tab  > div.tab-content > h3 du panel p
+  on construit 1 objet du panel p avec sont titre ets es sections
+  on stocke l'objet dans _pages
+  on ajoute les sections a l'objet
+
+
+on veut introduire PANEL_OFFSET
+
+initPagination , initNavigation , initMenu utilse _pages
+
+switchPanel n'utilise pas _pages ce qui permet 
+- switchPanel(PANEL_ADMIN) PANEL_ADMIN = 0
+- switchPanel(PANEL_USER) PANEL_USER = 1
+
+on introduit PANEL_OFFSET
+if (index >= PANEL_OFFSET){}
+
+*/
+
 function readPage(){
 
   let articleObj = null  
@@ -112,26 +155,43 @@ function readPage(){
   
   _main_panels.forEach((  panel , index ) => {
 
-    if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
-
-    strTemp = qs( "h2.panel-title" , panel).innerText
-    panelSections = qsa( "div.section-tab  > div.tab-content > h3" , panel )
-
-    articleObj = { index , title : strTemp , sections : [] } // constuire un objet
-
-    _pages.push( articleObj )
-
-    panelSections.forEach((  section , sindex ) => { 
-      _pages[ index ].sections.push( section.innerText ) 
-    })      
-
+    // on passe les premiers panel admin et user
+    if (index >= PANEL_OFFSET){   
+      // on recherche le panel actif par defaut 0 n'a pas de classe hidden
+      // _currentPanel = 0 ou 2 selon _main_panels
+      if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
+      
+      //  on recherche le titre h2 du panel p
+      strTemp = qs( "h2.panel-title" , panel).innerText
+      
+      // on recherche les div.section-tab  > div.tab-content > h3 du panel p
+      panelSections = qsa( "div.section-tab  > div.tab-content > h3" , panel )
+      
+      // on construit 1 objet du panel p avec sont titre ets es sections
+      articleObj = { index , title : strTemp , sections : [] } // constuire un objet
+      
+      // on stocke l'objet dans _pages
+      _pages.push( articleObj )
+      
+      //  on ajoute les sections a l'objet
+      panelSections.forEach((  section , sindex ) => { 
+        _pages[ index ].sections.push( section.innerText ) 
+      })      
+    } 
   })
 
   return true
   }
 }
 
-/*  ======================================================================================================================  */
+/*  ====================================================================================================================== 
+_pages
+switchPanel
+
+<div class="pagination-buttons"></div>
+a servi pour les tests switchPanel
+
+*/
 function initPagination(){
   let buttonTemp = null
   let pagination_buttons = null
@@ -219,15 +279,6 @@ function initMenu(){
           closeSidebar() 
         }           
       })
-
-      /*
-      subitem.addEventListener('mouseout', (e) => {
-        if (window.innerWidth > 768){
-          menu_panel.classList.remove('open')
-        }
-      })
-      */
-
     })
 
     menu_panel_item_button.appendChild(menu_panel_item_i)
@@ -258,12 +309,7 @@ function initMenu(){
 function setPageRef(){
 
   _main = byName("main")[0]
-  // sidebar = byId("sidebar", document)
-  // _menu = byName( "nav", document )[0]
-  // _menu_list = qs( "nav#sidebar" , document )
   _menu = byName( "nav", document )[0]
-
-  console.log( typeofObj( _menu ) )
 
   _footer = byName("footer" , document )[0]
   _footer_status = qs( "div#statusBar" , _footer )
@@ -371,22 +417,9 @@ function showAuthBoard(role) {
     board?.classList.remove('hidden')
     statusWrite(`Board : ${role}`)
 }
-/* //2026-09-28-001
-function initAuthBoards() {
-    bus.subscribe('board:admin',    () => showAuthBoard('admin'))
-    bus.subscribe('board:user',     () => showAuthBoard('user'))
-    bus.subscribe('board:register', () => showAuthBoard('user'))  // form dans panel user
-    bus.subscribe('board:hide',     () => {
-        hideAuthBoards()
-        // Revenir au panel courant
-        if (typeof switchPanel === 'function') switchPanel(_currentPanel)
-    })
 
-    // Au logout → masquer les boards
-    bus.subscribe('auth:guest', () => hideAuthBoards())
-}
-*/
 
+/*
 function initAuthBoards() {
     const show = (role) => {
         hideAuthBoards()
@@ -436,7 +469,7 @@ function initAuthBoards() {
         }
     })
 }
-
+*/
 // ── end  Boards auth  ─────────────────────────────────────
 
 //2026-09-28-001
@@ -474,15 +507,11 @@ function mountAdminBoard(user) {
 async function mountApplication()
 {
   console.log('Auth success; app can run')
-
   adresseWorkbench = new AdresseWorkbench({ id: 'adresse',name: 'Adresse'})
-
   await adresseWorkbench.init('#adresse-workbench')
+
 }
-function noAuth()
-{
-  console.log("Auht fails; app cannot run")
-}
+function noAuth() { console.log("Auht fails; app cannot run") }
 
 
 function boot()
@@ -491,12 +520,12 @@ function boot()
     initAuthController()
     new ToolbarAuthPanel().init()
     
-    initAuthBoards()  //2026-09-27-002
+    //initAuthBoards()  //2026-09-27-002
 
     bus.subscribe('auth:success', () => mountApplication() )
     bus.subscribe('auth:guest',   () => noAuth())
     //----- 2026-09-27-003
-    bus.subscribe('board:register', () => showAuthBoard('user'))
+    //bus.subscribe('board:register', () => showAuthBoard('user'))
 
     bus.publish('auth:check')
 }
