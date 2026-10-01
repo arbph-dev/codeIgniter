@@ -1,3 +1,7 @@
+- [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
+- [ ] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
+- [ ] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
+
 # UI
 ```
 public/ui.html
@@ -15,31 +19,75 @@ nav id="sidebar"
 ```
 ## Headers
 
-- title-layout
-- appTitle
-- appSubtitle
-- header-actions
+### Elements
+
+|Zone|Contenu|
+|---|---|
+|header > div.header-actions | regroupe les boutons |
+|header > div.header-auth | anonymous : email + password + Connexion + Inscription|
+|header > div.header-auth | anonymous : email + password + Connexion + Inscription|
+|header > div.header-auth |register en cours|
 
 ```
 header#header
     div.title-layout
         h1.appTitle
         span.appSubtitle
-        
     div.header-actions
         button.rwdnav
             i.fa fa-bars
         button#themeBtn
         button#fullscreenBtn
+    div.header-auth
 ```
 
 
-|Zone|Contenu|
-|---|---|
-|.header-auth (guest)|email + password + Connexion + **Inscription**|
-|.header-auth (register en cours)|bouton « Retour » minimal (optionnel)|
+```html
+    <header id="header">
+        <div class="title-layout">
+            <h1 id="appTitle">Automates industriels communicants</h1>
+            <span id="appSubtitle">Comparaison, caractéristiques techniques et avis</span>
+        </div>
 
-# Librairies Javascript
+        <div class="header-actions">
+            <button class="rwdnav" type="button" onclick="openNav()" aria-label="Ouvrir le menu">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <button id="themeBtn" type="button">Thème nature</button>
+            <button id="fullscreenBtn" type="button">Plein écran</button>
+        </div>
+
+        <div class="header-auth">
+            
+        </div>
+    </header>
+```
+
+### CSS
+- title-layout
+- appTitle
+- appSubtitle
+- header-actions
+
+### JS
+`header > div.header-actions` comporte des boutons
+- `header > div.header-actions > button.rwdnav` pour le menu appelle public/assets/js/uiapp.js - openNav()
+- `header > div.header-actions > button#fullscreenBtn`
+- `header > div.header-actions > button#themeBtn`
+
+```
+
+```
+
+themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPageRef()
+- fullscreenBtn listener sur click ->fullscreenSwitch
+- themeBtn listener sur click -> themeSwitch
+
+
+
+
+
+
 
 ## Sidebar
 
@@ -54,7 +102,7 @@ Sidebar doit etre généré par script
 - nav-toggle
 - nav-toc
 
-## Panels / Onglets
+## Panels - Onglets
 ### structure
 ```html
 <div class="panel-card">
@@ -88,32 +136,9 @@ Sidebar doit etre généré par script
 - tab-btn et tab-btn active
 - tab-content et tab-content active
 
+# Librairies Javascript
 ## Librairies tierces
 
-```
-import { bus } from '/assets/js/core/eventBus.js'
-import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
-
-import { initMermaid } from '/assets/js/components/mermaid.js'
-import { initApex } from '/assets/js/components/apex.js'
-import { initCodeVal } from '/assets/js/components/codeval.js'
-import { initCallout} from '/assets/js/components/callout.js'
-import { initLeaflet }  from '/assets/js/components/leaflet.js'
-
-//2026-09-22-000 ajout de auth
-import { initAuthController } from '/assets/js/features/auth/auth.controller.js'
-import { authStore } from '/assets/js/features/auth/auth.store.js'                      //2026-09-28-001
-
-import ToolbarAuthPanel       from '/assets/js/ui/workbench/auth/ToolbarAuthPanel.js'
-import AdresseWorkbench from '/assets/js/ui/workbench/adresse/AdresseWorkbench.js'
-
-//2026-09-23-001 ajout de vox
-import { initVoxBus } from '/assets/js/core/vox.js'
-import { initVoxRenderer } from '/assets/js/core/vox.renderer.js'
-
-//2026-09-23-002 ajout de vox
-import { initSceneBg }     from '/assets/js/ihm/cp_scene_bg.js'
-```
 ## Librairies
 
 ### core
@@ -144,7 +169,11 @@ import { initSceneBg }     from '/assets/js/ihm/cp_scene_bg.js'
 ```
 /assets/js/features/auth/auth.controller.js
 /assets/js/features/auth/auth.store.js
+
+auth:success
+
 ```
+
 ### workbench
 ```
 /assets/js/ui/workbench/auth/ToolbarAuthPanel.js
