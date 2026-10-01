@@ -2,8 +2,40 @@
 ```
 public/ui.html
 public/assets/js/uiapp.js
+public/assets/css/style.css
+```
+
+
+# Structure du document
 
 ```
+header id="header"
+nav id="sidebar"
+
+```
+## Headers
+
+- title-layout
+- appTitle
+- appSubtitle
+- header-actions
+
+```
+header#header
+    div.title-layout
+        h1.appTitle
+        span.appSubtitle
+        
+    div.header-actions
+        button.rwdnav
+            i.fa fa-bars
+        button#themeBtn
+        button#fullscreenBtn
+```
+
+
+
+
 # Librairies Javascript
 
 
