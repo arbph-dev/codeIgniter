@@ -166,6 +166,8 @@ Sidebar doit etre généré par script
 ```
 
 ### authentification
+
+#### [`auth.controller.js`](/public/assets/js/features/auth/auth.controller.js)
 ```
 /assets/js/features/auth/auth.controller.js
 /assets/js/features/auth/auth.store.js
