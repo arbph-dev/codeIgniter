@@ -1,5 +1,5 @@
 <?php
-
+//vendor/codeigniter4/shield/src/Authentication/Traits/HasAccessTokens.php
 declare(strict_types=1);
 
 /**
