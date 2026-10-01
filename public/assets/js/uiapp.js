@@ -60,16 +60,24 @@ switchPanel n'utilise pas _pages
 */
 function switchPanel(index) {
 
-  _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== index) })
-  
+  // _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== (PANEL_OFFSET+ index) ) })
+  _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== ( index ) ) })
   _currentPanel = index
   
-  statusWrite( `Onglet actif : ${_pages[index].title}` )
+  // statusWrite( `Onglet actif : ${_pages[index-PANEL_OFFSET].title}` )
+  // probleme selon l'appelant il possede ou non un title a reserver au menu page voir ligne 295
+
+  console.log( "switchPanel - index = " + index )
+
 }
 /*  ======================================================================================================================  */
 function switchSection(index) {
   // voir pour assigner les variables : panel_Sections et panel_header_Buttons
-  let panel_Sections = qsa( "div.section-tab > div.tab-content" , _main_panels[_currentPanel] )
+  /*
+  let panel_Sections = qsa( "div.section-tab > div.tab-content" , _main_panels[_currentPanel + PANEL_OFFSET ] )
+  let panel_header_Buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn", _main_panels[_currentPanel + PANEL_OFFSET] )
+  */
+  let panel_Sections = qsa( "div.section-tab > div.tab-content" , _main_panels[_currentPanel ] )
   let panel_header_Buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn", _main_panels[_currentPanel] )
 
   panel_Sections.forEach( c => c.classList.remove("active") )
@@ -148,17 +156,19 @@ function readPage(){
   let articleObj = null  
   let panelSections = null
   let strTemp = null
+  let off_index
 
   if ( _main && _menu) { 
-  // _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
+  //_main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
   _main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
   
   _main_panels.forEach((  panel , index ) => {
 
-    // on passe les premiers panel admin et user
+      // les 2 panels admin et user sont omis
     if (index >= PANEL_OFFSET){   
       // on recherche le panel actif par defaut 0 n'a pas de classe hidden
       // _currentPanel = 0 ou 2 selon _main_panels
+      
       if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
       
       //  on recherche le titre h2 du panel p
@@ -168,14 +178,18 @@ function readPage(){
       panelSections = qsa( "div.section-tab  > div.tab-content > h3" , panel )
       
       // on construit 1 objet du panel p avec sont titre ets es sections
-      articleObj = { index , title : strTemp , sections : [] } // constuire un objet
+
+      off_index = ( index - PANEL_OFFSET)  
+      // les 2 panel admin et user sont omis il faut décaler l'index des page dans _pages
+      //off_index = ( index )
+      articleObj = { off_index , title : strTemp , sections : [] } // constuire un objet
       
       // on stocke l'objet dans _pages
       _pages.push( articleObj )
       
       //  on ajoute les sections a l'objet
       panelSections.forEach((  section , sindex ) => { 
-        _pages[ index ].sections.push( section.innerText ) 
+        _pages[ off_index ].sections.push( section.innerText ) 
       })      
     } 
   })
@@ -203,7 +217,8 @@ function initPagination(){
   _pages.forEach((  panel , index ) => { 
 
     buttonTemp = create( 'button', { type: 'button', class: 'primary-button switch-tab-btn', text: panel.title } )
-    buttonTemp.addEventListener('click', () => switchPanel(index) )
+    // on utilse _pages donc + PANEL_OFFSET
+    buttonTemp.addEventListener('click', () => switchPanel(index + + PANEL_OFFSET) )
 
     pagination_buttons.appendChild( buttonTemp )
 
@@ -217,8 +232,11 @@ function initNavigation(){
   //on ajoute dans chaque panel la barrre de navigations panel
   _pages.forEach((  panel , index ) => { 
 
-    let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index] )   // reference sur element 
-  
+    //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
+    //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index] )   // reference sur element 
+
+    let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
+
     _pages[ index ].sections.forEach(( section , sindex) => {
      
       if (sindex === 0 ){ //par defaut le bouton 0 est actif 
@@ -269,9 +287,14 @@ function initMenu(){
       subitem.addEventListener('click', (e) => {
         e.preventDefault()
         e.stopPropagation()
-        
-        switchPanel(index)
+
+        // on utilse _pages donc + PANEL_OFFSET
+        console.log( "initMenu index = " + index )
+        console.log( "initMenu index + OFFSET = " + index + PANEL_OFFSET)
+        switchPanel(index + PANEL_OFFSET )
+        statusWrite( `Onglet actif : ${_pages[index].title}` )
         switchSection(sindex)
+        
         if (window.innerWidth > 768){
           menu_panel.classList.remove('open')
         }
@@ -287,10 +310,11 @@ function initMenu(){
     menu_panel.appendChild(sub_menu)
   
     _menu.appendChild(menu_panel)
-
+    // on utilse _pages donc + PANEL_OFFSET
     menu_panel.addEventListener('click', () => {
       console.log(`menu clic panel : ${index}`)
-      openMenuPanel(index)
+      openMenuPanel(index)      
+      //openMenuPanel(index + PANEL_OFFSET)
     })
 
     menu_panel.addEventListener('mouseleave', () => {
@@ -526,6 +550,8 @@ function boot()
     bus.subscribe('auth:guest',   () => noAuth())
     //----- 2026-09-27-003
     //bus.subscribe('board:register', () => showAuthBoard('user'))
+    console.log( "initAuthController ") 
+    bus.subscribe('board:user', () => { switchPanel(PANEL_USER) })
 
     bus.publish('auth:check')
 }
