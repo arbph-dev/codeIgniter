@@ -1,6 +1,3 @@
-- [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
-- [ ] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
-- [ ] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
 
 # Librairies Javascript
 ## Librairies tierces
