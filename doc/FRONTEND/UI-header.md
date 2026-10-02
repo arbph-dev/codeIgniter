@@ -4,16 +4,15 @@
 
 |Zone|Contenu|classe|
 |---|---|---|
-| header > div.title-layout | regroupe les boutons | --- |
-| header > div.title-layout > h1.appTitle | --- |
-| header > div.title-layout > span.appSubtitle | --- |
-| header > div.header-actions | regroupe les boutons | --- |
-| header > div.header-actions | regroupe les boutons | --- |
-| header > div.header-actions > button.rwdnav | pour le menu mobile| --- |
+| header > div.title-layout | TITRE | --- |
+| header > div.title-layout > h1.appTitle | --- | --- |
+| header > div.title-layout > span.appSubtitle | --- | --- |
+| header > div.header-actions | regroupe les boutons de la barre actions| --- |
+| header > div.header-actions > button.rwdnav | bouton le menu mobile| --- |
 | header > div.header-actions > button#fullscreenBtn | fullscreen | --- |
 | header > div.header-actions > button#themeBtn | themes | --- |
 | header > div.header-auth | anonymous : email + password + Connexion + Inscription| --- |
-| header > div.header-auth | register en cours| --- |
+
 
 ## Structure
 
