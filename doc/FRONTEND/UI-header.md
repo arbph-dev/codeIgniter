@@ -91,7 +91,7 @@ header#header
 </div>
 ```
 ### style
-
+```css
 .header-actions button {
   padding: 6px 12px;
   margin-left: 8px;
@@ -101,6 +101,7 @@ header#header
   background: rgba(255, 255, 255, 0.15);
   color: white;
 }
+```
 
 ### JS
 L'evenement onclick de rwdnav est associé a openNav() directement dans html
