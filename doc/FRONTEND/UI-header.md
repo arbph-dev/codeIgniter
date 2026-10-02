@@ -2,15 +2,20 @@
 
 ## Elements
 
-|Zone|Contenu|
-|---|---|
-| header > div.header-actions | regroupe les boutons |
-| header > div.header-actions | regroupe les boutons |
-| header > div.header-actions > button.rwdnav | pour le menu mobile|
-| header > div.header-actions > button#fullscreenBtn | fullscreen |
-| header > div.header-actions > button#themeBtn | themes |
-| header > div.header-auth | anonymous : email + password + Connexion + Inscription|
-| header > div.header-auth | register en cours|
+|Zone|Contenu|classe|
+|---|---|---|
+| header > div.title-layout | regroupe les boutons | --- |
+| header > div.title-layout > h1.appTitle | --- |
+| header > div.title-layout > span.appSubtitle | --- |
+| header > div.header-actions | regroupe les boutons | --- |
+| header > div.header-actions | regroupe les boutons | --- |
+| header > div.header-actions > button.rwdnav | pour le menu mobile| --- |
+| header > div.header-actions > button#fullscreenBtn | fullscreen | --- |
+| header > div.header-actions > button#themeBtn | themes | --- |
+| header > div.header-auth | anonymous : email + password + Connexion + Inscription| --- |
+| header > div.header-auth | register en cours| --- |
+
+## Structure
 
 ```
 header#header
@@ -30,6 +35,7 @@ header#header
 - `header > div.header-actions > button#fullscreenBtn`
 - `header > div.header-actions > button#themeBtn`
 
+## Code
 
 ```html
     <header id="header">
@@ -52,14 +58,52 @@ header#header
     </header>
 ```
 
-### CSS
-- title-layout
-- appTitle
-- appSubtitle
-- header-actions
+
+
+## Titre
+
+```html
+    <header id="header">
+        <div class="title-layout">
+            <h1 id="appTitle">Automates industriels communicants</h1>
+            <span id="appSubtitle">Comparaison, caractéristiques techniques et avis</span>
+        </div>
+```
+### style
+- title-layout     : non
+- appTitle         : sur ID
+- appSubtitle      : sur ID
+
+```css
+#appTitle { font-size: 1.1rem; font-weight: bold; }
+#appSubtitle { font-size: 0.8rem; opacity: 0.8; }
+```
+
+## Barre actions
+
+```html
+<div class="header-actions">
+    <button class="rwdnav" type="button" onclick="openNav()" aria-label="Ouvrir le menu">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+    <button id="themeBtn" type="button">Thème nature</button>
+    <button id="fullscreenBtn" type="button">Plein écran</button>
+</div>
+```
+### style
+
+.header-actions button {
+  padding: 6px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
 
 ### JS
-
+L'evenement onclick de rwdnav est associé a openNav() directement dans html
 
 themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPageRef()
 - fullscreenBtn listener sur click ->fullscreenSwitch
