@@ -59,8 +59,8 @@ header#header
 
 
 
-## Titre
-
+## title-layout
+Zone de titre
 ```html
     <header id="header">
         <div class="title-layout">
@@ -78,7 +78,7 @@ header#header
 #appSubtitle { font-size: 0.8rem; opacity: 0.8; }
 ```
 
-## Barre actions
+## actions
 
 ```html
 <div class="header-actions">
@@ -108,3 +108,16 @@ L'evenement onclick de rwdnav est associé a openNav() directement dans html
 themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPageRef()
 - fullscreenBtn listener sur click ->fullscreenSwitch
 - themeBtn listener sur click -> themeSwitch
+
+
+## auth
+Cette partie est construite dynamiquement selon l'état de l'autehntification
+
+```html
+<div class="header-auth">
+    
+</div>
+```
+
+### JS
+- /assets/js/ui/workbench/auth/ToolbarAuthPanel.js
