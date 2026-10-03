@@ -13,6 +13,9 @@
 | header > div.header-actions > button#themeBtn | themes | --- |
 | header > div.header-auth | anonymous : email + password + Connexion + Inscription| --- |
 
+#header > div.header-auth > div.auth-form > p.auth-error
+
+
 
 ## Structure
 
@@ -109,15 +112,38 @@ themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPag
 - fullscreenBtn listener sur click ->fullscreenSwitch
 - themeBtn listener sur click -> themeSwitch
 
+---
 
 ## auth
 Cette partie est construite dynamiquement selon l'état de l'autehntification
 
+
 ```html
 <div class="header-auth">
-    
+    <div class="auth-form">
+        <p class="auth-error">Compte non activé. Vérifiez votre email.</p>
+        <label class="sr-only" for="auth-email">Email</label>
+        <input id="auth-email" type="email" name="email" placeholder="Email" autocomplete="username" required="">
+        
+        <label class="sr-only" for="auth-password">Mot de passe</label>
+        <input id="auth-password" type="password" name="password" placeholder="Mot de passe" autocomplete="current-password" required="">
+        
+        <button type="button" class="auth-submit">
+            <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
+            <span>Connexion</span></button><button type="button" class="auth-link auth-register-btn">
+            <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
+            <span>Inscription</span>
+        </button>
+    </div>
 </div>
 ```
+
+### Affichage des erreurs
+element : `#header > div.header-auth > div.auth-form > p.auth-error`
+```
+<p class="auth-error">Compte non activé. Vérifiez votre email.</p>
+```html
+
 
 ### JS
 - /assets/js/ui/workbench/auth/ToolbarAuthPanel.js
