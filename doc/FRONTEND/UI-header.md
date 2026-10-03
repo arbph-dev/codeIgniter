@@ -12,8 +12,8 @@
 | header > div.header-actions > button#fullscreenBtn | fullscreen | --- |
 | header > div.header-actions > button#themeBtn | themes | --- |
 | header > div.header-auth | anonymous : email + password + Connexion + Inscription| --- |
+| header > div.header-auth > div.auth-form > p.auth-error | erreur dans le processus | --- |
 
-#header > div.header-auth > div.auth-form > p.auth-error
 
 
 
@@ -30,12 +30,12 @@ header#header
         button#themeBtn
         button#fullscreenBtn
     div.header-auth
+        div.auth-form
+            p.auth-error
 ```
 
-`header > div.header-actions` comporte des boutons
-- `header > div.header-actions > button.rwdnav` pour le menu
-- `header > div.header-actions > button#fullscreenBtn`
-- `header > div.header-actions > button#themeBtn`
+
+
 
 ## Code
 
@@ -82,6 +82,10 @@ Zone de titre
 ```
 
 ## actions
+`header > div.header-actions` comporte des boutons
+- `header > div.header-actions > button.rwdnav` pour le menu
+- `header > div.header-actions > button#fullscreenBtn`
+- `header > div.header-actions > button#themeBtn`
 
 ```html
 <div class="header-actions">
@@ -115,7 +119,7 @@ themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPag
 ---
 
 ## auth
-Cette partie est construite dynamiquement selon l'état de l'autehntification
+Cette partie est construite dynamiquement selon l'état de l'authentification
 
 
 ```html
@@ -140,9 +144,10 @@ Cette partie est construite dynamiquement selon l'état de l'autehntification
 
 ### Affichage des erreurs
 element : `#header > div.header-auth > div.auth-form > p.auth-error`
-```
-<p class="auth-error">Compte non activé. Vérifiez votre email.</p>
+
 ```html
+<p class="auth-error">Compte non activé. Vérifiez votre email.</p>
+```
 
 
 ### JS
