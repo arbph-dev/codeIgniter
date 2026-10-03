@@ -29,6 +29,7 @@ import { initVoxRenderer } from '/assets/js/core/vox.renderer.js'
 import { initSceneBg }     from '/assets/js/ihm/cp_scene_bg.js'
 ```
 ## Travaux
+- [doc/notes/2026-10-03.md](/doc/notes/2026-10-03.md)
 
 ### authentification
 resource
