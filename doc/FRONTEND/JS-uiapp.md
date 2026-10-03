@@ -32,7 +32,7 @@ import { initSceneBg }     from '/assets/js/ihm/cp_scene_bg.js'
 - [doc/notes/2026-10-03.md](/doc/notes/2026-10-03.md)
 
 ### authentification
-resource
+ressources
 - [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
 - [`/assets/js/ui/workbench/core/AuthPanelBase.js`](/public/assets/js/ui/workbench/core/AuthPanelBase.js)
 - ['/assets/js/features/auth/auth.store.js'](/public/assets/js/features/auth/auth.store.js)
