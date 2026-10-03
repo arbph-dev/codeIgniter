@@ -24,21 +24,17 @@ let _pages = []
 let currentTheme = "marine"
 let _main = null
 let _menu = null
-//let _menu_list = null
+
 let _footer = null
 let _footer_status = null
-//let _header = null
-//let _header_actions = null
+
 let _header_actions_btn_fullscreen = null
 let _header_actions_btn_theme = null
 let _main_panels = null
 
 let _currentPanel = 0 //par defaut voir le code html 
-let _currentSection = 0
 
-let sidebar = null
 let adresseWorkbench = null
-
 
 const PANEL_ADMIN = 0
 const PANEL_USER = 1
@@ -119,37 +115,7 @@ function typeofObj( Obj ){
   
 }
 
-/*  ======================================================================================================================  
-//2026-09-27-002 - Modifier readPage() pour ignorer les panels auth :
-intilise
-  _main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
-  // 0-5
 
-  _main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
-  // -2 -1 0 5
-
-pour chaque panel p de _main_panels
-  on recherche le panel actif par defaut 0 n'a pas de classe hidden
-  // _currentPanel = 0 ou 2 selon _main_panels
-  on recherche le titre h2 du panel p
-  on recherche les div.section-tab  > div.tab-content > h3 du panel p
-  on construit 1 objet du panel p avec sont titre ets es sections
-  on stocke l'objet dans _pages
-  on ajoute les sections a l'objet
-
-
-on veut introduire PANEL_OFFSET
-
-initPagination , initNavigation , initMenu utilse _pages
-
-switchPanel n'utilise pas _pages ce qui permet 
-- switchPanel(PANEL_ADMIN) PANEL_ADMIN = 0
-- switchPanel(PANEL_USER) PANEL_USER = 1
-
-on introduit PANEL_OFFSET
-if (index >= PANEL_OFFSET){}
-
-*/
 
 function readPage(){
 
@@ -274,6 +240,7 @@ function initMenu(){
     const menu_panel = create('div', { class: 'nav-article' })
     const menu_panel_item = create('div', { class: 'nav-header-row  primary-button'  , text: panel.title  })
     const menu_panel_item_button = create('button', { class: 'nav-toggle', type: 'button' })
+    
     menu_panel_item_button.setAttribute( 'aria-expanded', false)
     const menu_panel_item_i = create('i', { class: 'fa fa-fw fa-cogs' }) 
 
@@ -289,8 +256,8 @@ function initMenu(){
         e.stopPropagation()
 
         // on utilse _pages donc + PANEL_OFFSET
-        console.log( "initMenu index = " + index )
-        console.log( "initMenu index + OFFSET = " + index + PANEL_OFFSET)
+        //console.log( "initMenu index = " + index )
+        //console.log( "initMenu index + OFFSET = " + index + PANEL_OFFSET)
         switchPanel(index + PANEL_OFFSET )
         statusWrite( `Onglet actif : ${_pages[index].title}` )
         switchSection(sindex)
@@ -299,7 +266,8 @@ function initMenu(){
           menu_panel.classList.remove('open')
         }
         else{ 
-          closeSidebar() 
+          //closeSidebar()
+          closeNav() 
         }           
       })
     })
@@ -352,26 +320,12 @@ function setPageRef(){
 
 }
 
-/*  ======================================================================================================================  */
-function openSidebar() { _menu.classList.add("open") }
 
-function closeSidebar() { _menu.classList.remove("open") }
-
-function initSidebar() {
-    bus.subscribe('sidebar:open', openSidebar)
-    bus.subscribe('sidebar:close', closeSidebar)    
-    window.openNav = () => { bus.publish('sidebar:open') }
-    window.closeNav = () => { bus.publish('sidebar:close') }
-}
 
 /*  ======================================================================================================================  */
 function statusWrite( textContent ){
-    if (_footer_status){ 
-      _footer_status.textContent = textContent 
-    }
-    else{
-        console.log("STATUS :: " + textContent)
-    }    
+  if (_footer_status){ _footer_status.textContent = textContent }
+  console.log("STATUS :: " + textContent)
 }
 
 
@@ -526,43 +480,63 @@ function mountAdminBoard(user) {
 
 
 
-
+/**
+ * mountApplication
+ *   bus.subscribe('auth:success', () => mountApplication() )
+ */
 
 async function mountApplication()
 {
   console.log('Auth success; app can run')
+
+
+
   adresseWorkbench = new AdresseWorkbench({ id: 'adresse',name: 'Adresse'})
   await adresseWorkbench.init('#adresse-workbench')
 
 }
+
+/**
+ * noAuth
+ *  bus.subscribe('auth:guest',   () => noAuth())
+ */
 function noAuth() { console.log("Auht fails; app cannot run") }
 
 
 function boot()
 {
     
-    initAuthController()
-    new ToolbarAuthPanel().init()
-    
-    //initAuthBoards()  //2026-09-27-002
+  initAuthController() // /public/assets/js/features/auth/auth.controller.js
+  
+  new ToolbarAuthPanel().init() 
+  //   /public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js
+  
+  //initAuthBoards()  //2026-09-27-002
+  bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
+  
+  //bus.subscribe('auth:success', () => mountApplication() )
+  bus.subscribe( 'auth:success', () => (
 
-    bus.subscribe('auth:success', () => mountApplication() )
-    bus.subscribe('auth:guest',   () => noAuth())
-    //----- 2026-09-27-003
-    //bus.subscribe('board:register', () => showAuthBoard('user'))
-    console.log( "initAuthController ") 
-    bus.subscribe('board:user', () => { switchPanel(PANEL_USER) })
+    mountApplication() ,
+    console.log(authStore.user),
+    mountUserBoard(authStore.user) 
 
-    bus.publish('auth:check')
+  ))
+
+  bus.subscribe('auth:guest',   () => noAuth())
+  bus.subscribe('board:user', () => { switchPanel(PANEL_USER) })
+  //bus.subscribe('board:register', () => showAuthBoard('user'))//----- 2026-09-27-003
+  // console.log( "initAuthController ") 
+
+  bus.publish('auth:check')
+
+  window.openNav = () => { _menu.classList.add("open") } 
+  window.closeNav = () => { _menu.classList.remove("open") }
+
 }
 
 
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  setPageRef() //definit les references aux elements dom
-  initSidebar() // event + bus handlers 
-})
+document.addEventListener("DOMContentLoaded", () => { setPageRef() }) //definit les references aux elements dom
 
 // onload 
 window.onload = (event) => {
