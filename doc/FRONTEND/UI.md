@@ -13,7 +13,8 @@ Elements de structure du document
   - [header](/doc/FRONTEND/UI-header.md)
 - nav id="sidebar"
   - [nav](/doc/FRONTEND/UI-nav.md)
-
+- footer
+  - div#statusBar
 
 
 
