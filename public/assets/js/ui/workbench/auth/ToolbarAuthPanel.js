@@ -20,24 +20,18 @@ export class ToolbarAuthPanel extends AuthPanelBase
     _buildGuestForm(error = null)
     {
         const wrap = create('div', { class: 'auth-form' })
-
-        if (error)
-        {
-            wrap.appendChild(create('p', { class: 'auth-error', text: error }))
-        }
-
+        // div.auth-form > p.auth-error
+        if (error) { wrap.appendChild(create('p', { class: 'auth-error', text: error })) }
+        
+        // div.auth-form > input#auth-email
         wrap.appendChild(create('label', { class: 'sr-only', for: 'auth-email', text: 'Email' }))
-        wrap.appendChild(create('input', {
-            id: 'auth-email', type: 'email', name: 'email',
-            placeholder: 'Email', autocomplete: 'username', required: '',
-        }))
-
+        wrap.appendChild(create('input', { id: 'auth-email', type: 'email', name: 'email', placeholder: 'Email', autocomplete: 'username', required: '' }))
+        
+        // div.auth-form > input#auth-password
         wrap.appendChild(create('label', { class: 'sr-only', for: 'auth-password', text: 'Mot de passe' }))
-        wrap.appendChild(create('input', {
-            id: 'auth-password', type: 'password', name: 'password',
-            placeholder: 'Mot de passe', autocomplete: 'current-password', required: '',
-        }))
-
+        wrap.appendChild(create('input', { id: 'auth-password', type: 'password', name: 'password', placeholder: 'Mot de passe', autocomplete: 'current-password', required: '' }))
+        
+        // Bouton Login
         const btnLogin = create('button', { type: 'button', class: 'auth-submit' })
         btnLogin.append(
             create('i',    { class: 'fa fa-fw fa-sign-in', 'aria-hidden': 'true' }),
@@ -70,11 +64,6 @@ export class ToolbarAuthPanel extends AuthPanelBase
             { name: 'shield_email',    type: 'email',    placeholder: 'Email',              autocomplete: 'email' },
             { name: 'firstpassword',   type: 'password', placeholder: 'Mot de passe',       autocomplete: 'new-password' },
             { name: 'secondpassword',  type: 'password', placeholder: 'Confirmer',          autocomplete: 'new-password' },
-            { name: 'client_profil_tel',    type: 'tel',  placeholder: 'Tél. fixe (opt.)' },
-            { name: 'client_profil_mobile', type: 'tel',  placeholder: 'Tél. mobile (opt.)' },
-            // persid / orgid : stubs — autocomplete ultérieur
-            { name: 'client_profil_persid', type: 'number', placeholder: 'Personne ID (opt.)' },
-            { name: 'client_profil_orgid',  type: 'number', placeholder: 'Organisation ID (opt.)' },
         ]
 
         for (const f of fields)
@@ -104,21 +93,16 @@ export class ToolbarAuthPanel extends AuthPanelBase
         return wrap
     }
 
+
+    /*
     _buildRegisterPending(message)
     {
         const wrap = create('div', { class: 'auth-pending' })
         wrap.appendChild(create('p', { class: 'auth-success', text: message ?? 'Vérifiez votre email.' }))
-        /* 2026-09-27-003
-        const btnBack = create('button', { type: 'button', class: 'auth-link auth-back-login' })
-        btnBack.append(
-            create('i',    { class: 'fa fa-fw fa-arrow-left', 'aria-hidden': 'true' }),
-            create('span', { text: 'Retour connexion' }),
-        )
-        wrap.appendChild(btnBack)
-        */
+
         return wrap
     }
-
+*/
     /**
      *  Mini barre affichée dans .header-auth pendant l'inscription 
      * ---- 2026-09-27-003
