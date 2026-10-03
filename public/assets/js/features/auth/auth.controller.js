@@ -3,26 +3,23 @@
 import { bus }                          from '../../core/eventBus.js'
 import { authStore }                    from './auth.store.js'
 import { fetchLogin, fetchMe, fetchLogout , fetchRegister , fetchActivate } from './auth.service.js'
-    // fetchRegister à ajouter dans auth.service.js
-
 
 /*
+auth:register           crée le compte.
+auth:register:pending   indique que Shield attend l'activation.
 
-auth:register crée le compte.
-auth:register:pending indique que Shield attend l'activation.
-auth:activate vérifie le code.
-auth:activated indique que le compte est actif.
+auth:activate           vérifie le code.
+auth:activated          indique que le compte est actif.
 aucun token n'est créé pendant l'activation.
-auth:login reste le seul endroit qui récupère le Personal Access Token.
-auth:success signifie réellement que l'application dispose d'une authentification exploitable.
 
-Je ne changerais rien d'autre dans auth.controller.js
+auth:check              vérifie si une session Shield OU un token existe
+auth:login              reste le seul endroit qui récupère le Personal Access Token.
+auth:success            signifie réellement que l'application dispose d'une authentification exploitable.
+auth:logout
 */    
 
 export function initAuthController() {
-
-    // ── auth:check ───────────────────────────────────────────────────────────
-    // Appelé au démarrage — vérifie si une session Shield OU un token existe
+    // ── auth:check  Appelé au démarrage — vérifie si une session Shield OU un token existe
     bus.subscribe('auth:check', async () => {
         authStore.restore()              // récupère token/user depuis sessionStorage
         authStore.loading = true
@@ -124,11 +121,6 @@ export function initAuthController() {
     })
     
 
-    /*
-        auth:activate ↓ fetchActivate(token) ↓ bus.publish('auth:activated')
-
-    */
-
     // ── auth:activate ────────────────────────────────────────────────────────
     // Vérification du code envoyé par EmailActivator.
     //
@@ -156,6 +148,15 @@ export function initAuthController() {
         }
     })
     
+    /*  -----------------------------     
+    inutile dans le controller
+    
+    bus.subscribe('auth:activated', ({ message }) => {
+        console.log('[auth]', message)
+        // on reste en mode guest
+        // on peut afficher le formulaire login
+    })
+    */
 
     // ── auth:logout ──────────────────────────────────────────────────────────
     bus.subscribe('auth:logout', async () => {
