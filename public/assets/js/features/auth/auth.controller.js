@@ -2,8 +2,23 @@
 
 import { bus }                          from '../../core/eventBus.js'
 import { authStore }                    from './auth.store.js'
-import { fetchLogin, fetchMe, fetchLogout , fetchRegister } from './auth.service.js'
+import { fetchLogin, fetchMe, fetchLogout , fetchRegister , fetchActivate } from './auth.service.js'
     // fetchRegister à ajouter dans auth.service.js
+
+
+/*
+
+auth:register crée le compte.
+auth:register:pending indique que Shield attend l'activation.
+auth:activate vérifie le code.
+auth:activated indique que le compte est actif.
+aucun token n'est créé pendant l'activation.
+auth:login reste le seul endroit qui récupère le Personal Access Token.
+auth:success signifie réellement que l'application dispose d'une authentification exploitable.
+
+Je ne changerais rien d'autre dans auth.controller.js
+*/    
+
 export function initAuthController() {
 
     // ── auth:check ───────────────────────────────────────────────────────────
@@ -65,8 +80,6 @@ export function initAuthController() {
     // Payload attendu (après validation front des 2 mots de passe) :
     // {
     //   shield_username, shield_email, shield_password,
-    //   client_profil_tel?, client_profil_mobile?,
-    //   client_profil_persid?, client_profil_orgid?
     // }
     bus.subscribe('auth:register', async (payload) => {
         authStore.loading = true
@@ -110,6 +123,40 @@ export function initAuthController() {
         }
     })
     
+
+    /*
+        auth:activate ↓ fetchActivate(token) ↓ bus.publish('auth:activated')
+
+    */
+
+    // ── auth:activate ────────────────────────────────────────────────────────
+    // Vérification du code envoyé par EmailActivator.
+    //
+    // IMPORTANT :
+    // L'activation ne crée pas de token API et ne connecte pas
+    // automatiquement l'utilisateur.
+    bus.subscribe('auth:activate', async ({ token }) =>
+    {
+        authStore.loading = true
+        authStore.error   = null
+        bus.publish('auth:loading', true)
+
+        try {
+            const data = await fetchActivate(token)
+
+            bus.publish('auth:activated', data)
+
+        } catch (err) {
+            authStore.error = err.message
+            bus.publish('auth:error', err.message)
+
+        } finally {
+            authStore.loading = false
+            bus.publish('auth:loading', false)
+        }
+    })
+    
+
     // ── auth:logout ──────────────────────────────────────────────────────────
     bus.subscribe('auth:logout', async () => {
         authStore.loading = true
