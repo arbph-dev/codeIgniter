@@ -35,15 +35,13 @@ export async function fetchLogin({ email, password }) {
 // payload attendu :
 // {
 //   shield_username, shield_email, shield_password,
-//   client_profil_tel?, client_profil_mobile?,
-//   client_profil_persid?, client_profil_orgid?
 // }
 //
 // Réponses possibles :
 //   200 { message, email_verified: false }          → EmailActivator actif
 //   201 { message, email_verified: true, token, user } → pas d'activation
 //   422 { errors: {...} }                           → validation
-//   409 { error: '...' }                            → conflit profil
+//   409 { error: '...' }                            → conflit profil               OBSOLETE ?
 //   500 { error: '...' }
 
 export async function fetchRegister(payload) {
@@ -117,19 +115,19 @@ export async function fetchActivate(token) {
         redirect: 'manual',
     })
 
-    // Une activation réussie côté Shield provoque normalement
-    // une redirection vers registerRedirect().
-    if (res.ok || res.type === 'opaqueredirect' || res.status === 302) {
+    // Shield renvoie une redirection après une activation réussie.
+    // Avec redirect: 'manual', le navigateur expose normalement
+    // cette réponse comme "opaqueredirect".
+    if (res.type === 'opaqueredirect' || (res.status >= 300 && res.status < 400)) {
         return {
             success: true,
             message: 'Compte activé. Vous pouvez maintenant vous connecter.',
         }
     }
 
-    // Selon le cas, Shield peut renvoyer la page d'action avec une erreur.
-    const text = await res.text()
-
+    // Un code invalide provoque le retour de la vue d'activation
+    // avec HTTP 200. Ce n'est donc PAS un succès.
     throw new Error(
-        text || `Activation impossible (HTTP ${res.status})`
+        'Code d’activation invalide ou expiré.'
     )
 }
