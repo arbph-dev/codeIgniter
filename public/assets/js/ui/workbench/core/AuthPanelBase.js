@@ -41,6 +41,7 @@ export class AuthPanelBase extends PanelBase
         this._onGuest           = null
         this._onError           = null
         this._onRegisterPending = null
+        this._onActivated       = null
     }
 
     init()
@@ -67,15 +68,23 @@ export class AuthPanelBase extends PanelBase
         this._onError   = (msg)      => this._render('error', msg)
 
         this._onRegisterPending = ({ message }) => this._render('register-pending', message)
+        
+        this._onActivated = ({ message }) => this._render('activated', message)
 
-        bus.subscribe('auth:loading',          this._onLoading)
-        bus.subscribe('auth:success',          this._onSuccess)
-        bus.subscribe('auth:guest',            this._onGuest)
-        bus.subscribe('auth:error',            this._onError)
-        bus.subscribe('auth:register:pending', this._onRegisterPending)
-
+        bus.subscribe('auth:loading'            , this._onLoading)
+        bus.subscribe('auth:success'            , this._onSuccess)
+        bus.subscribe('auth:guest'              , this._onGuest)
+        bus.subscribe('auth:error'              , this._onError)
+        bus.subscribe('auth:register:pending'   , this._onRegisterPending)
+        
+        bus.subscribe('auth:activated'          , this._onActivated)
+        
         // Ouverture formulaire register depuis un bouton externe éventuel
         bus.subscribe('auth:show-register', () => this._render('register'))
+
+
+
+
     }
 
     //----- 2026-09-27-003 ---------------  helpers
@@ -99,9 +108,28 @@ export class AuthPanelBase extends PanelBase
     {
         const body = this._boardBody()
         if (!body) return
-
+    
         clear(body)
         body.appendChild(this._buildRegisterPending(message))
+        this._bindActivate()
+    }
+
+    _mountRegisterActivated(message)
+    {
+        const body = this._boardBody()
+        if (!body) return
+    
+        clear(body)
+    
+        const wrap = document.createElement('div')
+        wrap.className = 'auth-activated'
+    
+        const text = document.createElement('p')
+        text.textContent = message ??
+            'Compte activé. Vous pouvez maintenant vous connecter.'
+    
+        wrap.appendChild(text)
+        body.appendChild(wrap)
     }
 
     /** Mini barre toolbar pendant l'inscription */
@@ -170,6 +198,13 @@ export class AuthPanelBase extends PanelBase
                 this._target.appendChild(this._buildRegisterToolbar())
                 this._bindShowGuest()
                 break
+            
+            case 'activated':
+                this._mountRegisterActivated(payload)
+                this._target.appendChild(this._buildRegisterToolbar())
+                this._bindShowGuest()
+                break
+
 
             //----- 2026-09-27-003
             case 'user':
@@ -223,6 +258,25 @@ export class AuthPanelBase extends PanelBase
             body.querySelector('.auth-register-submit')
                 ?.addEventListener('click', () => this._emitRegister())        
     }
+    
+    _bindActivate()
+    {
+        const body = this._boardBody()
+        if (!body) return
+    
+        body.querySelector('.auth-activate-submit')
+            ?.addEventListener('click', () => this._emitActivate())
+    
+        body.querySelector('[name="activation_token"]')
+            ?.addEventListener('keydown', (e) =>
+            {
+                if (e.key === 'Enter')
+                {
+                    e.preventDefault()
+                    this._emitActivate()
+                }
+            })
+    }
 
     _bindLogout()
     {
@@ -249,6 +303,28 @@ export class AuthPanelBase extends PanelBase
         if (email && password) bus.publish('auth:login', { email, password })
     }
 
+    _emitActivate()
+    {
+        const body = this._boardBody()
+        if (!body) return
+    
+        const token = body
+            .querySelector('[name="activation_token"]')
+            ?.value
+            ?.trim()
+    
+        if (!token)
+        {
+            this._render(
+                'register-pending',
+                'Veuillez saisir le code reçu par email.'
+            )
+            return
+        }
+    
+        bus.publish('auth:activate', { token })
+    }
+    
     /**
      * Valide firstpassword / secondpassword, fusionne en shield_password,
      * puis publie auth:register.
@@ -258,59 +334,22 @@ export class AuthPanelBase extends PanelBase
 
     _emitRegister()
     {
-        /*
-        const username = this._target.querySelector('[name="shield_username"]')?.value?.trim()
-        const email    = this._target.querySelector('[name="shield_email"]')?.value?.trim()
-        const pass1    = this._target.querySelector('[name="firstpassword"]')?.value ?? ''
-        const pass2    = this._target.querySelector('[name="secondpassword"]')?.value ?? ''
-
-        const tel    = this._target.querySelector('[name="client_profil_tel"]')?.value?.trim()    || null
-        const mobile = this._target.querySelector('[name="client_profil_mobile"]')?.value?.trim() || null
-        const persid = this._target.querySelector('[name="client_profil_persid"]')?.value?.trim() || null
-        const orgid  = this._target.querySelector('[name="client_profil_orgid"]')?.value?.trim()  || null
-        */
         const root = this._boardBody() ?? this._target // _emitRegister lit les champs depuis le board
 
         const username = root.querySelector('[name="shield_username"]')?.value?.trim()
         const email    = root.querySelector('[name="shield_email"]')?.value?.trim()
         const pass1    = root.querySelector('[name="firstpassword"]')?.value ?? ''
         const pass2    = root.querySelector('[name="secondpassword"]')?.value ?? ''
-
-        const tel    = root.querySelector('[name="client_profil_tel"]')?.value?.trim()    || null
-        const mobile = root.querySelector('[name="client_profil_mobile"]')?.value?.trim() || null
-        const persid = root.querySelector('[name="client_profil_persid"]')?.value?.trim() || null
-        const orgid  = root.querySelector('[name="client_profil_orgid"]')?.value?.trim()  || null        
-        
+     
         // Validation mots de passe
-        if (pass1 !== pass2)
-        {
-            this._render('register', 'Les mots de passe ne correspondent pas.')
-            return
-        }
+        if (pass1 !== pass2) { this._render('register', 'Les mots de passe ne correspondent pas.') ; return }
 
         const complexity = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
-        if (!complexity.test(pass1))
-        {
-            this._render('register',
-                'Mot de passe trop faible (min. 8 car., 1 majuscule, 1 chiffre, 1 caractère spécial).')
-            return
-        }
+        if (!complexity.test(pass1)) { this._render('register', 'Mot de passe trop faible (min. 8 car., 1 majuscule, 1 chiffre, 1 caractère spécial).') ; return }
 
-        if (!username || !email)
-        {
-            this._render('register', 'Nom d\'utilisateur et email obligatoires.')
-            return
-        }
+        if (!username || !email) { this._render('register', 'Nom d\'utilisateur et email obligatoires.') ; return }
 
-        bus.publish('auth:register', {
-            shield_username:      username,
-            shield_email:         email,
-            shield_password:      pass1,
-            client_profil_tel:    tel,
-            client_profil_mobile: mobile,
-            client_profil_persid: persid ? Number(persid) : null,
-            client_profil_orgid:  orgid  ? Number(orgid)  : 0,
-        })
+        bus.publish('auth:register', { shield_username: username, shield_email: email, shield_password: pass1 })
     }
 
     // ── Hooks ─────────────────────────────────────────────────────────────────
@@ -331,13 +370,40 @@ export class AuthPanelBase extends PanelBase
         throw new Error(`[${this.constructor.name}] _buildRegisterForm() non implémenté`)
     }
 
-    /** Message post-inscription (email à valider) */
+    /** Message post-inscription (email à valider) 
     _buildRegisterPending(message)
     {
         // Défaut minimal — surchargeable
         const wrap = document.createElement('div')
         wrap.className = 'auth-pending'
         wrap.textContent = message ?? 'Vérifiez votre email.'
+        return wrap
+    }*/
+
+    _buildRegisterPending(message)
+    {
+        const wrap = document.createElement('div')
+        wrap.className = 'auth-pending'
+    
+        const text = document.createElement('p')
+        text.textContent = message ?? 'Vérifiez votre email.'
+        wrap.appendChild(text)
+    
+        const input = document.createElement('input')
+        input.type = 'text'
+        input.name = 'activation_token'
+        input.inputMode = 'numeric'
+        input.autocomplete = 'one-time-code'
+        input.maxLength = 6
+        input.placeholder = 'Code d’activation'
+        wrap.appendChild(input)
+    
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.className = 'auth-submit auth-activate-submit'
+        button.textContent = 'Activer le compte'
+        wrap.appendChild(button)
+    
         return wrap
     }
 
@@ -350,12 +416,13 @@ export class AuthPanelBase extends PanelBase
     {
         bus.unsubscribe('auth:loading',          this._onLoading)
         bus.unsubscribe('auth:success',          this._onSuccess)
-        bus.unsubscribe('auth:guest',            this._onGuest)
-        bus.unsubscribe('auth:error',            this._onError)
-        bus.unsubscribe('auth:register:pending', this._onRegisterPending)
-
+        bus.unsubscribe('auth:guest'            ,            this._onGuest)
+        bus.unsubscribe('auth:error'            ,            this._onError)
+        bus.unsubscribe('auth:register:pending' , this._onRegisterPending)
+        bus.unsubscribe('auth:activated'        , this._onActivated)
+        
         this._onLoading = this._onSuccess = this._onGuest = this._onError = null
-        this._onRegisterPending = null
+        this._onRegisterPending = this._onActivated = null
 
         if (this._target) clear(this._target)
         this._target = null
