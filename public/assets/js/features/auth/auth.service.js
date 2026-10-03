@@ -95,3 +95,41 @@ export async function fetchLogout(token) {
 
     return await res.json()
 }
+// ── POST /auth/a/verify ──────────────────────────────────────────────────────
+// Activation native Shield — EmailActivator
+//
+// Le code d'activation est envoyé comme champ "token".
+// Cette route utilise la session Shield créée lors du register.
+//
+// IMPORTANT :
+// - pas de Bearer token
+// - pas de JSON
+// - Shield peut répondre par une redirection
+
+export async function fetchActivate(token) {
+    const res = await fetch('/auth/a/verify', {
+        method: 'POST',
+        headers: {
+            'Accept': 'text/html, application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ token }),
+        redirect: 'manual',
+    })
+
+    // Une activation réussie côté Shield provoque normalement
+    // une redirection vers registerRedirect().
+    if (res.ok || res.type === 'opaqueredirect' || res.status === 302) {
+        return {
+            success: true,
+            message: 'Compte activé. Vous pouvez maintenant vous connecter.',
+        }
+    }
+
+    // Selon le cas, Shield peut renvoyer la page d'action avec une erreur.
+    const text = await res.text()
+
+    throw new Error(
+        text || `Activation impossible (HTTP ${res.status})`
+    )
+}
