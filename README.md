@@ -8,8 +8,8 @@
   - [2026-09-30](/doc/notes/2026-09-30.md)
   - [2026-10-01 : codeigniter / shield / users](/doc/notes/2026-10-01.md#codeigniter--shield--users)
 - frontend
-  - [2026-01-02](/doc/notes/2026-01-02.md)
-  - [2026-10-03](doc/notes/2026-10-03.md)
+  - [2026-10-02](/doc/notes/2026-10-02.md)
+  - [2026-10-03](doc/notes/2026-10-03.md) : register 
 
 ## Taches
 
