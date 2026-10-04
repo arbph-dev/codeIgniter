@@ -39,3 +39,58 @@ keywords : Authentication, authorization, codeigniter, codeigniter4
 versions : * v1.3.0
 released : 2026-03-16, 6 months ago
 type     : library
+
+```
+use CodeIgniter\Database\RawSql;  
+use CodeIgniter\I18n\Time;  
+use CodeIgniter\Shield\Authentication\Authenticators\AccessTokens;  
+use CodeIgniter\Shield\Authentication\Authenticators\HmacSha256;  
+use CodeIgniter\Shield\Authentication\Authenticators\Session;  
+use CodeIgniter\Shield\Authentication\HMAC\HmacEncrypter;  
+use CodeIgniter\Shield\Authentication\Passwords;  
+use CodeIgniter\Shield\Entities\AccessToken;  
+use CodeIgniter\Shield\Entities\User;  
+use CodeIgniter\Shield\Entities\UserIdentity;  
+use CodeIgniter\Shield\Exceptions\LogicException;  
+use CodeIgniter\Shield\Exceptions\ValidationException;  
+use Exception;  
+use Faker\Generator;  
+use InvalidArgumentException;  
+use ReflectionException;
+```
+
+### CodeIgniter\Shield\Entities\AccessToken
+/vendor/codeigniter4/shield/src/Authentication/Authenticators/AccessTokens.php
+
+**Ce que fait `AccessTokens`**
+Le chemin réel est :
+```
+Authorization: Bearer <token>
+        ▼
+AccessTokens::loggedIn()
+        ▼
+AccessTokens::attempt()
+        ▼
+AccessTokens::check()
+        ├── récupère le header
+        ├── retire "Bearer"
+        ├── SHA-256 du token
+        ├── recherche dans identities
+        ├── vérifie expiration
+        ├── vérifie unusedTokenLifetime
+        ├── met à jour last_used_at
+        ▼
+UserIdentityModel::getAccessTokenByRawToken()
+        ▼
+User + AccessToken
+        ▼
+$user->setAccessToken($token)
+```
+
+
+# ressource 
+
+| Nom | path relatif github  | path js/ php  | path absolu |
+| --- | ------------  | ---------  | --------------------------------- |
+| uiapp.js| /public/assets/js/uiapp.js  | /assets/js/uiapp.js  | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uiapp.js |
+| AuthPanelBase.js| /public/assets/js/ui/workbench/core/AuthPanelBase.js  | /assets/js/ui/workbench/core/AuthPanelBase.js  | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/core/AuthPanelBase.js |
