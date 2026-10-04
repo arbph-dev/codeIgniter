@@ -383,7 +383,7 @@ export class AuthPanelBase extends PanelBase
     /** Message post-inscription (email à valider) */
     _buildRegisterPending(message, error = null)
     {
-        throw new Error(`[${this.constructor.name}] _buildRegisterForm() non implémenté`)
+        throw new Error(`[${this.constructor.name}] _buildRegisterPending() non implémenté`)
     }
 
     _buildUserBar(user)
