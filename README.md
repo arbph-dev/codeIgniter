@@ -10,7 +10,9 @@
 - frontend
   - [2026-10-02](/doc/notes/2026-10-02.md)
   - [2026-10-03](doc/notes/2026-10-03.md) : register
-  - [2026-10-04](/doc/notes/2026-10-04.md)
+    - [2026-10-03-001](/doc/notes/2026-10-03-001.md) : Détail de l'interaction : ToolbarAuthPanel ↔ Bus ↔ uiapp.js
+    - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#-r%C3%A9sum%C3%A9-des-responsabilit%C3%A9s
+    - [2026-10-04](/doc/notes/2026-10-04.md) : amélioration  AuthPanelBase / ToolbarAuthPanel
 
 ## Taches
 
