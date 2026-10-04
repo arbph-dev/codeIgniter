@@ -112,8 +112,17 @@ export function initAuthController() {
             })
 
         } catch (err) {
-            authStore.error = err.message
-            bus.publish('auth:error', err.message)
+            //authStore.error = err.message
+            //bus.publish('auth:error', err.message)
+            
+            if (err.emailVerified === false) {
+                // Compte créé mais non activé → même écran que juste après l'inscription
+                bus.publish('auth:register:pending', { message: err.message })
+            } 
+            else {
+                authStore.error = err.message
+                bus.publish('auth:error', err.message)
+            }  
         } finally {
             authStore.loading = false
             bus.publish('auth:loading', false)
