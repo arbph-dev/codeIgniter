@@ -97,9 +97,6 @@ $user->setAccessToken($token)
 | --- | ------------  | ---------  | --------------------------------- |
 | uiapp.js| /public/assets/js/uiapp.js  | /assets/js/uiapp.js  | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uiapp.js |
 | AuthPanelBase.js| /public/assets/js/ui/workbench/core/AuthPanelBase.js  | /assets/js/ui/workbench/core/AuthPanelBase.js  | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/core/AuthPanelBase.js |
-
-
-
 | Config/Filters.php | /app/Config/Filters.php  | app/Config/Filters.php  | https://github.com/arbph-dev/codeIgniter/blob/master/app/Config/Filters.php |
 | Config/Routes.php | /app/Config/Routes.php | app/Config/Routes.php  | https://github.com/arbph-dev/codeIgniter/blob/master/app/Config/Routes.php |
 | Api/AuthController.php | /app/Controllers/Api/AuthController.php | app/Controllers/Api/AuthController.php | https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php |
