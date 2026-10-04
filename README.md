@@ -21,6 +21,7 @@
     - [2026-10-04-001](/doc/notes/2026-10-04-001.md) auth/register/inscription en attente 
       - js/features/auth/auth.service.js - fetchLogin - ligne 13 :  - conserver les détails de l'erreur
       - js/features/auth/auth.controller.js - bus.subscribe 'auth:login' - ligne 71  - aiguiller dans auth:login
+    - [solution-retenue](/doc/notes/2026-10-04-001.md#solution-retenue) auth/register/inscription en attente nécessite un endpoint
 ## Taches
 
 - [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
