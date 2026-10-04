@@ -21,10 +21,15 @@ export async function fetchLogin({ email, password }) {
 
     if (!res.ok) {
         // 422 validation, 401 credentials invalides
-        const msg = data.errors
-            ? Object.values(data.errors).join(' ')
-            : (data.error ?? `HTTP ${res.status}`)
-        throw new Error(msg)
+        const msg = data.errors ? Object.values(data.errors).join(' ') : (data.error ?? `HTTP ${res.status}`)
+        
+        //throw new Error(msg)
+        // 2026-10-04-001 auth/register/inscription en attente - conserver les détails de l'erreur
+        const err = new Error(msg)
+        err.status        = res.status
+        err.emailVerified = data.email_verified   // false si compte non activé
+        throw err
+        
     }
 
     return data // { token, user: { id, username, email, groups, permissions } }
