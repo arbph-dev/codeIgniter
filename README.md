@@ -18,7 +18,7 @@
     - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#5-la-vraie-modification-dans-authpanelbase
     - [2026-10-03-001-05](/doc/notes/2026-10-03-001-05.md)
     - [2026-10-04](/doc/notes/2026-10-04.md) : amélioration  AuthPanelBase / ToolbarAuthPanel
-
+    - [2026-10-04-001](/doc/notes/2026-10-04.md) inscription en attente
 ## Taches
 
 - [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
