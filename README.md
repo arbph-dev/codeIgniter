@@ -12,6 +12,10 @@
   - [2026-10-03](doc/notes/2026-10-03.md) : register
     - [2026-10-03-001](/doc/notes/2026-10-03-001.md) : Détail de l'interaction : ToolbarAuthPanel ↔ Bus ↔ uiapp.js
     - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#-r%C3%A9sum%C3%A9-des-responsabilit%C3%A9s
+    - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#2-ce-que-le-bus-doit-exposer
+    - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#3-%C3%A9dition-de-authcontrollerjs
+    - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#4-impl%C3%A9mentation-de-fetchactivate-dans-authservicejs
+    - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#5-la-vraie-modification-dans-authpanelbase
     - [2026-10-04](/doc/notes/2026-10-04.md) : amélioration  AuthPanelBase / ToolbarAuthPanel
 
 ## Taches
