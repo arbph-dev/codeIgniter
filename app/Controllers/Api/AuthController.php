@@ -8,6 +8,11 @@ use App\Controllers\BaseController;
 
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Events\Events;
+use CodeIgniter\I18n\Time;
+use CodeIgniter\Shield\Authentication\Authenticators\Session;
+use CodeIgniter\Shield\Models\UserIdentityModel;
+use CodeIgniter\Shield\Models\UserModel;
+use CodeIgniter\Shield\Traits\Viewable;
 
 /**
  * API d'authentification de l'application.
@@ -46,9 +51,20 @@ use CodeIgniter\Events\Events;
  *
  * Le token brut n'est jamais stocké en clair dans la base :
  * Shield en conserve le hash SHA-256.
+ * 
+ *
+ *
+ *
+ * HISTORIQUE
+ * =========
+ * 2026-10-04-002 - register / 
+ * 
+ * 
  */
 class AuthController extends BaseController
 {
+    use Viewable; // nécessaire pour rendre la vue de l'email d'activation (resend)
+
     /**
      * POST /api/auth/login
      *
@@ -379,6 +395,205 @@ class AuthController extends BaseController
                     'error' => 'Erreur serveur lors de l\'inscription.',
                 ]);
         }
+    }
+
+
+    /**
+     * POST /api/auth/activate
+     * Body JSON : { "email": "...", "token": "123456" }
+     *
+     * ACTIVATION API (sans dépendance à la session Shield)
+     * ----------------------------------------------------
+     *
+     * /auth/a/verify (ActionController) exige l'action "pending" dans la
+     * SESSION PHP : après fermeture du navigateur il répond 404.
+     *
+     * Ici on retrouve le User par email et on compare le code stocké dans
+     * l'identité "email_activate" créée par EmailActivator::createIdentity().
+     *
+     *   200 { message }          compte activé (ou déjà activé)
+     *   422 { error | errors }   code invalide / validation
+     *   429 { error }            trop d'essais
+     */
+    public function activate()
+    {
+        $rules = [
+            'email' => 'required|valid_email',
+            'token' => 'required|exact_length[6]|numeric',
+        ];
+
+        if (! $this->validate($rules)) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['errors' => $this->validator->getErrors()]);
+        }
+
+        $email = strtolower(trim((string) $this->request->getVar('email')));
+        $token = (string) $this->request->getVar('token');
+
+        // Anti force brute : 6 chiffres = 1 000 000 de possibilités
+        if ($this->tooManyAttempts('activate:' . $this->request->getIPAddress() . ':' . $email, 5, 60)) {
+            return $this->response
+                ->setStatusCode(429)
+                ->setJSON(['error' => 'Trop de tentatives. Réessayez dans une minute.']);
+        }
+
+        // Même réponse si le compte n'existe pas : pas d'énumération d'emails
+        $invalid = fn () => $this->response
+            ->setStatusCode(422)
+            ->setJSON(['error' => 'Code d’activation invalide ou expiré.']);
+
+        /** @var UserModel $userModel */
+        $userModel = model(UserModel::class);
+        $user      = $userModel->findByCredentials(['email' => $email]);
+
+        if (! $user instanceof User) {
+            return $invalid();
+        }
+
+        if ($user->isActivated()) {
+            return $this->response
+                ->setStatusCode(200)
+                ->setJSON(['message' => 'Compte déjà activé. Vous pouvez vous connecter.']);
+        }
+
+        /** @var UserIdentityModel $identityModel */
+        $identityModel = model(UserIdentityModel::class);
+        $identity      = $identityModel->getIdentityByType($user, Session::ID_TYPE_EMAIL_ACTIVATE);
+
+        if ($identity === null || ! hash_equals((string) $identity->secret, $token)) {
+            return $invalid();
+        }
+
+        // Code valide : on supprime l'identité puis on active le compte
+        $identityModel->deleteIdentitiesByType($user, Session::ID_TYPE_EMAIL_ACTIVATE);
+        $user->activate();
+
+        /*
+         * Nettoyage de la session "pending login" laissée par register()
+         * (même navigateur, sans rechargement). Sinon les pages natives
+         * Shield (/login) redirigeraient vers auth-action-show et
+         * recréeraient un code pour un compte déjà actif.
+         */
+        $authenticator = auth('session')->getAuthenticator();
+        if ($authenticator->getPendingUser()?->id === $user->id) {
+            session()->remove(setting('Auth.sessionConfig')['field']);
+        }
+
+        return $this->response
+            ->setStatusCode(200)
+            ->setJSON(['message' => 'Compte activé. Vous pouvez maintenant vous connecter.']);
+    }
+
+
+    /**
+     * POST /api/auth/resend
+     * Body JSON : { "email": "..." }
+     *
+     * Régénère un code d'activation et renvoie l'email.
+     *
+     * On n'utilise PAS EmailActivator::show() ni startLogin() :
+     * show() lit le pending user dans la session, et startLogin() lève une
+     * LogicException si la session contient déjà un utilisateur.
+     * On appelle donc createIdentity() (publique, supprime l'ancien code)
+     * puis on envoie nous-mêmes l'email.
+     *
+     * Réponse identique que le compte existe ou non (pas d'énumération).
+     */
+    public function resend()
+    {
+        if (! $this->validate(['email' => 'required|valid_email'])) {
+            return $this->response
+                ->setStatusCode(422)
+                ->setJSON(['errors' => $this->validator->getErrors()]);
+        }
+
+        $email = strtolower(trim((string) $this->request->getVar('email')));
+
+        if ($this->tooManyAttempts('resend:' . $this->request->getIPAddress() . ':' . $email, 3, 300)) {
+            return $this->response
+                ->setStatusCode(429)
+                ->setJSON(['error' => 'Trop de demandes. Réessayez dans quelques minutes.']);
+        }
+
+        $generic = fn () => $this->response
+            ->setStatusCode(200)
+            ->setJSON(['message' => 'Si le compte existe et n’est pas activé, un nouveau code a été envoyé.']);
+
+        /** @var UserModel $userModel */
+        $userModel = model(UserModel::class);
+        $user      = $userModel->findByCredentials(['email' => $email]);
+
+        if (! $user instanceof User || $user->isActivated()) {
+            return $generic();
+        }
+
+        $registerAction = setting('Auth.actions')['register'] ?? null;
+        if ($registerAction === null || $registerAction === '') {
+            return $generic();
+        }
+
+        try {
+            /** @var \CodeIgniter\Shield\Authentication\Actions\EmailActivator $action */
+            $action = \CodeIgniter\Config\Factories::actions($registerAction);
+            $code   = $action->createIdentity($user);
+
+            $this->sendActivationEmail($user, $code);
+        } catch (\Throwable $e) {
+            log_message('error', '[resend] ' . $e->getMessage());
+
+            return $this->response
+                ->setStatusCode(500)
+                ->setJSON(['error' => 'Envoi impossible pour le moment.']);
+        }
+
+        return $generic();
+    }
+
+
+    /**
+     * Envoie l'email d'activation (même gabarit que EmailActivator::show()).
+     */
+    private function sendActivationEmail(User $user, string $code): void
+    {
+        helper('email');
+
+        $email = emailer(['mailType' => 'html'])
+            ->setFrom(setting('Email.fromEmail'), setting('Email.fromName') ?? '');
+        $email->setTo($user->email);
+        $email->setSubject(lang('Auth.emailActivateSubject'));
+        $email->setMessage($this->view(
+            setting('Auth.views')['action_email_activate_email'],
+            [
+                'code'      => $code,
+                'user'      => $user,
+                'ipAddress' => $this->request->getIPAddress(),
+                'userAgent' => (string) $this->request->getUserAgent(),
+                'date'      => Time::now()->toDateTimeString(),
+            ],
+            ['debug' => false],
+        ));
+
+        if ($email->send(false) === false) {
+            throw new \RuntimeException(
+                'Cannot send activation email for user: ' . $user->email . "\n"
+                . $email->printDebugger(['headers'])
+            );
+        }
+
+        $email->clear();
+    }
+
+
+    /**
+     * Limiteur simple basé sur le service Throttler de CodeIgniter
+     * (utilise le cache configuré).
+     *
+     * @return bool true si la limite est dépassée
+     */
+    private function tooManyAttempts(string $key, int $capacity, int $seconds): bool
+    {
+        return service('throttler')->check(md5($key), $capacity, $seconds) === false;
     }
 
 
