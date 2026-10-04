@@ -380,49 +380,10 @@ export class AuthPanelBase extends PanelBase
         throw new Error(`[${this.constructor.name}] _buildRegisterForm() non implémenté`)
     }
 
-    /** Message post-inscription (email à valider) 
-    _buildRegisterPending(message)
-    {
-        // Défaut minimal — surchargeable
-        const wrap = document.createElement('div')
-        wrap.className = 'auth-pending'
-        wrap.textContent = message ?? 'Vérifiez votre email.'
-        return wrap
-    }*/
-
+    /** Message post-inscription (email à valider) */
     _buildRegisterPending(message, error = null)
     {
-        const wrap = document.createElement('div')
-        wrap.className = 'auth-pending'
-
-        if (error)
-            {
-                const err = document.createElement('p')
-                err.className = 'auth-error'
-                err.textContent = error
-                wrap.appendChild(err)
-            }
-        
-            const text = document.createElement('p')
-        text.textContent = message ?? 'Vérifiez votre email.'
-        wrap.appendChild(text)
-    
-        const input = document.createElement('input')
-        input.type = 'text'
-        input.name = 'activation_token'
-        input.inputMode = 'numeric'
-        input.autocomplete = 'one-time-code'
-        input.maxLength = 6
-        input.placeholder = 'Code d’activation'
-        wrap.appendChild(input)
-    
-        const button = document.createElement('button')
-        button.type = 'button'
-        button.className = 'auth-submit auth-activate-submit'
-        button.textContent = 'Activer le compte'
-        wrap.appendChild(button)
-    
-        return wrap
+        throw new Error(`[${this.constructor.name}] _buildRegisterForm() non implémenté`)
     }
 
     _buildUserBar(user)
