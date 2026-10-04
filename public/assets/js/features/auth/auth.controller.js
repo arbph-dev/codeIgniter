@@ -2,29 +2,37 @@
 
 import { bus }                          from '../../core/eventBus.js'
 import { authStore }                    from './auth.store.js'
-import { fetchLogin, fetchMe, fetchLogout , fetchRegister , fetchActivate } from './auth.service.js'
+import {
+    fetchLogin, fetchMe, fetchLogout,
+    fetchRegister, fetchActivate, fetchResend,
+} from './auth.service.js'
 
 /*
-auth:register           crée le compte.
-auth:register:pending   indique que Shield attend l'activation.
-
-auth:activate           vérifie le code.
-auth:activated          indique que le compte est actif.
-aucun token n'est créé pendant l'activation.
-
-auth:check              vérifie si une session Shield OU un token existe
-auth:login              reste le seul endroit qui récupère le Personal Access Token.
-auth:success            signifie réellement que l'application dispose d'une authentification exploitable.
+auth:check              vérifie si un token valide existe (GET /api/auth/me)
+auth:login              seul endroit qui récupère le Personal Access Token
+auth:register           crée le compte
+auth:register:pending   compte non activé : afficher message + saisie du code
+auth:activate           POST /api/auth/activate { email, token }
+auth:activated          compte activé (aucun token créé, l'utilisateur doit se connecter)
+auth:resend             POST /api/auth/resend { email } → nouveau code par email
+auth:success            l'application dispose d'une authentification exploitable
+auth:changed            login / register avec connexion immédiate / logout
 auth:logout
-*/    
+
+authStore.pendingEmail  email du compte en attente d'activation.
+                        Renseigné par auth:register et par auth:login (403 non activé),
+                        conservé en mémoire seulement (jamais le mot de passe).
+*/
 
 export function initAuthController() {
-    // ── auth:check  Appelé au démarrage — vérifie si une session Shield OU un token existe
+
+    // ── auth:check ───────────────────────────────────────────────────────────
+    // Appelé au démarrage
     bus.subscribe('auth:check', async () => {
         authStore.restore()              // récupère token/user depuis sessionStorage
         authStore.loading = true
         bus.publish('auth:loading', true)
-  
+
         try {
             const user = await fetchMe(authStore.token)
 
@@ -34,7 +42,6 @@ export function initAuthController() {
                 authStore.persist()
                 bus.publish('auth:success', { user, token: authStore.token })
             } else {
-                // Pas de session active
                 authStore.clear()
                 bus.publish('auth:guest')
             }
@@ -56,28 +63,32 @@ export function initAuthController() {
         try {
             const data = await fetchLogin({ email, password })
 
-            authStore.user     = data.user
-            authStore.token    = data.token
-            authStore.loggedIn = true
+            authStore.user         = data.user
+            authStore.token        = data.token
+            authStore.loggedIn     = true
+            authStore.pendingEmail = null
             authStore.persist()
 
             bus.publish('auth:success', { user: data.user, token: data.token })
             bus.publish('auth:changed')
 
         } catch (err) {
-            authStore.error = err.message
-            bus.publish('auth:error', err.message)
+            if (err.emailVerified === false) {
+                // Compte créé mais non activé → même écran qu'après l'inscription
+                authStore.pendingEmail = email
+                bus.publish('auth:register:pending', { message: err.message })
+            } else {
+                authStore.error = err.message
+                bus.publish('auth:error', err.message)
+            }
         } finally {
             authStore.loading = false
             bus.publish('auth:loading', false)
         }
     })
-    
+
     // ── auth:register ────────────────────────────────────────────────────────
-    // Payload attendu (après validation front des 2 mots de passe) :
-    // {
-    //   shield_username, shield_email, shield_password,
-    // }
+    // payload : { shield_username, shield_email, shield_password }
     bus.subscribe('auth:register', async (payload) => {
         authStore.loading = true
         authStore.error   = null
@@ -86,15 +97,16 @@ export function initAuthController() {
         try {
             const data = await fetchRegister(payload)
 
-            // Cas EmailActivator actif — pas de token, compte non activé
+            // EmailActivator actif — pas de token, compte non activé
             if (data.email_verified === false) {
+                authStore.pendingEmail = payload.shield_email
                 bus.publish('auth:register:pending', {
                     message: data.message ?? 'Compte créé. Vérifiez votre email pour activer votre compte.',
                 })
                 return
             }
 
-            // Cas sans activation — login immédiat
+            // Sans activation — login immédiat
             if (data.token && data.user) {
                 authStore.user     = data.user
                 authStore.token    = data.token
@@ -112,39 +124,30 @@ export function initAuthController() {
             })
 
         } catch (err) {
-            //authStore.error = err.message
-            //bus.publish('auth:error', err.message)
-            
-            if (err.emailVerified === false) {
-                // Compte créé mais non activé → même écran que juste après l'inscription
-                bus.publish('auth:register:pending', { message: err.message })
-            } 
-            else {
-                authStore.error = err.message
-                bus.publish('auth:error', err.message)
-            }  
+            authStore.error = err.message
+            bus.publish('auth:error', err.message)
         } finally {
             authStore.loading = false
             bus.publish('auth:loading', false)
         }
     })
-    
 
     // ── auth:activate ────────────────────────────────────────────────────────
-    // Vérification du code envoyé par EmailActivator.
-    //
-    // IMPORTANT :
-    // L'activation ne crée pas de token API et ne connecte pas
-    // automatiquement l'utilisateur.
-    bus.subscribe('auth:activate', async ({ token }) =>
-    {
+    // Vérification du code envoyé par email.
+    // L'activation ne crée pas de token et ne connecte pas l'utilisateur.
+    bus.subscribe('auth:activate', async ({ token }) => {
         authStore.loading = true
         authStore.error   = null
         bus.publish('auth:loading', true)
 
         try {
-            const data = await fetchActivate(token)
+            if (!authStore.pendingEmail) {
+                throw new Error('Email inconnu : reconnectez-vous pour recevoir le formulaire d’activation.')
+            }
 
+            const data = await fetchActivate({ email: authStore.pendingEmail, token })
+
+            authStore.pendingEmail = null
             bus.publish('auth:activated', data)
 
         } catch (err) {
@@ -156,16 +159,34 @@ export function initAuthController() {
             bus.publish('auth:loading', false)
         }
     })
-    
-    /*  -----------------------------     
-    inutile dans le controller
-    
-    bus.subscribe('auth:activated', ({ message }) => {
-        console.log('[auth]', message)
-        // on reste en mode guest
-        // on peut afficher le formulaire login
+
+    // ── auth:resend ──────────────────────────────────────────────────────────
+    // Nouveau code d'activation. On reste dans l'écran "pending".
+    bus.subscribe('auth:resend', async () => {
+        authStore.loading = true
+        authStore.error   = null
+        bus.publish('auth:loading', true)
+
+        try {
+            if (!authStore.pendingEmail) {
+                throw new Error('Email inconnu : reconnectez-vous pour recevoir le formulaire d’activation.')
+            }
+
+            const data = await fetchResend(authStore.pendingEmail)
+
+            bus.publish('auth:register:pending', {
+                message: data.message ?? 'Un nouveau code a été envoyé.',
+            })
+
+        } catch (err) {
+            authStore.error = err.message
+            bus.publish('auth:error', err.message)
+
+        } finally {
+            authStore.loading = false
+            bus.publish('auth:loading', false)
+        }
     })
-    */
 
     // ── auth:logout ──────────────────────────────────────────────────────────
     bus.subscribe('auth:logout', async () => {
@@ -189,10 +210,8 @@ export function initAuthController() {
     })
 
     // ── auth:success ─────────────────────────────────────────────────────────
-    // Redirection selon le groupe après login (optionnel — le renderer peut aussi gérer)
     bus.subscribe('auth:success', ({ user }) => {
         const groups = user?.groups ?? []
         console.log(`[auth] connecté : ${user?.username} [${groups.join(', ')}]`)
     })
-    
 }
