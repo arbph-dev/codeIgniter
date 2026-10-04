@@ -104,7 +104,7 @@ $user->setAccessToken($token)
 | auth.controller.js | /public/assets/js/features/auth/auth.controller.js | /assets/js/features/auth/auth.controller.js | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js |
 | auth.service.js | /public/assets/js/features/auth/auth.service.js | /assets/js/features/auth/auth.service.js | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.service.js |
 | ToolbarAuthPanel.js | /public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js | /assets/js/ui/workbench/auth/ToolbarAuthPanel.js | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js |
-|  |  |  |  |
+| AuthPanelBase.js | /public/assets/js/ui/workbench/core/AuthPanelBase.js | /assets/js/ui/workbench/core/AuthPanelBase.js | https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/core/AuthPanelBase.js |
 |  |  |  |  |
 
 
