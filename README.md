@@ -16,6 +16,7 @@
     - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#3-%C3%A9dition-de-authcontrollerjs
     - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#4-impl%C3%A9mentation-de-fetchactivate-dans-authservicejs
     - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001.md#5-la-vraie-modification-dans-authpanelbase
+    - [2026-10-03-001-05](/doc/notes/2026-10-03-001-05.md)
     - [2026-10-04](/doc/notes/2026-10-04.md) : amélioration  AuthPanelBase / ToolbarAuthPanel
 
 ## Taches
