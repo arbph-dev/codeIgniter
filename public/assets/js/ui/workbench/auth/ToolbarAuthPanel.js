@@ -94,15 +94,8 @@ export class ToolbarAuthPanel extends AuthPanelBase
     }
 
 
-    /*
-    _buildRegisterPending(message)
-    {
-        const wrap = create('div', { class: 'auth-pending' })
-        wrap.appendChild(create('p', { class: 'auth-success', text: message ?? 'Vérifiez votre email.' }))
 
-        return wrap
-    }
-*/
+
     /**
      *  Mini barre affichée dans .header-auth pendant l'inscription 
      * ---- 2026-09-27-003
