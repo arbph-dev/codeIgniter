@@ -42,6 +42,9 @@ export class AuthPanelBase extends PanelBase
         this._onError           = null
         this._onRegisterPending = null
         this._onActivated       = null
+        this._onShowRegister    = null
+        this._flow              = 'guest'   // guest | register | register-pending | activated | user
+        this._pendingMessage    = null        
     }
 
     init()
@@ -65,26 +68,28 @@ export class AuthPanelBase extends PanelBase
         this._onLoading = (on)       => { if (on) this._render('loading') }
         this._onSuccess = ({ user }) => { this._user = user; this._render('user') }
         this._onGuest   = ()         => { this._user = null; this._render('guest') }
-        this._onError   = (msg)      => this._render('error', msg)
+        this._onError   = (msg)      => {
+            // Une erreur reste dans l'étape où elle s'est produite
+            if (this._flow === 'register')         return this._render('register', msg)
+            if (this._flow === 'register-pending') return this._render('register-pending', msg)
+            this._render('error', msg)
+        }
 
-        this._onRegisterPending = ({ message }) => this._render('register-pending', message)
+        this._onRegisterPending = ({ message }) => {
+            this._pendingMessage = message
+            this._render('register-pending')
+        }
         
         this._onActivated = ({ message }) => this._render('activated', message)
+        this._onShowRegister = () => this._render('register')
 
         bus.subscribe('auth:loading'            , this._onLoading)
         bus.subscribe('auth:success'            , this._onSuccess)
         bus.subscribe('auth:guest'              , this._onGuest)
         bus.subscribe('auth:error'              , this._onError)
         bus.subscribe('auth:register:pending'   , this._onRegisterPending)
-        
         bus.subscribe('auth:activated'          , this._onActivated)
-        
-        // Ouverture formulaire register depuis un bouton externe éventuel
-        bus.subscribe('auth:show-register', () => this._render('register'))
-
-
-
-
+        bus.subscribe('auth:show-register'      , this._onShowRegister)
     }
 
     //----- 2026-09-27-003 ---------------  helpers
@@ -104,13 +109,13 @@ export class AuthPanelBase extends PanelBase
         this._bindRegister()          // écoute .auth-register-submit dans le board
     }
 
-    _mountRegisterPending(message)
+    _mountRegisterPending(message, error = null)
     {
         const body = this._boardBody()
         if (!body) return
     
         clear(body)
-        body.appendChild(this._buildRegisterPending(message))
+        body.appendChild(this._buildRegisterPending(message, error))
         this._bindActivate()
     }
 
@@ -160,6 +165,9 @@ export class AuthPanelBase extends PanelBase
 
         clear(this._target)
 
+        if (state !== 'loading')
+            this._flow = (state === 'error') ? 'guest' : state
+
         switch (state)
         {
             case 'loading':
@@ -171,6 +179,7 @@ export class AuthPanelBase extends PanelBase
                 this._target.appendChild(this._buildGuestForm())
                 this._bindForm()
                 this._bindShowRegister()
+                bus.publish('board:hide')
                 break
 
 
@@ -193,7 +202,8 @@ export class AuthPanelBase extends PanelBase
                 break
 
             case 'register-pending':
-                this._mountRegisterPending(payload)
+                // payload = message d'erreur éventuel
+                this._mountRegisterPending(this._pendingMessage, payload)
                 bus.publish('board:register')
                 this._target.appendChild(this._buildRegisterToolbar())
                 this._bindShowGuest()
@@ -380,12 +390,20 @@ export class AuthPanelBase extends PanelBase
         return wrap
     }*/
 
-    _buildRegisterPending(message)
+    _buildRegisterPending(message, error = null)
     {
         const wrap = document.createElement('div')
         wrap.className = 'auth-pending'
-    
-        const text = document.createElement('p')
+
+        if (error)
+            {
+                const err = document.createElement('p')
+                err.className = 'auth-error'
+                err.textContent = error
+                wrap.appendChild(err)
+            }
+        
+            const text = document.createElement('p')
         text.textContent = message ?? 'Vérifiez votre email.'
         wrap.appendChild(text)
     
@@ -420,10 +438,12 @@ export class AuthPanelBase extends PanelBase
         bus.unsubscribe('auth:error'            ,            this._onError)
         bus.unsubscribe('auth:register:pending' , this._onRegisterPending)
         bus.unsubscribe('auth:activated'        , this._onActivated)
-        
-        this._onLoading = this._onSuccess = this._onGuest = this._onError = null
-        this._onRegisterPending = this._onActivated = null
+        bus.unsubscribe('auth:show-register'    , this._onShowRegister)
+                 
 
+
+        this._onLoading = this._onSuccess = this._onGuest = this._onError = null
+        this._onRegisterPending = this._onActivated = this._onShowRegister = null
         if (this._target) clear(this._target)
         this._target = null
         this._user   = null
