@@ -16,3 +16,16 @@
 - [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
 - [ ] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
 - [ ] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
+
+
+
+## Envrionnement
+```
+composer show codeigniter4/shield
+```
+name     : codeigniter4/shield
+descrip. : Authentication and Authorization for CodeIgniter 4
+keywords : Authentication, authorization, codeigniter, codeigniter4
+versions : * v1.3.0
+released : 2026-03-16, 6 months ago
+type     : library
