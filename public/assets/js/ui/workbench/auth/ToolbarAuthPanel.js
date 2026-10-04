@@ -93,7 +93,38 @@ export class ToolbarAuthPanel extends AuthPanelBase
         return wrap
     }
 
-
+    /** 
+    * Message post-inscription (email à valider) - implémentation nécessaire
+    */
+    _buildRegisterPending(message, error = null)
+    {
+        const wrap = create('div', { class: 'auth-pending auth-form' })
+    
+        if (error)
+        {
+            wrap.appendChild(create('p', { class: 'auth-error', text: error }))
+        }
+    
+        wrap.appendChild(create('p', { class: 'auth-success', text: message ?? 'Vérifiez votre email.' }))
+    
+        wrap.appendChild(create('input', {
+            type: 'text',
+            name: 'activation_token',
+            inputMode: 'numeric',
+            autocomplete: 'one-time-code',
+            maxLength: '6',
+            placeholder: 'Code d\'activation (6 chiffres)',
+        }))
+    
+        const btnActivate = create('button', { type: 'button', class: 'auth-submit auth-activate-submit' })
+        btnActivate.append(
+            create('i', { class: 'fa fa-fw fa-check', 'aria-hidden': 'true' }),
+            create('span', { text: 'Activer le compte' }),
+        )
+        wrap.appendChild(btnActivate)
+    
+        return wrap
+    }
 
 
     /**
