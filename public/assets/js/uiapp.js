@@ -39,7 +39,8 @@ let adresseWorkbench = null
 const PANEL_ADMIN = 0
 const PANEL_USER = 1
 const PANEL_OFFSET = 2
-
+let _lastContentPanel = PANEL_OFFSET   // dernier panel hors boards auth
+let _currentSection = 0                // était utilisé dans switchSection() sans être déclaré
 
 /*  ======================================================================================================================  */
 // Gestion du thème
@@ -59,7 +60,7 @@ function switchPanel(index) {
   // _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== (PANEL_OFFSET+ index) ) })
   _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== ( index ) ) })
   _currentPanel = index
-  
+  if (index >= PANEL_OFFSET) _lastContentPanel = index
   // statusWrite( `Onglet actif : ${_pages[index-PANEL_OFFSET].title}` )
   // probleme selon l'appelant il possede ou non un title a reserver au menu page voir ligne 295
 
@@ -135,8 +136,9 @@ function readPage(){
       // on recherche le panel actif par defaut 0 n'a pas de classe hidden
       // _currentPanel = 0 ou 2 selon _main_panels
       
-      if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
-      
+      //if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
+      if ( !panel.classList.contains("hidden") ) { _currentPanel = index; _lastContentPanel = index }
+
       //  on recherche le titre h2 du panel p
       strTemp = qs( "h2.panel-title" , panel).innerText
       
@@ -505,29 +507,26 @@ function noAuth() { console.log("Auht fails; app cannot run") }
 
 function boot()
 {
-    
   initAuthController() // /public/assets/js/features/auth/auth.controller.js
-  
   new ToolbarAuthPanel().init() 
-  //   /public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js
-  
-  //initAuthBoards()  //2026-09-27-002
   bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
   
-  //bus.subscribe('auth:success', () => mountApplication() )
-  bus.subscribe( 'auth:success', () => (
-
-    mountApplication() ,
-    console.log(authStore.user),
-    mountUserBoard(authStore.user) 
-
-  ))
+  bus.subscribe('auth:success', () => {
+    mountApplication()
+    mountUserBoard(authStore.user)      // contenu seulement, sans changer de panel
+  })
 
   bus.subscribe('auth:guest',   () => noAuth())
-  bus.subscribe('board:user', () => { switchPanel(PANEL_USER) })
-  //bus.subscribe('board:register', () => showAuthBoard('user'))//----- 2026-09-27-003
-  // console.log( "initAuthController ") 
+  // ── Affichage des boards ──
+  bus.subscribe('board:user',     () => switchPanel(PANEL_USER))
+  bus.subscribe('board:register', () => switchPanel(PANEL_USER))
+  bus.subscribe('board:admin',    () => { mountAdminBoard(authStore.user); switchPanel(PANEL_ADMIN) })
+  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel))
 
+  // login / register avec connexion immédiate / logout
+  bus.subscribe('auth:changed', () => {
+    if (authStore.loggedIn) switchPanel(PANEL_USER)
+  })
   bus.publish('auth:check')
 
   window.openNav = () => { _menu.classList.add("open") } 
