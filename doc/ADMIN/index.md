@@ -1,5 +1,5 @@
 # Architecture backend que je retiendrais
-
+la récupération d'un utilisateur Shield est commune.
 ```
 app/
 ├── Controllers/
@@ -17,25 +17,6 @@ app/
 └── Authorization/
     └── ...
 ```
-
-Et non :
-
-```
-Services/
-└── Admin/
-    └── AdminUserService.php
-```
-
-car sinon on aura rapidement :
-
-```
-AdminUserService
-TeamUserService
-ProjectUserService
-...
-```
-
-alors que la récupération d'un utilisateur Shield est commune.
 
 ---
 
