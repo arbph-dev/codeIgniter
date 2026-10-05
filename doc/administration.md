@@ -3,10 +3,10 @@
 préparer la transposition de la partie admin : https://zealot.fr/admin
 
 basé sur 
-https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Admin.php
-https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/cms/admin.php
-https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/layouts/cms.php
-https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/cms/components/debug_overlay.php
+- https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Admin.php
+- https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/cms/admin.php
+- https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/layouts/cms.php
+- https://github.com/arbph-dev/codeIgniter/blob/master/app/Views/cms/components/debug_overlay.php
 
 dans app/Views/cms/admin.php les données sont transmises par app/Controllers/Admin.php 
 ```
