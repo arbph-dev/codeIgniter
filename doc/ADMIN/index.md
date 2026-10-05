@@ -212,23 +212,7 @@ La guideline `2026-09-26-002` prévoit précisément `/like`, `/batch`, `/:id`, 
 
 ---
 
-# 6. Attention à `limit` vs `per_page`
-
-Dans ton brouillon tu proposes :
-
-```
-?page=1&limit=50
-```
-
-mais ta guideline existante définit :
-
-```
-?page=2&per_page=20
-```
-
-Je garderais **`per_page`**.
-
-Donc :
+# 6. Pagination `per_page`
 
 ```
 GET /api/admin/users?page=1&per_page=50
@@ -239,8 +223,6 @@ et :
 ```
 GET /api/team/users?page=1&per_page=50
 ```
-
-Cela évite d'avoir deux conventions API dans le projet.
 
 ---
 
@@ -672,16 +654,7 @@ sans réécrire la logique API/store.
 
 ---
 
-# 17. Une petite correction dans ton arborescence
-
-Tu avais :
-
-```
-AdminUserListPanel.js
-AdminUserDetailPanel.js
-```
-
-Je ferais plutôt :
+# 17. Arborescence
 
 ```
 assets/js/ui/workbench/admin/
@@ -749,7 +722,7 @@ per_page
 
 # 19. Ordre de travail
 
-Je ferais effectivement les deux branches **en parallèle** :
+les deux branches **en parallèle** :
 
 ### Backend
 
