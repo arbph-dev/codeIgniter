@@ -105,9 +105,9 @@ main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
 ```
 
 ### Panel admin
-réserve un élément div.admin-board-body
+Reprend la structure d'un Panel générique mais réserve un élément div.admin-board-body
 
-main#stack > div.panel-card > div.section-tab > div.tab-content > 
+main#stack > div.panel-card > div.section-tab > div.tab-content > div#admin-board-body
 
 
 ```
