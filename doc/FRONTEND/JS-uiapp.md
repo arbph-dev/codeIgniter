@@ -45,5 +45,10 @@ function boot()
   new ToolbarAuthPanel().init() 
 ```
 
+### Gestion de l'affichage
+reprendre les notes de https://github.com/arbph-dev/codeIgniter/blob/master/Frontend.md
 
-
+### gestion des panels
+les panels sont détaillés dans la partie ui 
+- https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI.md
+- https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-panels.md
