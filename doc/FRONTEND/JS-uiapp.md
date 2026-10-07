@@ -28,6 +28,11 @@ import { initVoxBus } from '/assets/js/core/vox.js'
 import { initVoxRenderer } from '/assets/js/core/vox.renderer.js'
 import { initSceneBg }     from '/assets/js/ihm/cp_scene_bg.js'
 ```
+
+### Dépendances
+- ToolbarAuthPanel.js / AuthPanelBase.js
+
+
 ## Travaux
 - [doc/notes/2026-10-03.md](/doc/notes/2026-10-03.md)
 
@@ -43,12 +48,50 @@ function boot()
 {
   initAuthController() // /public/assets/js/features/auth/auth.controller.js
   new ToolbarAuthPanel().init() 
+  bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
+  
+  bus.subscribe('auth:success', () => {
+    mountApplication()
+    mountUserBoard(authStore.user)      // contenu seulement, sans changer de panel
+  })
+
+  bus.subscribe('auth:guest',   () => noAuth())
+  // ── Affichage des boards ──
+  bus.subscribe('board:user',     () => switchPanel(PANEL_USER))
+  bus.subscribe('board:register', () => switchPanel(PANEL_USER))
+  bus.subscribe('board:admin',    () => { mountAdminBoard(authStore.user); switchPanel(PANEL_ADMIN) })
+  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel))
+
+  // login / register avec connexion immédiate / logout
+  bus.subscribe('auth:changed', () => {
+    if (authStore.loggedIn) switchPanel(PANEL_USER)
+  })
+  bus.publish('auth:check')
+
+  window.openNav = () => { _menu.classList.add("open") } 
+  window.closeNav = () => { _menu.classList.remove("open") }
 ```
 
-### Gestion de l'affichage
+# Gestion de l'affichage
 reprendre les notes de https://github.com/arbph-dev/codeIgniter/blob/master/Frontend.md
 
-### gestion des panels
+[/assets/js/uiapp.js](/public/assets/js/uiapp.js) dispose de plusieurs fonctions 
+- switchPanel : afficher masquer
+- mountUserBoard(user)  :
+- 
+
+## gestion des panels
 les panels sont détaillés dans la partie ui 
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI.md
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-panels.md
+- affichage des boards user et admin : https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-03-001-05.md
+
+
+### Affichage des boards
+```js
+    bus.subscribe('board:user',     () => switchPanel(PANEL_USER))
+  bus.subscribe('board:register', () => switchPanel(PANEL_USER))
+  bus.subscribe('board:admin',    () => { mountAdminBoard(authStore.user); switchPanel(PANEL_ADMIN) })
+  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel))
+```
+
