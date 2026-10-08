@@ -1,9 +1,9 @@
 # Gestion users (user et admin)
 
-https://github.com/arbph-dev/codeIgniter/blob/master/doc/administration.md
-
-
-
+**Ressources**
+- https://github.com/arbph-dev/codeIgniter/blob/master/doc/administration.md
+- https://github.com/arbph-dev/codeIgniter/blob/master/doc/ADMIN/index.md
+- https://github.com/arbph-dev/codeIgniter/blob/master/doc/ADMIN/UserService-update.md
 
 
 a gérer en utilitaire pour les listes de choix , radio et checkbox
@@ -20,6 +20,8 @@ Le futur écran devra être fait en dur dans la page
 ## Version 1
 
 - [X] app/Services/Users/UserService.php
+
+
 
 
 - [X] Admin/UsersController.php
@@ -90,9 +92,6 @@ Endpoint : GET /api/admin/users - Version 2
 ---
 
 # Intégration Version 1
-
-https://github.com/arbph-dev/codeIgniter/blob/master/doc/ADMIN/UserService-update.md
-https://github.com/arbph-dev/codeIgniter/blob/master/doc/ADMIN/index.md
 
 **fichiers**
 G:\WWW\REFACTOR\OVH\temp\USER\
