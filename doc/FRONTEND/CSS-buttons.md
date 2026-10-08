@@ -36,3 +36,6 @@
 }
 .primary-button:hover { background-color: var(--accent-hover); }
 ```
+
+# AJOUTER
+- primary-button switch-tab-btn
