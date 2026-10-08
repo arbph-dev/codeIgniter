@@ -1,6 +1,18 @@
 /*
 2026-09-20 : Ajout callout 
+2026-10-08 : Ajout root
 */
+
+:root{
+--col-danger           : #f01313;
+--col-danger-secondary : #fdd8d0;
+--col-info             : #0000ff;
+--col-info-secondary   : #d0d8fd;
+--col-note             : #0b9d14;
+--col-note-secondary   : #d0f0da;        
+--col-warning          : #f79503;
+--col-warning-secondary: #fdf3d0;
+}
 
 /* Définition des thèmes */
 :root[data-theme="marine"] {
@@ -16,14 +28,7 @@
   --accent-hover: #1d4ed8;
   --border-color: #cbd5e1;
 
-  --col-danger           : #f01313;
-  --col-danger-secondary : #fdd8d0;
-  --col-info             : #0000ff;
-  --col-info-secondary   : #d0d8fd;
-  --col-note             : #0b9d14;
-  --col-note-secondary   : #d0f0da;        
-  --col-warning          : #f79503;
-  --col-warning-secondary: #fdf3d0;
+
   /* ── Espacements ─────────────────────────────────────────────────────────── */
   --wb-gap:        1rem;
   --wb-padding:    1rem;
@@ -52,14 +57,6 @@
   --accent-hover: #15803d;
   --border-color: #bbf7d0;
 
-  --col-danger           : #f01313;
-  --col-danger-secondary : #fdd8d0;
-  --col-info             : #0000ff;
-  --col-info-secondary   : #d0d8fd;
-  --col-note             : #0b9d14;
-  --col-note-secondary   : #d0f0da;        
-  --col-warning          : #f79503;
-  --col-warning-secondary: #fdf3d0;    
   /* ── Espacements ─────────────────────────────────────────────────────────── */
   --wb-gap:        1rem;
   --wb-padding:    1rem;
@@ -1034,7 +1031,7 @@ input[type="text"], input[type="number"], select {
   max-width: 300px;
 }
 
-
+/* ============== container buttons ============== */
 .pagination-buttons {
   display: flex;
   justify-content: space-between;
@@ -1042,7 +1039,26 @@ input[type="text"], input[type="number"], select {
   margin-top: 20px;
 }
 
+/*
+============== container buttons ============== 
+background-color: var(--accent);
+color: white;
+background-color: var(--accent-hover);
 
+--col-danger           : #f01313;
+--col-danger-secondary : #fdd8d0;
+
+--col-info             : #0000ff;
+--col-info-secondary   : #d0d8fd;
+
+--col-note             : #0b9d14;
+--col-note-secondary   : #d0f0da;        
+
+--col-warning          : #f79503;
+--col-warning-secondary: #fdf3d0;
+
+
+*/
 .primary-button {
   padding: 10px 18px;
   background-color: var(--accent);
@@ -1052,6 +1068,11 @@ input[type="text"], input[type="number"], select {
   cursor: pointer;
 }
 .primary-button:hover { background-color: var(--accent-hover); }
+
+
+
+
+
 
 /* Barre de statut */
 #statusBar {
