@@ -91,6 +91,8 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 - publie un event sur le bus demande statut de l'authentification
 - référence les callbacks de rendu du menu au niveau window pour un usage plus simple
 
+**authStore** est importée voir [`features/auth`](#features/auth)
+
 **_menu** est référencée par [`setPageRef`](#setPageRef)
 
 ```js
