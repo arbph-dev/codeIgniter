@@ -69,16 +69,16 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [initMenu](#initMenu)
 - [initNavigation](#initNavigation)
 - [initPagination](#initPagination)
-- [mountAdminBoard](#mountAdminBoard)
-- [mountUserBoard](#mountUserBoard)
+- [mountAdminBoard](#mountAdminBoard) : Construit le board admin
+- [mountUserBoard](#mountUserBoard) : Construit le board user
+- [openMenuPanel](#openMenuPanel)
 - [renderUserCard](#renderUserCard)
 - [readPage](#readPage) 
 - [setPageRef](#setPageRef)
 - [statusWrite](#statusWrite)
-- Construit le board user
-- Construit le board admin
-- gère les panels, leur affichage
-- gère les menus, leur affichage
+- [themeSwitch](#themeSwitch)
+
+
 
 ## Système
 
@@ -130,6 +130,20 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 
 ### readPage
 Construit la liste des div.panel-card de contenu 
+
+**Structure du contenu**
+```
+main#stack
+	div.panel-card  = article
+		h2.panel-title
+		p.panel-description 
+		div.section-tab
+			div.tab-headers
+			div.tab-content = section
+				h3
+				p
+```
+
 - appelée par : [setPageRef](#setPageRef)
 - définition : [`function readPage()`](/public/assets/js/uiapp.js#L121)
 
@@ -152,6 +166,13 @@ initialise les variables sur les éléments dom, appelle les fonctions de constr
 **header#header** n'est pas référencé
 
 
+### themeSwitch
+Bascule le theme lors d'un clic sur le button **_header_actions_btn_theme**
+
+**_header_actions_btn_theme**  est référencée par [`setPageRef`](#setPageRef)
+
+- appelée par : Listener sur click de **_header_actions_btn_theme**
+- définition : [`function themeSwitch()`](/public/assets/js/uiapp.js#L47)
 
 ## Helper de rendu
 
@@ -223,6 +244,10 @@ a servi pour les tests switchPanel, pourra servir par la suite
 
 
 
+### openMenuPanel
+Au clic : Ouvre ou bascule le panneau
+- appelée par : *
+- définition : [`function openMenuPanel(index)`](/public/assets/js/uiapp.js#L227)
 
 
 
@@ -254,8 +279,46 @@ async function fullscreenSwitch()  + public/assets/js/uiapp.js#L93  =>
 
 
 
+[closeSidebar](#closeSidebar)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
 
 
+[initSidebar](#initSidebar)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
+
+mountApplication
+[](#)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
+
+
+noAuth
+[](#)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
+
+
+
+
+
+
+
+
+[openSidebar](#openSidebar)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
 
 
 
@@ -268,62 +331,32 @@ todo :
 - [] /assets/js/uiapp.js / ref : sujet : 
 
 
-----
+- [ ] ui-components/xxx.html + uiapp2.js + uistyle.css : modifier structure 
+	- div.panel-card  =  article
+	- div.panel-card  > div.section-tab >div.tab-content = section
 
-
-## Helper de rendu
-Rendu minimal board user / admin
-
-
-#### Montage dans les boards 
-fait sentir la nécessité d'un panel user ou workbench
-
-
-
-
-- onload
-- 
-
-	
-- [themeSwitch](#themeSwitch)
+- [] /assets/js/uiapp.js / typeofObj : a sortir vers domHelper ou une autre librairie: 
 - typeofObj
-	- a sortir vers domHelper
  	- `console.log( typeofObj( _menu ) )`
 
 
-
-- [openMenuPanel](#openMenuPanel)
-
-
-- Sidebar
-	- [closeSidebar](#closeSidebar)
-	- [initSidebar](#initSidebar)
-	- [openSidebar](#openSidebar)
+----
+- gère les panels, leur affichage
+- gère les menus, leur affichage
 
 - openMenuPanel
 - openNav
 - closeNav
-
-
 show/hide boards
 - switchPanel
 - switchSection
-
 ```
-
-
 
 - getAuthBoards
 - hideAuthBoards
-
 - initAuthBoards
 
 
-- mountAdminBoard
-- mountApplication
-- mountUserBoard
-
-- noAuth
 
 
 
@@ -348,29 +381,8 @@ show/hide boards
 **2026-09-30-001**
 - offset readpage à formaliser
 
-### setPageRef
-Initialise des références aux principaux elements
-- certains ne servent qu'une fois donc les déplacer en init pour minimiser la mémoire
 
-Appelle [readPage](#readPage) pour initialiser le tableau 
 
-Appele les différentes initialisation des éléments de la navigation
-- [initMenu](#initMenu)
-- [initNavigation](#initNavigation)
-- [initPagination](#initPagination)
-
-#### Structure du contenu
-```
-main#stack
-	div.panel-card  = article
-		h2.panel-title
-		p.panel-description 
-		div.section-tab
-			div.tab-headers
-			div.tab-content = section
-				h3
-				p
-```
 
 
 
@@ -406,25 +418,8 @@ main#stack
 - ajout function initAuthBoards() 
 
 
-## Helper de rendu
-Rendu minimal board user / admin
-- function badgeGroups(groups)
-- function badgePerms(permissions)
-- function renderUserCard(user, { title = 'Mon profil' } = {})
-	- Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
 
-#### Montage dans les boards 
-fait sentir la nécessité d'un panel user ou workbench
-- function mountUserBoard(user) {
-- function mountAdminBoard(user) {
 
-####  Branchement bus
-- import '/assets/js/features/auth/auth.store.js'
-- remplacer initAuthBoards
-- Affiche panel user , le formulaire est déjà monté par AuthPanelBase._mountRegisterForm.
-```js
-  bus.subscribe('board:register', () => showAuthBoard('user'))
-```
 ## Génération de la structure HTML
 
 Pour chaque page contenue dans _pages
@@ -487,9 +482,7 @@ utilise **_pages** initialisé par [readPage](#readPage)
 
 ## Interactions avec le panneau principal :
 
-### openMenuPanel
-Au clic : Ouvre ou bascule le panneau via openMenuPanel(index).
-- [/assets/js/uiapp.js - openMenuPanel - #L181](public/assets/js/uiapp.js#L181)
+
 
 
 
