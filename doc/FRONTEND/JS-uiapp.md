@@ -8,22 +8,44 @@ les fonctions essentielles
 
 ### boot
 
+  initAuthController() // /public/assets/js/features/auth/auth.controller.js
+  new ToolbarAuthPanel().init() 
+
+  
 ### DOMContentLoaded
 
 ### window.onload
 
-
-
-## Helpers
-
-Suivre les évolutions avec élément html `footer/div#statusBar` et employer  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+## Import
+les imports communs au scripts applications
 
 
 
 
+### Helpers
+```js
+import { bus } from '/assets/js/core/eventBus.js'
+import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
+```
 
 
-## Import voir librairie 
+#### fonctions uiapp
+
+##### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar` 
+
+- définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+
+#### domhelper
+- [ ] retrouver la documentation
+- [ ] créer /doc/FRONTEND/JS/CORE/DOMHELPER.md
+
+#### eventBus
+- [ ] retrouver la documentation
+- [ ] créer /doc/FRONTEND/JS/CORE/EVENTBUS.md
+
+
+# librairies  
 - [ ] Crééer  fichier et dossiers si besoin (exemple : JS-component)  : JS-libext , JS-lib , JS-component ,JS-core
 
 ```js
