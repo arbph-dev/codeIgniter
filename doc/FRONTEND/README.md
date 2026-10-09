@@ -1,3 +1,17 @@
+l'arborescence evolue, on sépare le code des composants pour les évoloutions
+- on modifie les documents html
+- on scinde les scripts applications
+
+## application
+- public/ui.html
+- [/assets/js/uiapp.js](/public/assets/js/uiapp.js) : application
+
+## composants
+- public/ui-components/apex.html
+- [/assets/js/uiapp2.js](/public/assets/js/uiapp2.js) : 
+
+
+
 # Ressources
 [UI.md](/doc/FRONTEND/UI.md)
 - [UI-panels.md](/doc/FRONTEND/UI-panels.md)
@@ -7,31 +21,7 @@
 - [CSS-buttons.md](/doc/FRONTEND/CSS-buttons.md)
 
 
-## CSS
 
-### [CSS-root.md](/doc/FRONTEND/CSS-root.md)
-Constantes de taille et de couleur général et par thème
-- `:root`
-- `:root[data-theme="marine"]`
-- `:root[data-theme="nature"]`
-
-a gérer les classe wb pour workbench à regrouper en root
-
-```css
-  /* ── Espacements ─────────────────────────────────────────────────────────── */
-  --wb-gap:        1rem;
-  --wb-padding:    1rem;
-  --wb-radius:     8px;
-  --wb-shadow:     0 2px 12px rgba(0,0,0,.08);
-
-  /* ── Panel ───────────────────────────────────────────────────────────────── */
-  --wb-panel-bg:          var(--wb-white);
-  --wb-panel-header-bg:   var(--wb-navy);
-  --wb-panel-header-fg:   var(--wb-yellow);
-  --wb-panel-header-pad:  .875rem 1rem;
-  --wb-panel-body-pad:    1rem;
-  --wb-left-width:        360px;
-```
 
 
 
