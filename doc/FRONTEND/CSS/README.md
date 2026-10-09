@@ -1,6 +1,6 @@
 # CSS
 
-### [CSS-root.md](/doc/FRONTEND/CSS-root.md)
+### [root.md](/doc/FRONTEND/CSS/root.md)
 Constantes de taille et de couleur général et par thème
 - `:root`
 - `:root[data-theme="marine"]`
@@ -23,3 +23,6 @@ a gérer les classe wb pour workbench à regrouper en root
   --wb-panel-body-pad:    1rem;
   --wb-left-width:        360px;
 ```
+
+
+### [Buttons.md](/doc/FRONTEND/CSS/buttons.md)
