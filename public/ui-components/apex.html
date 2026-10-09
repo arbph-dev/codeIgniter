@@ -1,100 +1,25 @@
 <!-- 
-    /public/ui-components/apex.html
-    2026-09-09 : modificaton 
-    2026-09-10 : voir pour supprimer les ul vide dans le menu nav ligne 66 et suivantes
-    2026-09-23 : intégrtion vox ligne 316
-    2026-10-08 : on reserve la page aux composants
-    
-    ui-components.html
-    a ce stade on conserve uen seule uiapp.js avec les boards
-    on documentera les composants dans une page dedie au composant lui meme dans le dossier /ui-components/
-    
-    /ui-components/apex
-    -> attention au path
-    1- on creer /ui-components-apex.html
-    2- on deplace ui-components-apex.html dans /ui-components/ on valide  /ui-components/ui-components-apex.html
+/public/ui-components/apex.html
 
+2026-10-08 : on reserve la page aux composants
+- ligne 233 on modifie le script applciation de uiapp.js en uiapp2.js 
+- on modifie description (ligne 14) , tag titre (ligne 17) 
 
-    /ui-components-apex.html
-on remonte le composant apex dans un `main#stack > div.panel-card` / type de graphique
-- editer main#stack > div.panel-card > h2.panel-title
-- editer main#stack > div.panel-card > p.panel-description 
-
-    <div class="panel-card" data-index="0">
-        <h2 class="panel-title">Hypersynchronisme</h2>
-    
-        <p class="panel-description">
-            Le graphique doit présenté l'hypersynchronisme
-        </p>
-
-
-    </div>    
-le conteneur des sections 
-- main#stack > div.panel-card > div.section-tab
-le header des sections 
-- main#stack > div.panel-card > div.section-tab > div.tab-headers
-
-
-Première section, on met le composant 
-Seconde section : description
-Troisième section : tâches
-
-on met le composant en premiere section en evidence avec active
-
-main#stack > div.panel-card > div.section-tab > div#id.tab-content
-main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
-        
-
-
-        <div class="section-tab">
-            <div class="tab-headers"></div>
-            
-            <div id="apex-0" class="tab-content active">
-                <h3>Graphique</h3>
-                  <p>Le couple selon la vistesse</p>
-                
-                  <h4>line</h4>
-                  <div id="APEX_LIGNE_1" class="cp_apex" data-chart="line"></div>
-
-            </div>
-
-            <div id="apex-description" class="tab-content">
-                <h3>Description</h3>
-                  <p>Le composant est importé dans le script de niveau application uiapp.js</p>
-                
-                  <h4>Mise en oeuvre</h4>
-                  on reserve un container div
-                  on attribue un id au container
-                  on attribue une classe cp_apex
-                  on attribue un type de graphique via data-chart="line"
-                  <code>
-                    &lt;div id="APEX_LIGNE_1" class="cp_apex" data-chart="line"&gt;&lt;/div&gt;
-                  </code>
-            </div>
-
-            <div id="apex-todo" class="tab-content">
-                <h3>Todo</h3>
-                  <p>Décrire les graphiques et leurs utilisation</p>
-                  <p>Décrire la création des graphiques</p>
-            </div>
-
-        </div>
-
-
-  -->
+-->
 <!DOCTYPE html>
 <html lang="fr" data-theme="marine">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Automates industriels - comparaison et caractéristiques</title>
-    <meta name="description" content="Comparatif d'automates et contrôleurs industriels communicants : Schneider Modicon M221, WAGO, Crouzet Millenium EVO, Siemens LOGO! 8 et LACROIX Sofrel YDRIX.">
+    <meta name="description" content="Mise en oeuvre de la librairie apex au travers d'exemples. Les graphiques sont construits depuis des modèles et peuvent intéragir avec les scripts. La documentation est en cours de rédaction.">
     <meta name="robots" content="index, follow">
+    
+    <title>Composant graphique APEX</title>    
+    
     <link rel="stylesheet" href="/assets/css/uistyle.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
     <!-- Leaflet -->    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="/assets/css/GpPluginLeaflet.css"/>
@@ -102,8 +27,6 @@ main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
     <script src="https://unpkg.com/leaflet-tilelayer-wmts@1.0.0/dist/leaflet-tilelayer-wmts.js"></script>
     <!-- Extension Géoplateforme pour Leaflet -->
     <script src="/assets/js/plugins/GpPluginLeaflet.js"></script>
-
-
 
 
 </head>
@@ -144,19 +67,6 @@ main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
     <!-- ====  CONTENU PRINCIPAL    ========================== -->
     <main id="stack">
 
-        <!--
-        main
-            div.panel-card  = article
-                h2.panel-title
-                p.panel-description 
-                div.section-tab
-                    div.tab-headers
-                    div.tab-content = section
-                        h3
-                        p
-
-            AUTH BOARDS (hors menu / pagination) 
-        -->
         <div class="panel-card hidden" data-role="admin" data-index="-2">
             <h2 class="panel-title">Administration</h2>
             <p class="panel-description">Tableau de bord administrateur</p>
@@ -309,17 +219,17 @@ main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
         </div>
 
     </main>
-
+    <!-- ====   PAGINATION  ================================================ -->
     <div class="pagination-buttons"></div>
+    
     <!-- ====   FOOTER  ================================================ -->
-
     <footer>
         <div id="statusBar">
             Automate actif : Schneider Modicon M221
         </div> 
     </footer>
 
-    <!-- <script type="module" src="/assets/js/uiapp.js"></script> -->
+    <!-- script  application dédié composant -->
     <script type="module" src="/assets/js/uiapp2.js"></script>
 </body>
 
