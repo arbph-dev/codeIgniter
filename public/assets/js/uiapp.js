@@ -1,3 +1,4 @@
+// /assets/js/uiapp.js
 "use strict"
 import { bus } from '/assets/js/core/eventBus.js'
 import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
@@ -50,30 +51,17 @@ function themeSwitch(){
   _header_actions_btn_theme.textContent = currentTheme === "marine" ? "Thème nature" : "Thème marine";
 }
 
-/*  ======================================================================================================================
-switchPanel n'utilise pas _pages
-- switchPanel(PANEL_ADMIN)
-- switchPanel(PANEL_USER)
-*/
+/*  ============ switchPanel n'utilise pas _pages - switchPanel(PANEL_ADMIN) / - switchPanel(PANEL_USER) =================== */
 function switchPanel(index) {
-
-  // _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== (PANEL_OFFSET+ index) ) })
   _main_panels.forEach((panel, i) => { panel.classList.toggle("hidden", i !== ( index ) ) })
-  _currentPanel = index
-  if (index >= PANEL_OFFSET) _lastContentPanel = index
-  // statusWrite( `Onglet actif : ${_pages[index-PANEL_OFFSET].title}` )
-  // probleme selon l'appelant il possede ou non un title a reserver au menu page voir ligne 295
 
-  console.log( "switchPanel - index = " + index )
+  _currentPanel = index
+
+  if (index >= PANEL_OFFSET) _lastContentPanel = index
 
 }
 /*  ======================================================================================================================  */
 function switchSection(index) {
-  // voir pour assigner les variables : panel_Sections et panel_header_Buttons
-  /*
-  let panel_Sections = qsa( "div.section-tab > div.tab-content" , _main_panels[_currentPanel + PANEL_OFFSET ] )
-  let panel_header_Buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn", _main_panels[_currentPanel + PANEL_OFFSET] )
-  */
   let panel_Sections = qsa( "div.section-tab > div.tab-content" , _main_panels[_currentPanel ] )
   let panel_header_Buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn", _main_panels[_currentPanel] )
 
@@ -116,44 +104,29 @@ function typeofObj( Obj ){
   
 }
 
-
+/*  ======================================================================================================================  */
 
 function readPage(){
-
   let articleObj = null  
   let panelSections = null
   let strTemp = null
   let off_index
 
   if ( _main && _menu) { 
-  //_main_panels = qsa('div.panel-card:not([data-role])', _main) // ignorer les panels auth
-  _main_panels = qsa("div.panel-card" , _main )  // on extrait les informations de la page
-  
+  _main_panels = qsa("div.panel-card" , _main )                                     // on extrait les informations des div.panel-card
   _main_panels.forEach((  panel , index ) => {
 
-      // les 2 panels admin et user sont omis
-    if (index >= PANEL_OFFSET){   
-      // on recherche le panel actif par defaut 0 n'a pas de classe hidden
-      // _currentPanel = 0 ou 2 selon _main_panels
       
-      //if ( !panel.classList.contains("hidden") ) { _currentPanel = index }
-      if ( !panel.classList.contains("hidden") ) { _currentPanel = index; _lastContentPanel = index }
-
-      //  on recherche le titre h2 du panel p
-      strTemp = qs( "h2.panel-title" , panel).innerText
-      
-      // on recherche les div.section-tab  > div.tab-content > h3 du panel p
-      panelSections = qsa( "div.section-tab  > div.tab-content > h3" , panel )
-      
-      // on construit 1 objet du panel p avec sont titre ets es sections
-
-      off_index = ( index - PANEL_OFFSET)  
-      // les 2 panel admin et user sont omis il faut décaler l'index des page dans _pages
-      //off_index = ( index )
-      articleObj = { off_index , title : strTemp , sections : [] } // constuire un objet
-      
-      // on stocke l'objet dans _pages
-      _pages.push( articleObj )
+    if (index >= PANEL_OFFSET){                                                      // les 2 panels admin et user sont omis
+      if ( !panel.classList.contains("hidden") ) {                                   // on recherche le panel actif par defaut 0 n'a pas de classe hidden
+        _currentPanel = index; _lastContentPanel = index 
+      }
+    
+      strTemp = qs( "h2.panel-title" , panel).innerText                               //  on recherche le titre h2 du panel p
+      panelSections = qsa( "div.section-tab  > div.tab-content > h3" , panel )        // on recherche les div.section-tab  > div.tab-content > h3 du panel p
+      off_index = ( index - PANEL_OFFSET)                                             // les 2 panel admin et user sont omis il faut décaler l'index pour _pages
+      articleObj = { off_index , title : strTemp , sections : [] }                    // on construit 1 objet du panel p avec sont titre et ses sections
+      _pages.push( articleObj )                                                       // on stocke l'objet dans _pages
       
       //  on ajoute les sections a l'objet
       panelSections.forEach((  section , sindex ) => { 
@@ -166,73 +139,45 @@ function readPage(){
   }
 }
 
-/*  ====================================================================================================================== 
-_pages
-switchPanel
-
-<div class="pagination-buttons"></div>
-a servi pour les tests switchPanel
-
-*/
+/*  ====================================================================================================================== */
 function initPagination(){
   let buttonTemp = null
   let pagination_buttons = null
 
-  console.log("----- Adding pagination buttons -------") // on construit la pagination depuis _pages
-
   pagination_buttons = qs( "div.pagination-buttons" , document )   // reference sur element   
   
   _pages.forEach((  panel , index ) => { 
-
     buttonTemp = create( 'button', { type: 'button', class: 'primary-button switch-tab-btn', text: panel.title } )
     // on utilse _pages donc + PANEL_OFFSET
     buttonTemp.addEventListener('click', () => switchPanel(index + + PANEL_OFFSET) )
-
     pagination_buttons.appendChild( buttonTemp )
 
   })
 
 }
-/*  ======================================================================================================================  */
+/*  =====    on construit la barrre de navigations de chaque panel   ========================================================  */
 function initNavigation(){
-  
   let buttonTemp = null
-  //on ajoute dans chaque panel la barrre de navigations panel
-  _pages.forEach((  panel , index ) => { 
-
-    //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
-    //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index] )   // reference sur element 
-
+  _pages.forEach((  panel , index ) => { //on ajoute dans chaque panel la barrre de navigations panel
     let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
 
     _pages[ index ].sections.forEach(( section , sindex) => {
-     
       if (sindex === 0 ){ //par defaut le bouton 0 est actif 
-        buttonTemp = create( 'button', { type: 'button', class: 'tab-btn active', text: section } )
+        buttonTemp = create( 'button', { type: 'button', class: 'tab-btn active', text: section } ) 
       }
-      else{
-        buttonTemp = create( 'button', { type: 'button', class: 'tab-btn', text: section } )
-      }
+      else{ buttonTemp = create( 'button', { type: 'button', class: 'tab-btn', text: section } ) }
       
       panel_header.appendChild( buttonTemp )
       buttonTemp.addEventListener('click', () => { switchSection(sindex) })
-
     })
 
   })
-
 }
 
 /*  ======================================================================================================================  */
 function openMenuPanel(index) {
-
   const menuPanels = qsa('.nav-article', _menu )
-
-  menuPanels.forEach((menupanel, i) => {
-    menupanel.classList.toggle('open', i === index)
-  })
-
-  //switchPanel(index)
+  menuPanels.forEach((menupanel, i) => { menupanel.classList.toggle('open', i === index) })
 }
 
 /*  ======================================================================================================================  */
@@ -257,20 +202,11 @@ function initMenu(){
         e.preventDefault()
         e.stopPropagation()
 
-        // on utilse _pages donc + PANEL_OFFSET
-        //console.log( "initMenu index = " + index )
-        //console.log( "initMenu index + OFFSET = " + index + PANEL_OFFSET)
         switchPanel(index + PANEL_OFFSET )
         statusWrite( `Onglet actif : ${_pages[index].title}` )
         switchSection(sindex)
-        
-        if (window.innerWidth > 768){
-          menu_panel.classList.remove('open')
-        }
-        else{ 
-          //closeSidebar()
-          closeNav() 
-        }           
+       
+        if (window.innerWidth > 768){ menu_panel.classList.remove('open') } else{ closeNav() }           
       })
     })
 
@@ -284,17 +220,12 @@ function initMenu(){
     menu_panel.addEventListener('click', () => {
       console.log(`menu clic panel : ${index}`)
       openMenuPanel(index)      
-      //openMenuPanel(index + PANEL_OFFSET)
     })
 
     menu_panel.addEventListener('mouseleave', () => {
       console.log(`leave menu : ${index}`)
       if (window.innerWidth > 768){ menu_panel.classList.remove('open') }
     })
-    /*
-      if (window.innerWidth > 768){ menu_panel.classList.remove('open') }
-
-    */
 
   })
 }
@@ -346,10 +277,7 @@ function badgePerms(permissions) {
     return permissions.map(p => `<span class="adm-badge">${p}</span>`).join(' ')
 }
 
-/**
- * Carte profil minimale — données endpoint /me
- * { id, username, email, groups, permissions }
- */
+/* ========= Carte profil minimale — données endpoint /me - { id, username, email, groups, permissions } ============= */
 function renderUserCard(user, { title = 'Mon profil' } = {}) {
     const initial = (user?.username?.[0] ?? '?').toUpperCase()
     return `
@@ -370,87 +298,6 @@ function renderUserCard(user, { title = 'Mon profil' } = {}) {
         <p class="panel-hint"><em>Profils (user_profils) — à venir après seeder + tests register</em></p>
     `
 }
-// ── Boards auth (hors pagination / menu) ─────────────────────────────────────
-//2026-09-27-002
-function getAuthBoards() {
-
-    return {
-        admin: document.querySelector('div.panel-card[data-role="admin"]'),
-        user:  document.querySelector('div.panel-card[data-role="user"]'),
-    }
-}
-
-function hideAuthBoards() {
-    const { admin, user } = getAuthBoards()
-    admin?.classList.add('hidden')
-    user?.classList.add('hidden')
-}
-
-function showAuthBoard(role) {
-
-    hideAuthBoards()
-    // Masquer aussi les panels "contenu" classiques
-    qsa('div.panel-card:not([data-role])', _main)
-        .forEach(p => p.classList.add('hidden'))
-
-    const board = document.querySelector(`div.panel-card[data-role="${role}"]`)
-    board?.classList.remove('hidden')
-    statusWrite(`Board : ${role}`)
-}
-
-
-/*
-function initAuthBoards() {
-    const show = (role) => {
-        hideAuthBoards()
-        qsa('div.panel-card:not([data-role])', _main)
-            .forEach(p => p.classList.add('hidden'))
-
-        const board = document.querySelector(`div.panel-card[data-role="${role}"]`)
-        board?.classList.remove('hidden')
-        statusWrite(`Board : ${role}`)
-    }
-
-    bus.subscribe('board:user', () => {
-        show('user')
-        // Ne pas écraser un formulaire register en cours
-        const body = document.querySelector('#user-board-body')
-        if (body && !body.querySelector('.auth-register-form') && !body.querySelector('.auth-pending')) {
-            mountUserBoard(authStore.user)
-        }
-    })
-
-    bus.subscribe('board:admin', () => {
-        show('admin')
-        mountAdminBoard(authStore.user)
-    })
-
-    // register : ouvre le panel user ; le form est monté par AuthPanelBase
-    bus.subscribe('board:register', () => show('user'))
-
-    bus.subscribe('board:hide', () => {
-        hideAuthBoards()
-        if (typeof switchPanel === 'function') switchPanel(_currentPanel)
-    })
-
-    bus.subscribe('auth:guest', () => {
-        hideAuthBoards()
-        const body = document.querySelector('#user-board-body')
-        if (body) body.innerHTML = ''
-        const admin = document.querySelector('#admin-board-body')
-        if (admin) admin.innerHTML = ''
-    })
-
-    // Après login réussi : rafraîchir la carte si le board user est visible
-    bus.subscribe('auth:success', ({ user }) => {
-        const userBoard = document.querySelector('div.panel-card[data-role="user"]')
-        if (userBoard && !userBoard.classList.contains('hidden')) {
-            mountUserBoard(user)
-        }
-    })
-}
-*/
-// ── end  Boards auth  ─────────────────────────────────────
 
 //2026-09-28-001
 
@@ -478,30 +325,15 @@ function mountAdminBoard(user) {
     `
 }
 
-
-
-
-
-/**
- * mountApplication
- *   bus.subscribe('auth:success', () => mountApplication() )
- */
-
+/* ==========     mountApplication      ============================================================= */
 async function mountApplication()
 {
-  console.log('Auth success; app can run')
-
-
-
+  //console.log('Auth success; app can run')
   adresseWorkbench = new AdresseWorkbench({ id: 'adresse',name: 'Adresse'})
   await adresseWorkbench.init('#adresse-workbench')
-
 }
 
-/**
- * noAuth
- *  bus.subscribe('auth:guest',   () => noAuth())
- */
+/** =========    noAuth   ===========================================================================  */
 function noAuth() { console.log("Auht fails; app cannot run") }
 
 
@@ -509,29 +341,23 @@ function boot()
 {
   initAuthController() // /public/assets/js/features/auth/auth.controller.js
   new ToolbarAuthPanel().init() 
-  bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
-  
-  bus.subscribe('auth:success', () => {
-    mountApplication()
-    mountUserBoard(authStore.user)      // contenu seulement, sans changer de panel
-  })
 
-  bus.subscribe('auth:guest',   () => noAuth())
+  bus.subscribe('auth:changed', () => { if (authStore.loggedIn) switchPanel(PANEL_USER) })
+  bus.subscribe('auth:guest',   () => noAuth())    
+  bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
+  bus.subscribe('auth:success', () => { mountApplication() ; mountUserBoard(authStore.user) ; mountAdminBoard(authStore.user) } )
+  
   // ── Affichage des boards ──
-  bus.subscribe('board:user',     () => switchPanel(PANEL_USER))
+  bus.subscribe('board:admin',    () => { switchPanel(PANEL_ADMIN) })  
+  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel) )  
   bus.subscribe('board:register', () => switchPanel(PANEL_USER))
-  bus.subscribe('board:admin',    () => { mountAdminBoard(authStore.user); switchPanel(PANEL_ADMIN) })
-  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel))
+  bus.subscribe('board:user',     () => switchPanel(PANEL_USER))
 
   // login / register avec connexion immédiate / logout
-  bus.subscribe('auth:changed', () => {
-    if (authStore.loggedIn) switchPanel(PANEL_USER)
-  })
   bus.publish('auth:check')
 
   window.openNav = () => { _menu.classList.add("open") } 
   window.closeNav = () => { _menu.classList.remove("open") }
-
 }
 
 
@@ -551,5 +377,4 @@ window.onload = (event) => {
 
   //initLeaflet()
   boot()
-} 
-  
+}
