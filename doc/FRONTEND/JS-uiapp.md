@@ -6,10 +6,7 @@ les fonctions essentielles
 - `document.addEventListener("DOMContentLoaded")`
 - `window.onload`
 
-### boot
 
-  initAuthController() // /public/assets/js/features/auth/auth.controller.js
-  new ToolbarAuthPanel().init() 
 
   
 ### DOMContentLoaded
@@ -77,9 +74,41 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 ## Système
 
 ### boot
-initialise l'interface , démarre le script application , souscrit et publie les evenements
+initialise le processus et l'interface d'authentification,l'interface du document, démarre le script application , souscrit et publie les evenements
+
 - appelée par : `window.onload`
 - définition : function [`boot()`](/public/assets/js/uiapp.js#L460)
+
+**initialisation de l'authentification**
+```js
+  initAuthController() // /public/assets/js/features/auth/auth.controller.js
+  new ToolbarAuthPanel().init() 
+```
+
+**souscription / publication evenements**
+- souscrit aux évènements d'authentification
+- souscrit aux évènements de l'interface d'authentification
+- publie un event sur le bus demande statut de l'authentification
+- référence les callbacks de rendu du menu au niveau window pour un usage plus simple
+
+**_menu** est référencée par [`setPageRef`](#setPageRef)
+
+```js
+  bus.subscribe('auth:changed', () => { if (authStore.loggedIn) switchPanel(PANEL_USER) })
+  bus.subscribe('auth:guest',   () => noAuth())
+  bus.subscribe('auth:loading', () => statusWrite('auth:loading') )
+  bus.subscribe('auth:success', () => { mountApplication() ; mountUserBoard(authStore.user); mountAdminBoard(authStore.user) })
+
+  bus.subscribe('board:admin',    () => { switchPanel(PANEL_ADMIN) })
+  bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel) )
+  bus.subscribe('board:register', () => switchPanel(PANEL_USER))
+  bus.subscribe('board:user',     () => switchPanel(PANEL_USER))  
+
+  bus.publish('auth:check')
+
+  window.openNav = () => { _menu.classList.add("open") } 
+  window.closeNav = () => { _menu.classList.remove("open") }
+```
 
 
 ### setPageRef
