@@ -70,6 +70,7 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [initNavigation](#initNavigation)
 - [initPagination](#initPagination)
 - [mountAdminBoard](#mountAdminBoard) : Construit le board admin
+- [mountApplication](#mountApplication)
 - [mountUserBoard](#mountUserBoard) : Construit le board user
 - [openMenuPanel](#openMenuPanel)
 - [renderUserCard](#renderUserCard)
@@ -126,6 +127,12 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 ### fullscreenSwitch
 - appelée par : listener button (à préciser)
 - définition : [`async function fullscreenSwitch()`](/public/assets/js/uiapp.js#L93)
+
+
+### mountApplication
+--description--
+- appelée par : *
+- définition : [`async function mountApplication()`](/public/assets/js/uiapp.js#L490)
 
 
 ### readPage
@@ -292,12 +299,8 @@ async function fullscreenSwitch()  + public/assets/js/uiapp.js#L93  =>
 - appelée par : *
 - définition : [``](/)
 
-mountApplication
-[](#)
-### 
---description--
-- appelée par : *
-- définition : [``](/)
+
+
 
 
 noAuth
@@ -308,13 +311,22 @@ noAuth
 - définition : [``](/)
 
 
-
-
-
-
-
-
 [openSidebar](#openSidebar)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
+
+
+- switchPanel + 
+[](#)
+### 
+--description--
+- appelée par : *
+- définition : [``](/)
+
+- switchSection + 
+[](#)
 ### 
 --description--
 - appelée par : *
@@ -348,8 +360,7 @@ todo :
 - openNav
 - closeNav
 show/hide boards
-- switchPanel
-- switchSection
+
 ```
 
 - getAuthBoards
