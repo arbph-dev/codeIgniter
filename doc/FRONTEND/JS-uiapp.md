@@ -69,7 +69,10 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [initMenu](#initMenu)
 - [initNavigation](#initNavigation)
 - [initPagination](#initPagination)
-- [renderUserCard](#renderUserCard) 
+- [mountAdminBoard](#mountAdminBoard)
+- [mountUserBoard](#mountUserBoard)
+- [renderUserCard](#renderUserCard)
+- [readPage](#readPage) 
 - [setPageRef](#setPageRef)
 - [statusWrite](#statusWrite)
 - Construit le board user
@@ -125,6 +128,11 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 - définition : [`async function fullscreenSwitch()`](/public/assets/js/uiapp.js#L93)
 
 
+### readPage
+Construit la liste des div.panel-card de contenu 
+- appelée par : [setPageRef](#setPageRef)
+- définition : [`function readPage()`](/public/assets/js/uiapp.js#L121)
+
 ### setPageRef
 initialise les variables sur les éléments dom, appelle les fonctions de construction de l'interface
 
@@ -154,6 +162,18 @@ initialise les variables sur les éléments dom, appelle les fonctions de constr
 
 ### badgePerms
 - définition : [`function badgePerms(permissions)`](/public/assets/js/uiapp.js#L344)
+
+
+
+### mountAdminBoard
+Affiche le panel Admin Board
+- appelée par : bus
+- définition : [`function mountAdminBoard(user)`](/public/assets/js/uiapp.js#L463)
+
+### mountUserBoard
+Affiche le panel User Board
+- appelée par : bus
+- définition : [`function mountUserBoard(user)`](/public/assets/js/uiapp.js#L457)
 
 ### renderUserCard
 Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
@@ -186,7 +206,18 @@ Affiche un message dans le footer du document. Permet de suivre les évolutions 
 
 
 ### initPagination
---description--
+Construit une pagination des éléments `_pages` (div.panel-card) dans le div.pagination-buttons
+
+```html
+<div class="pagination-buttons"></div>
+```
+
+**_pages** est référencée par 
+
+la fonction `switchPanel` est employé par les listeners des buttons
+
+a servi pour les tests switchPanel, pourra servir par la suite
+
 - appelée par : [setPageRef](#setPageRef)
 - définition : [`function initPagination()`](/public/assets/js/uiapp.js#L177)
 
@@ -246,13 +277,12 @@ Rendu minimal board user / admin
 
 #### Montage dans les boards 
 fait sentir la nécessité d'un panel user ou workbench
-- function mountUserBoard(user) {
-- function mountAdminBoard(user) {
+
 
 
 
 - onload
-- [readPage](#readPage)
+- 
 
 	
 - [themeSwitch](#themeSwitch)
