@@ -1,8 +1,23 @@
-### Ressources
+# Ressources
 [UI.md](/doc/FRONTEND/UI.md)
 - [UI-panels.md](/doc/FRONTEND/UI-panels.md)
 - [UI-nav.md](/doc/FRONTEND/UI-nav.md)
-[JS-uiapp.md](/doc/FRONTEND/JS-uiapp.md)
+- [JS-uiapp.md](/doc/FRONTEND/JS-uiapp.md)
+- [CSS-root.md](/doc/FRONTEND/CSS-root.md)
+- [CSS-buttons.md](/doc/FRONTEND/CSS-buttons.md)
+
+
+## CSS
+
+### [CSS-root.md](/doc/FRONTEND/CSS-root.md)
+Constantes de taille et de couleur général et par thème
+- `:root`
+- `:root[data-theme="marine"]`
+- `:root[data-theme="nature"]`
+
+a gérer les classe wb pour workbench à regrouper en root
+
+
 
 
 #### en cours
