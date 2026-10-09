@@ -2,34 +2,14 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 - on modifie les documents html
 - on scinde les scripts applications
 
-## application
+# application
 - public/ui.html
 - [/assets/js/uiapp.js](/public/assets/js/uiapp.js) : application
 
-## composants
-- public/ui-components/apex.html
-- [/assets/js/uiapp2.js](/public/assets/js/uiapp2.js) : 
-
-
-
-# Ressources
-[UI.md](/doc/FRONTEND/UI.md)
-- [UI-panels.md](/doc/FRONTEND/UI-panels.md)
-- [UI-nav.md](/doc/FRONTEND/UI-nav.md)
-- [JS-uiapp.md](/doc/FRONTEND/JS-uiapp.md)
-- [CSS-root.md](/doc/FRONTEND/CSS-root.md)
-- [CSS-buttons.md](/doc/FRONTEND/CSS-buttons.md)
-
-
-
-
-
-
-# en cours
 - gestion authentification et admin
 
----
-## intégration admin / ui
+
+## intégration admin / ui [en cours]
 - backup a détruire après évolution REFACTOR\OVH\public\ui copy.html
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-panels.md#panel-admin
 
@@ -147,6 +127,14 @@ this._buildUserBar(this._user).forEach(el => this._target.appendChild(el))
     {
         this._target = document.querySelector(this._selector)
 ```
+
+
+# composants
+- public/ui-components/apex.html
+- [/assets/js/uiapp2.js](/public/assets/js/uiapp2.js) : 
+
+
+
 
 
 
