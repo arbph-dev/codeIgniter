@@ -22,15 +22,34 @@ Usage :
 
 
 
-
-
+---
 ### 'auth:guest'
 bus.subscribe
 bus.publish
+---
 
 ### 'auth:success'
+bus.subscribe
+bus.publish
+---
+
 ### 'board:admin'
+bus.subscribe
+bus.publish
+---
+
 ### 'board:hide'
+bus.subscribe
+bus.publish
+---
+
 ### 'board:register'
+bus.subscribe
+bus.publish
+---
+
 ### 'board:user'
+bus.subscribe
+bus.publish
+---
 
