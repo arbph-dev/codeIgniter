@@ -19,7 +19,15 @@ les fonctions essentielles
 ## Import
 les imports communs au scripts applications
 
+### features/auth
+Permet de gérer les échanges avec l'API et de stocker les données  
+- ['/assets/js/features/auth/auth.controller.js'](/public/assets/js/features/auth/auth.controller.js)
+- ['/assets/js/features/auth/auth.store.js'](/public/assets/js/features/auth/auth.store.js)
 
+```js
+import { initAuthController }  from   '/public/assets/js/features/auth/auth.controller.js'
+import { authStore }           from   '/assets/js/features/auth/auth.store.js'                      
+```
 
 
 ### Helpers
@@ -27,11 +35,21 @@ les imports communs au scripts applications
 import { bus } from '/assets/js/core/eventBus.js'
 import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
 ```
+### ui/workbench/auth/
 
+Construit la toolbar et le board user(?)
 
-#### fonctions uiapp
+dépend de ui/workbench/core/AuthPanelbase.js qui dépend de .... à revoir trop complexe
+- [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
+- [`/assets/js/ui/workbench/core/AuthPanelBase.js`](/public/assets/js/ui/workbench/core/AuthPanelBase.js)
 
-##### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+```js
+import ToolbarAuthPanel        from   '/assets/js/ui/workbench/auth/ToolbarAuthPanel.js'
+```
+
+### fonctions uiapp
+
+#### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar` 
 
 - définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
