@@ -72,6 +72,7 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [mountAdminBoard](#mountAdminBoard) : Construit le board admin
 - [mountApplication](#mountApplication)
 - [mountUserBoard](#mountUserBoard) : Construit le board user
+- [noAuth](#noAuth)
 - [openMenuPanel](#openMenuPanel)
 - [renderUserCard](#renderUserCard)
 - [readPage](#readPage) 
@@ -136,6 +137,10 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 - appelée par : *
 - définition : [`async function mountApplication()`](/public/assets/js/uiapp.js#L490)
 
+### noAuth
+--description--
+- appelée par : *
+- définition : [`function noAuth()`](/public/assets/js/uiapp.js#L505)
 
 ### readPage
 Construit la liste des div.panel-card de contenu 
@@ -295,50 +300,6 @@ async function fullscreenSwitch()  + public/assets/js/uiapp.js#L93  =>
 
 
 
-[closeSidebar](#closeSidebar)
-### 
---description--
-- appelée par : *
-- définition : [``](/)
-
-
-[initSidebar](#initSidebar)
-### 
---description--
-- appelée par : *
-- définition : [``](/)
-
-
-
-
-
-noAuth
-[](#)
-### 
---description--
-- appelée par : *
-- définition : [``](/)
-
-
-[openSidebar](#openSidebar)
-### 
---description--
-- appelée par : *
-- définition : [``](/)
-
-
-[switchPanel](#switchPanel)[switchSection](#switchSection)
-### switchPanel
---description--
-- appelée par : *
-- définition : [`function switchPanel(index)`](/public/assets/js/uiapp.js#L58)
-
-
-
-### switchSection
---description--
-- appelée par : *
-- définition : [`function switchSection(index)`](/public/assets/js/uiapp.js#L71)
 
 
 
