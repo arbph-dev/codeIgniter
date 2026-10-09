@@ -79,37 +79,3 @@ Troisième section : tâches
        <p>Décrire la création des graphiques</p>
  </div>
 ```
-
-```html
- <div class="section-tab">
-     <div class="tab-headers"></div>
-     
-     <div id="apex-0" class="tab-content active">
-         <h3>Graphique</h3>
-           <p>Le couple selon la vistesse</p>
-         
-           <h4>line</h4>
-           <div id="APEX_LIGNE_1" class="cp_apex" data-chart="line"></div>
-
-     </div>
-
-     <div id="apex-description" class="tab-content">
-         <h3>Description</h3>
-           <p>Le composant est importé dans le script de niveau application uiapp.js</p>
-         
-           <h4>Mise en oeuvre</h4>
-           on reserve un container div
-           on attribue un id au container
-           on attribue une classe cp_apex
-           on attribue un type de graphique via data-chart="line"
-           <code>
-             &lt;div id="APEX_LIGNE_1" class="cp_apex" data-chart="line"&gt;&lt;/div&gt;
-           </code>
-     </div>
-
-
-
- </div>
-```
-
-<!--   -->
