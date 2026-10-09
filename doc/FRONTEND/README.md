@@ -4,6 +4,7 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 
 # application
 - public/ui.html
+    - [header - auth](/doc/FRONTEND/UI-header.md#auth)
 - [/assets/js/uiapp.js](/public/assets/js/uiapp.js) : application
     - gestion authentification et admin
     - [Evénements](/doc/FRONTEND/JS/Events.md)
