@@ -66,6 +66,9 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [badgePerms](#badgePerms)
 - [boot](#boot)
 - [fullscreenSwitch](#fullscreenSwitch)
+- [initMenu](#initMenu)
+- [initNavigation](#initNavigation)
+- [initPagination](#initPagination)
 - [renderUserCard](#renderUserCard) 
 - [setPageRef](#setPageRef)
 - [statusWrite](#statusWrite)
@@ -153,19 +156,39 @@ initialise les variables sur les éléments dom, appelle les fonctions de constr
 - définition : [`function badgePerms(permissions)`](/public/assets/js/uiapp.js#L344)
 
 ### renderUserCard
+Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
+
 - définition : [`function renderUserCard(user, { title = 'Mon profil' } = {})`](/public/assets/js/uiapp.js#L353)
-- Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
+
 
 ### statusWrite
-- appelée par : *
-- définition : function [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 Affiche un message dans le footer du document. Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar`. Ecrit dans le footer en utilisant la variable **_footer_status**, si **_footer_status** est null  fallback vers console.
 
 **_footer_status** est référencée par [`setPageRef`](#setPageRef)
 
+- appelée par : *
+- définition : function [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 
 
 
+## Navigation
+
+### initMenu
+--description--
+- appelée par : [setPageRef](#setPageRef)
+- définition : [`function initMenu()`](/public/assets/js/uiapp.js#L239)
+
+
+### initNavigation
+--description--
+- appelée par : [setPageRef](#setPageRef)
+- définition : [`function initNavigation()`](/public/assets/js/uiapp.js#L197)
+
+
+### initPagination
+--description--
+- appelée par : [setPageRef](#setPageRef)
+- définition : [`function initPagination()`](/public/assets/js/uiapp.js#L177)
 
 
 
@@ -185,6 +208,8 @@ Affiche un message dans le footer du document. Permet de suivre les évolutions 
 template et exemple a conserver
 [](#)
 ### 
+--description--
+- appelée par : *
 - définition : [``](/)
 
 
@@ -193,6 +218,8 @@ async function fullscreenSwitch()  + public/assets/js/uiapp.js#L93  =>
 [fullscreenSwitch](#fullscreenSwitch)
 - définition : [`async function fullscreenSwitch()`](/public/assets/js/uiapp.js#L93)
 ### fullscreenSwitch
+
+
 
 
 
@@ -227,18 +254,13 @@ fait sentir la nécessité d'un panel user ou workbench
 - onload
 - [readPage](#readPage)
 
-- [statusWrite](#statusWrite)
 	
 - [themeSwitch](#themeSwitch)
 - typeofObj
 	- a sortir vers domHelper
  	- `console.log( typeofObj( _menu ) )`
 
-Navigation
 
-- [initMenu](#initMenu)
-- [initNavigation](#initNavigation)
-- [initPagination](#initPagination)
 
 - [openMenuPanel](#openMenuPanel)
 
