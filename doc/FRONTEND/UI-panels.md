@@ -157,3 +157,11 @@ main#stack > div.panel-card > div.section-tab > div.tab-content > div#admin-boar
 - tab-headers
 - tab-btn et tab-btn active
 - tab-content et tab-content active
+
+#user-board-body
+#admin-board-body
+.hidden
+.auth-register-form
+.auth-pending
+
+
