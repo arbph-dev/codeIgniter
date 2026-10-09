@@ -1,13 +1,32 @@
-source : [/assets/js/uiapp.js](/public/assets/js/uiapp.js)
-
 # Point d'entrée de l'application
 
+## Initialisation
+les fonctions essentielles
+- `boot()`
+- `document.addEventListener("DOMContentLoaded")`
+- `window.onload`
+
+### boot
+
+### DOMContentLoaded
+
+### window.onload
+
+
+
+## Helpers
+
 Suivre les évolutions avec élément html `footer/div#statusBar` et employer  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+
+
+
+
+
 
 ## Import voir librairie 
 - [ ] Crééer  fichier et dossiers si besoin (exemple : JS-component)  : JS-libext , JS-lib , JS-component ,JS-core
 
-```
+```js
 import { bus } from '/assets/js/core/eventBus.js'
 import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
 import { initMermaid } from '/assets/js/components/mermaid.js'
