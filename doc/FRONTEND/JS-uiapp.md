@@ -61,46 +61,95 @@ import ToolbarAuthPanel        from   '/assets/js/ui/workbench/auth/ToolbarAuthP
 
 
 # Fonctions uiapp
-- [boot](#boot) : démarre le script
+on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.js) pour les documenter
+
+- [ ] Reprendre les notes de [`Frontend.md`](/Frontend.md)
+
+
+- [boot](#boot) : 
+- [setPageRef](#setPageRef)
+- [statusWrite](#statusWrite)
 - Construit le board user
 - Construit le board admin
 - gère les panels, leur affichage
 - gère les menus, leur affichage
 
+## Système
 
-### [`boot()`](/public/assets/js/uiapp2.js#L460)
-
-### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
-affiche un message dans le footer du document
-
-Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar` 
-
-- définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+### boot
+initialise l'interface , démarre le script application , souscrit et publie les evenements
+- appelée par : `window.onload`
+- définition : function [`boot()`](/public/assets/js/uiapp.js#L460)
 
 
-on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.js) pour les documenter
+### setPageRef
+initialise les variables sur les éléments dom, appelle les fonctions de construction de l'interface
 
-Reprendre les notes de [`Frontend.md`](/Frontend.md)
+- appelée par : [boot](#boot)
+- définition : function [`setPageRef()`](/public/assets/js/uiapp.js#L314)
+
+
+| variable | référence | Note |
+| --- | --- | --- |
+| _footer | footer | reference sur name , footer du body |
+| _footer_status | footer / div#statusBar | reference sur selecteur css depuis _footer |
+| _header_actions_btn_fullscreen | header#header > div.header-actions > button#fullscreenBtn | reference sur selecteur css |
+| _header_actions_btn_theme | header#header > div.header-actions > button#themeBtn | reference sur selecteur css |
+| _main | main | reference sur name, norme dit main est unique , id stack ne sert a rien |
+| _menu | nav | reference sur name , nav du body |
+
+**header#header** n'est pas référencé
+
+
+
+## Helper de rendu
+
+### statusWrite
+- appelée par : *
+- définition : function [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+Affiche un message dans le footer du document. Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar`. Ecrit dans le footer en utilisant la variable **_footer_status**, si **_footer_status** est null  fallback vers console.
+
+**_footer_status** est référencée par [`setPageRef`](#setPageRef)
 
 
 <!-- 
 [](#)
 ### [``](/)
+### 
 
 
 ### [``](/)
 
-- boot : public/assets/js/uiapp2.js#L460
+todo : 
+- [] file / ref (line / fonction)  : sujet : note eventuelle
+
+
+- [] /assets/js/uiapp.js / ref : sujet : 
+
 
 fullscreenSwitch
 #fullscreenSwitch
 
 
+## Helper de rendu
+Rendu minimal board user / admin
+- function badgeGroups(groups)
+- function badgePerms(permissions)
+- function renderUserCard(user, { title = 'Mon profil' } = {})
+	- Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
+
+#### Montage dans les boards 
+fait sentir la nécessité d'un panel user ou workbench
+- function mountUserBoard(user) {
+- function mountAdminBoard(user) {
+
+
+
 - onload
 - [readPage](#readPage)
-- [setPageRef](#setPageRef)
+
 - [statusWrite](#statusWrite)
-	- Ecrit dans le footer en utilisant **_footer_status**, si **_footer_status** est null  fallback vers console
+	
 - [themeSwitch](#themeSwitch)
 - typeofObj
 	- a sortir vers domHelper
@@ -194,16 +243,7 @@ main#stack
 
 
 
-| variable | référence | Note |
-| --- | --- | --- |
-| _footer | footer | reference sur name , footer du body |
-| _footer_status | footer / div#statusBar | reference sur selecteur css depuis _footer |
-| _header_actions_btn_fullscreen | header#header > div.header-actions > button#fullscreenBtn | reference sur selecteur css |
-| _header_actions_btn_theme | header#header > div.header-actions > button#themeBtn | reference sur selecteur css |
-| _main | main | reference sur name, norme dit main est unique , id stack ne sert a rien |
-| _menu | nav | reference sur name , nav du body |
 
-**header#header** n'est pas référencé
 
 **byName** retourne une collection
 
