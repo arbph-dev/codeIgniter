@@ -1,28 +1,23 @@
 files : [`/ui-components/apex.html`](/public/ui-components/apex.html)
 url : 
 
-<!-- 
 
-    2026-09-09 : modificaton 
-    2026-09-10 : voir pour supprimer les ul vide dans le menu nav ligne 66 et suivantes
-    2026-09-23 : intégrtion vox ligne 316
-    2026-10-08 : on reserve la page aux composants
-    
-    ui-components.html
-    a ce stade on conserve uen seule uiapp.js avec les boards
-    on documentera les composants dans une page dedie au composant lui meme dans le dossier /ui-components/
-    
-    /ui-components/apex
-    -> attention au path
-    1- on creer /ui-components-apex.html
-    2- on deplace ui-components-apex.html dans /ui-components/ on valide  /ui-components/ui-components-apex.html
+a ce stade 
+- on conserve uiapp.js pour les applications
+- on conserve uiapp2.js pour les composants
+- les documents relatifs aux composants sont placés dans le dossier /public/ui-components/
+ 
+on documentera les composants dans la page dedie au composant lui meme
 
+# [/ui-components/apex.html](/public/ui-components/apex.html)
 
-    /ui-components-apex.html
 on remonte le composant apex dans un `main#stack > div.panel-card` / type de graphique
 - editer main#stack > div.panel-card > h2.panel-title
 - editer main#stack > div.panel-card > p.panel-description 
 
+```html
+
+```
     <div class="panel-card" data-index="0">
         <h2 class="panel-title">Hypersynchronisme</h2>
     
@@ -84,4 +79,4 @@ main#stack > div.panel-card > div.section-tab > div#id.tab-content > h3
         </div>
 
 
-  -->
+<!--   -->
