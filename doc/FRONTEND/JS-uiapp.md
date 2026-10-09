@@ -35,9 +35,19 @@ import { authStore }           from   '/assets/js/features/auth/auth.store.js'
 import { bus } from '/assets/js/core/eventBus.js'
 import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
 ```
+
+#### domhelper
+- [ ] retrouver la documentation
+- [ ] créer /doc/FRONTEND/JS/CORE/DOMHELPER.md
+
+#### eventBus
+- [ ] retrouver la documentation
+- [ ] créer /doc/FRONTEND/JS/CORE/EVENTBUS.md
+
+
 ### ui/workbench/auth/
 
-Construit la toolbar et le board user(?)
+Construit la toolbar
 
 dépend de ui/workbench/core/AuthPanelbase.js qui dépend de .... à revoir trop complexe
 - [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
@@ -47,20 +57,19 @@ dépend de ui/workbench/core/AuthPanelbase.js qui dépend de .... à revoir trop
 import ToolbarAuthPanel        from   '/assets/js/ui/workbench/auth/ToolbarAuthPanel.js'
 ```
 
-### fonctions uiapp
 
-#### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+
+
+## fonctions uiapp
+Construit le board user
+
+
+### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar` 
 
 - définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 
-#### domhelper
-- [ ] retrouver la documentation
-- [ ] créer /doc/FRONTEND/JS/CORE/DOMHELPER.md
 
-#### eventBus
-- [ ] retrouver la documentation
-- [ ] créer /doc/FRONTEND/JS/CORE/EVENTBUS.md
 
 
 # librairies  
