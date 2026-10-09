@@ -77,6 +77,8 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 - [readPage](#readPage) 
 - [setPageRef](#setPageRef)
 - [statusWrite](#statusWrite)
+- [switchPanel](#switchPanel)
+- [switchSection](#switchSection)
 - [themeSwitch](#themeSwitch)
 
 
@@ -256,8 +258,15 @@ Au clic : Ouvre ou bascule le panneau
 - appelée par : *
 - définition : [`function openMenuPanel(index)`](/public/assets/js/uiapp.js#L227)
 
+### switchPanel
+--description--
+- appelée par : *
+- définition : [`function switchPanel(index)`](/public/assets/js/uiapp.js#L58)
 
-
+### switchSection
+--description--
+- appelée par : *
+- définition : [`function switchSection(index)`](/public/assets/js/uiapp.js#L71)
 
 
 
@@ -318,19 +327,18 @@ noAuth
 - définition : [``](/)
 
 
-- switchPanel + 
-[](#)
-### 
+[switchPanel](#switchPanel)[switchSection](#switchSection)
+### switchPanel
 --description--
 - appelée par : *
-- définition : [``](/)
+- définition : [`function switchPanel(index)`](/public/assets/js/uiapp.js#L58)
 
-- switchSection + 
-[](#)
-### 
+
+
+### switchSection
 --description--
 - appelée par : *
-- définition : [``](/)
+- définition : [`function switchSection(index)`](/public/assets/js/uiapp.js#L71)
 
 
 
@@ -401,35 +409,12 @@ show/hide boards
 
 **byName** retourne une collection
 
-```js
-  _main = byName("main")[0]
-  _menu = byName( "nav", document )[0]
-
-  _footer = byName("footer" , document )[0]
-  _footer_status = qs( "div#statusBar" , _footer )
-  
-  _header_actions_btn_fullscreen = qs( "header#header > div.header-actions > button#fullscreenBtn")
-  _header_actions_btn_fullscreen.addEventListener("click", fullscreenSwitch );// Gestion du plein écran
-
-  _header_actions_btn_theme = qs( "header#header > div.header-actions > button#themeBtn")
-  _header_actions_btn_theme.addEventListener("click", themeSwitch );// Gestion du thème - click header
-
-  if ( !readPage() ) { return }
-  
-  initPagination()    
-  initNavigation()
-  initMenu()
-```
-
 ## show/hide boards
 - Modifier readPage() pour ignorer les panels auth :
 - ajout function getAuthBoards()
 - ajout function hideAuthBoards()
 - ajout function showAuthBoard(role)
 - ajout function initAuthBoards() 
-
-
-
 
 ## Génération de la structure HTML
 
