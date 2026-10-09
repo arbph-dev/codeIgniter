@@ -70,7 +70,7 @@ Permet de suivre les évolutions en affichant des informations dans un élément
 - définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 
 
-
+<!--
 
 # librairies  
 - [ ] Crééer  fichier et dossiers si besoin (exemple : JS-component)  : JS-libext , JS-lib , JS-component ,JS-core
@@ -163,3 +163,4 @@ les panels sont détaillés dans la partie ui
   bus.subscribe('board:hide',     () => switchPanel(_lastContentPanel))
 ```
 
+-->
