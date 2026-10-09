@@ -62,8 +62,11 @@ on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.
 
 - [ ] Reprendre les notes de [`Frontend.md`](/Frontend.md)
 
-
-- [boot](#boot) : 
+- [badgeGroups](#badgeGroups)
+- [badgePerms](#badgePerms)
+- [boot](#boot)
+- [fullscreenSwitch](#fullscreenSwitch)
+- [renderUserCard](#renderUserCard) 
 - [setPageRef](#setPageRef)
 - [statusWrite](#statusWrite)
 - Construit le board user
@@ -113,6 +116,12 @@ initialise le processus et l'interface d'authentification,l'interface du documen
 ```
 
 
+
+### fullscreenSwitch
+- appelée par : listener button (à préciser)
+- définition : [`async function fullscreenSwitch()`](/public/assets/js/uiapp.js#L93)
+
+
 ### setPageRef
 initialise les variables sur les éléments dom, appelle les fonctions de construction de l'interface
 
@@ -135,6 +144,18 @@ initialise les variables sur les éléments dom, appelle les fonctions de constr
 
 ## Helper de rendu
 
+### badgeGroups
+- définition : [`function badgeGroups(groups)`](/public/assets/js/uiapp.js#L337)
+
+
+
+### badgePerms
+- définition : [`function badgePerms(permissions)`](/public/assets/js/uiapp.js#L344)
+
+### renderUserCard
+- définition : [`function renderUserCard(user, { title = 'Mon profil' } = {})`](/public/assets/js/uiapp.js#L353)
+- Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
+
 ### statusWrite
 - appelée par : *
 - définition : function [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
@@ -143,31 +164,58 @@ Affiche un message dans le footer du document. Permet de suivre les évolutions 
 **_footer_status** est référencée par [`setPageRef`](#setPageRef)
 
 
-<!-- 
-[](#)
-### [``](/)
-### 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+template et exemple a conserver
+[](#)
+### 
+- définition : [``](/)
+
+
+async function fullscreenSwitch()  + public/assets/js/uiapp.js#L93  =>
+
+[fullscreenSwitch](#fullscreenSwitch)
+- définition : [`async function fullscreenSwitch()`](/public/assets/js/uiapp.js#L93)
+### fullscreenSwitch
+
+
+
+
+
+
+
+
+-----
 
 ### [``](/)
 
 todo : 
 - [] file / ref (line / fonction)  : sujet : note eventuelle
-
-
 - [] /assets/js/uiapp.js / ref : sujet : 
 
 
-fullscreenSwitch
-#fullscreenSwitch
+----
 
 
 ## Helper de rendu
 Rendu minimal board user / admin
-- function badgeGroups(groups)
-- function badgePerms(permissions)
-- function renderUserCard(user, { title = 'Mon profil' } = {})
-	- Carte profil minimale des données endpoint /me { id, username, email, groups, permissions }
+
 
 #### Montage dans les boards 
 fait sentir la nécessité d'un panel user ou workbench
