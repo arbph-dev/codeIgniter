@@ -60,15 +60,24 @@ import ToolbarAuthPanel        from   '/assets/js/ui/workbench/auth/ToolbarAuthP
 
 
 
-## fonctions uiapp
-Construit le board user
+# Fonctions uiapp
 
+- Construit le board user
+- Construit le board admin
+- gère les panels, leur affichage
+- gère les menus, leur affichage
 
 ### [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
+affiche un message dans le footer du document
+
 Permet de suivre les évolutions en affichant des informations dans un élément html `footer/div#statusBar` 
 
 - définition  [`statusWrite( textContent )`](/public/assets/js/uiapp.js#L326)
 
+
+on profite de la migration de [`/assets/js/uiapp2.js`](/public/assets/js/uiapp2.js) pour les documenter
+
+Reprendre les notes de [`Frontend.md`](/Frontend.md)
 
 <!--
 
