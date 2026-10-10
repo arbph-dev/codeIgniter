@@ -6,7 +6,7 @@
 ### 7.1 EventBus (Bus d'événements)
 - path-js     : [`/assets/js/core/eventBus.js`](/public/assets/js/core/eventBus.js)
 
-**Pattern Pub/Sub ** : publish() / subscribe()
+**Pattern Pub/Sub** : publish() / subscribe()
 
 ```javascript
 // =============================================================================
