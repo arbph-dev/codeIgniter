@@ -143,7 +143,14 @@ Cette partie est construite dynamiquement selon l'état de l'authentification
 ```
 
 ### Affichage des erreurs
-element : `#header > div.header-auth > div.auth-form > p.auth-error`
+element : 
+- `#header > div.header-auth > div.auth-form > p.auth-error`
+- `#header > div.header-auth > div.auth-form > label.sr-only`
+- `#header > div.header-auth > div.auth-form > input#auth-email`
+- `#header > div.header-auth > div.auth-form > label.sr-only`
+- `#header > div.header-auth > div.auth-form > input#auth-password`
+- `#header > div.header-auth > div.auth-form > button.auth-submit`
+- `#header > div.header-auth > div.auth-form > button.auth-link auth-register-btn`
 
 ```html
 <p class="auth-error">Compte non activé. Vérifiez votre email.</p>
