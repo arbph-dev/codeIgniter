@@ -31,7 +31,7 @@ bus.subscribe('mon:event', (payload) => { ... })
 ```
 
 ```html
-<button onclick="window.eventBusPublish(event,'codeval:eval','CV_1')">
+<button onclick="window.eventBusPublish(event,'codeval:eval',{'CV_1'})">
   Evaluate
 </button>
 ```
