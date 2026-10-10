@@ -6,12 +6,23 @@
 ### 7.1 EventBus (Bus d'événements)
 - path-js     : [`/assets/js/core/eventBus.js`](/public/assets/js/core/eventBus.js)
 
-| Aspect | Fichier | Statut | Notes |
-|--------|---------|--------|-------|
-| **JS** | `core/eventBus.js` | ✅ Critique | Colonne vertébrale |
-| **Pattern** | Pub/Sub | ✅ Oui | `bus.publish()`, `bus.subscribe()` |
-| **Import** | Partout | ✅ Oui | Utilisé par tous les composants |
+**Pattern Pub/Sub ** : publish() / subscribe()
 
+```javascript
+// =============================================================================
+//   evt       — événement DOM (ignoré, présent pour compatibilité onclick)
+//   eventName — nom de l'événement bus
+//   payload   — données transmises aux subscribers
+
+window.eventBusPublish = (evt, eventName, payload = null) => {
+    bus.publish(eventName, payload)
+}
+```
+
+
+Disponible dès que eventBus.js est importé par n'importe quel module
+
+**Usage** : 
 ```javascript
 import { bus } from '/assets/js/core/eventBus.js'
 
@@ -19,16 +30,29 @@ bus.publish('mon:event', { data: 'valeur' })
 bus.subscribe('mon:event', (payload) => { ... })
 ```
 
+```html
+<button onclick="window.eventBusPublish(event,'codeval:eval','CV_1')">
+  Evaluate
+</button>
+```
+
+
+
+
+
+
+
 ---
 
 ### 7.2 DomHelper (Utilitaires DOM)
 - path-js     : [`/assets/js/core/domhelper.js`](/public/assets/js/core/domhelper.js)
 
-| Aspect | Fichier | Statut | Notes |
-|--------|---------|--------|-------|
-| **JS** | `core/domhelper.js` | ✅ Utilitaire | `byId()`, `qs()`, `qsa()`, `autocomplete()` |
-| **Import** | `index.php:46` | ✅ Oui | Utilisé pour manipulation DOM |
-| **Init** | `index.php:157` | ✅ Oui | `domhelper.init()` |
+✅ Utilitaire 
+- `byId()`
+- `qs()`
+- `qsa()`
+- `autocomplete()`
+
 
 ```javascript
 import * as domhelper from '/assets/js/core/domhelper.js'
@@ -45,16 +69,14 @@ const ac = domhelper.autocomplete({...})   // Autocomplete widget
 - path-js     : [`/assets/js/core/clientinfo.js`](/public/assets/js/core/clientinfo.js)
 - dépendance  : [`/assets/js/core/eventBus.js`](/public/assets/js/core/eventBus.js)   
 
+✅ Async       💻 Publie `client:info`
+
+
 Sonde les capacités du navigateur et les publie sur le bus ('client:info').
 
 Utile pour les décisions d'interface que le CSS ne peut pas prendre (présence du tactile, permissions, speech synthesis, connexion réseau, etc.)
 
-| Aspect | Fichier | Statut | Notes |
-|--------|---------|--------|-------|
-| **JS** | `core/clientinfo.js` | ✅ Actif | Détecte: tactile, Web Speech, géoloc, etc. |
-| **Fonction** | `probeClientCapabilities()` | ✅ Async | Publie `client:info` |
-| **Init** | `index.php:169` | ✅ À window.load | Appelée après DOMContentLoaded |
-
+**Usage** : window.load après DOMContentLoaded
 ```javascript
 // Import
 import { probeClientCapabilities } from '/assets/js/core/clientinfo.js'
