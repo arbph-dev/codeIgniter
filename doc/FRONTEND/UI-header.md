@@ -121,6 +121,15 @@ themeBtn et fullscreenBtn ont des évènements affectés dans la fonction setPag
 ## auth
 Cette partie est construite dynamiquement selon l'état de l'authentification
 
+### Formulaire LOGIN
+element : 
+- `#header > div.header-auth > div.auth-form > p.auth-error`
+- `#header > div.header-auth > div.auth-form > label.sr-only`
+- `#header > div.header-auth > div.auth-form > input#auth-email`
+- `#header > div.header-auth > div.auth-form > label.sr-only`
+- `#header > div.header-auth > div.auth-form > input#auth-password`
+- `#header > div.header-auth > div.auth-form > button.auth-submit`
+- `#header > div.header-auth > div.auth-form > button.auth-link auth-register-btn`
 
 ```html
 <div class="header-auth">
@@ -142,19 +151,12 @@ Cette partie est construite dynamiquement selon l'état de l'authentification
 </div>
 ```
 
-### Affichage des erreurs
-element : 
-- `#header > div.header-auth > div.auth-form > p.auth-error`
-- `#header > div.header-auth > div.auth-form > label.sr-only`
-- `#header > div.header-auth > div.auth-form > input#auth-email`
-- `#header > div.header-auth > div.auth-form > label.sr-only`
-- `#header > div.header-auth > div.auth-form > input#auth-password`
-- `#header > div.header-auth > div.auth-form > button.auth-submit`
-- `#header > div.header-auth > div.auth-form > button.auth-link auth-register-btn`
-
+#### Affichage des erreurs
 ```html
 <p class="auth-error">Compte non activé. Vérifiez votre email.</p>
 ```
+
+
 
 
 ### JS
