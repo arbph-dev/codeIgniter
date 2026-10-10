@@ -13,8 +13,12 @@
 | header > div.header-actions > button#themeBtn | themes | --- |
 | header > div.header-auth | anonymous : email + password + Connexion + Inscription| --- |
 | header > div.header-auth > div.auth-form > p.auth-error | erreur dans le processus | --- |
-
-
+| header > div.header-auth > div.auth-form > label.sr-only | libellé email | --- |
+| header > div.header-auth > div.auth-form > input#auth-email |  | --- |
+| header > div.header-auth > div.auth-form > label.sr-only |  | --- |
+| header > div.header-auth > div.auth-form > input#auth-password |  | --- |
+| header > div.header-auth > div.auth-form > button.auth-submit |  | --- |
+| header > div.header-auth > div.auth-form > button.auth-link auth-register-btn |  | --- |
 
 
 ## Structure
