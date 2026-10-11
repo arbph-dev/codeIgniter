@@ -59,11 +59,14 @@ les classes Workbench sont a redéfinir avec la partie "stack" on ne créé pas 
 
 
 ## Classes
+en cours d'inventaire
+
 ```css
 #appSubtitle { font-size : 0.8rem; opacity : 0.8;  }
 #appTitle  { font-size : 1.1rem; font-weight : bold;  }
 #contentLayout { display : flex; flex : 1; overflow : hidden;  }
-#header { align-items : center; background-color : var(--bg-header); color : var(--text-header); display : flex; height : 60px; justify-content : space-between; padding : 0 22px;  }
+/* #header { align-items : center; background-color : var(--bg-header); color : var(--text-header); display : flex; height : 60px; justify-content : space-between; padding : 0 22px;  } */
+header { align-items : center; background-color : var(--bg-header); color : var(--text-header); display : flex; height : 60px; justify-content : space-between; padding : 0 22px;  }
 .header-actions button { background : rgba(255, 255, 255, 0.15); border : none; border-radius : 4px; color : white; cursor : pointer ;margin-left : 8px; padding : 6px 12px;  }
 .header-auth { align-items : center; display : flex; flex : 0 0 auto; font-size : 0.85rem; gap : 6px;  }
 .rwdnav  { text-align : right ; }
