@@ -750,11 +750,7 @@ nav a.closebtn {
 
 /* Zone d'affichage (Stack) */
 
-#stack {
-  flex: 1;
-  padding: 28px;
-  overflow-y: auto;
-}
+main { flex: 1; padding: 28px; overflow-y: auto; }
 
 .panel-card {
   background: var(--bg-card);
@@ -851,11 +847,8 @@ background-color: var(--accent-hover);
 
 
 
-
-
-
 /* Barre de statut */
-#statusBar {
+footer > div#statusBar {
   height: 24px;
   background: var(--bg-card);
   border-top: 1px solid var(--border-color);
