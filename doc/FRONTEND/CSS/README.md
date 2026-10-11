@@ -12,10 +12,10 @@
 - les dimensions dans root
 - les couleurs dans root theme
 - on colle a la structure
-
+- on ne créé pas une classe par élément on standardise
 
 **Coller à la structure**
-on utilise l'élément dom : `main` plutôt que l'id `#stack` 
+- on utilise l'élément dom : `main` plutôt que l'id `#stack` 
 
 dans html
 ```html
@@ -48,9 +48,14 @@ Cela fonctionne mais cela doit être revue.
 - .auth-form button span 
 - .auth-form button
 
-les classes Workbench sont a commentés et a redefinir
-https://github.com/arbph-dev/codeIgniter/blob/a16d182956b00513ec0a4a88e53dde2cd49bbf04/public/assets/css/ui.css#L587-L607
-https://github.com/arbph-dev/codeIgniter/blob/a16d182956b00513ec0a4a88e53dde2cd49bbf04/public/assets/css/ui.css#L609-L620
+
+
+la partie "stack" ne gère pas encore le RWD : [public/assets/css/ui.css](/public/assets/css/ui.css#L753-L864)
+
+les classes Workbench sont a redéfinir avec la partie "stack" on ne créé pas une classe par élément on standardise
+
+
+
 
 
 ## Classes
@@ -68,6 +73,7 @@ nav { background-color : var(--bg-sidebar); color : var(--text-sidebar); display
 nav.open { transform : translateX(0);  }
 nav a.closebtn { align-self : flex-end; font-size : 2rem; padding : 8px 16px; text-decoration : none;  }
 nav a.closebtn { display : none;  }
+
 ```
 
 elements
@@ -94,23 +100,10 @@ Constantes de taille et de couleur général et par thème
 - `:root[data-theme="marine"]`
 - `:root[data-theme="nature"]`
 
-a gérer les classe wb pour workbench à regrouper en root
-
-```css
-  /* ── Espacements ─────────────────────────────────────────────────────────── */
-  --wb-gap:        1rem;
-  --wb-padding:    1rem;
-  --wb-radius:     8px;
-  --wb-shadow:     0 2px 12px rgba(0,0,0,.08);
-
-  /* ── Panel ───────────────────────────────────────────────────────────────── */
-  --wb-panel-bg:          var(--wb-white);
-  --wb-panel-header-bg:   var(--wb-navy);
-  --wb-panel-header-fg:   var(--wb-yellow);
-  --wb-panel-header-pad:  .875rem 1rem;
-  --wb-panel-body-pad:    1rem;
-  --wb-left-width:        360px;
-```
-
+- [X] a gérer les classe wb pour workbench à regrouper en root
+- [ ] ajuster les couleurs des classes wb dans les `:root[data-theme="marine"]` et `:root[data-theme="nature"]`
 
 ### [buttons.md](/doc/FRONTEND/CSS/buttons.md)
+- [ ] Ajouter les boutons style callout note, info, warning danger
+
+
