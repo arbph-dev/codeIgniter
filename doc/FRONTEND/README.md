@@ -2,6 +2,31 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 - on modifie les documents html
 - on scinde les scripts applications
 
+
+|Fichier|Responsabilité|
+|---|---|
+|[`index.html`](https://github.com/arbph-dev/codeIgniter/blob/master/public/index.html)|Structure de l'application|
+|[`/assets/css/ui.css`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/css/ui.css)|Styles|
+|`domhelper.js`|Fonctions DOM élémentaires, thèmes et plein écran si elles y sont déjà bien intégrées|
+|`domfactory.js`|Construction et montage des composants DOM|
+|`domelements.js`|Navigation, pagination, menus et lecture de la structure des pages|
+|`domutils.js`|Utilitaires génériques, notamment `typeofObj`|
+|`shared/templates.js`|`TemplateFactory` et gestion centralisée des templates|
+|`shared/templates/tpl-user.js`|Rendu des cartes utilisateur, badges de groupes et permissions|
+|[`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)|Contrat commun, état de navigation, cycle de vie et points d'extension|
+|[`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js)|Initialisation et comportements spécifiques de `/index.html`|
+
+
+
+
+
+
+
+
+<!--
+
+
+
 # application
 - public/ui.html
     - [header - auth](/doc/FRONTEND/UI-header.md#auth)
@@ -137,7 +162,7 @@ this._buildUserBar(this._user).forEach(el => this._target.appendChild(el))
 
 
 
-
+-->
 
 
 
