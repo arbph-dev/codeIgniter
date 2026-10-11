@@ -1,4 +1,21 @@
 # CSS
+- 2026-09-20 : Ajout callout 
+- 2026-10-08 : Ajout root
+- 2026-10-10 : separation code pour projet finale
+
+**Regles**
+- mobile first on gere les spécifictés pc voir tablet
+- les dimensions dans root
+- les couleurs dans root theme
+
+**essais** 
+- root avec rwd
+- on change les dimensions ou flex selon pc ou mobile
+- a splitter en 2 line
+```css
+--wb-shadow:     0 2px 12px rgba(0,0,0,.08);
+```
+
 
 ## Classes
 ```css
