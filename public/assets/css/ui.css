@@ -102,7 +102,7 @@ body {
 }
 
 /* Header */
-#header {
+header {
   height: 60px;
   background-color: var(--bg-header);
   color: var(--text-header);
