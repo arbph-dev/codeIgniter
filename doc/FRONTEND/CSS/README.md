@@ -1,7 +1,11 @@
 # CSS
 - 2026-09-20 : Ajout callout 
 - 2026-10-08 : Ajout root
-- 2026-10-10 : separation code pour projet finale
+- 2026-10-10 : separation code pour projet finale :
+  - [public/assets/css/ui.css](/public/assets/css/ui.css)
+  - [public/index.html](/public/index.html) 
+
+- path serveur `/assets/css/ui.css`
 
 **Regles**
 - mobile first on gere les spécifictés pc voir tablet
@@ -33,6 +37,22 @@ nav.open { transform : translateX(0);  }
 nav a.closebtn { align-self : flex-end; font-size : 2rem; padding : 8px 16px; text-decoration : none;  }
 nav a.closebtn { display : none;  }
 ```
+
+elements
+
+- header
+
+- header > div.title-layout
+- header > div.title-layout > h1#appTitle
+- header > div.title-layout > span#appSubtitle
+
+- header > div.header-actions
+- header > div.header-actions > button.rwdnav
+    - bouton pour menu sur mobile
+- header > div.header-actions > button#themeBtn
+- header > div.header-actions > button#fullscreenBtn
+
+- header > div.header-auth
 
 
 
