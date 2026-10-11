@@ -63,7 +63,29 @@ header#header
         </div>
     </header>
 ```
+## [`style`](/public/assets/css/ui.css#L104-L127)
+- title-layout     : non
+- appTitle         : sur ID
+- appSubtitle      : sur ID
 
+title-layout
+```css
+#appTitle { font-size: 1.1rem; font-weight: bold; }
+#appSubtitle { font-size: 0.8rem; opacity: 0.8; }
+```
+
+actions
+```css
+.header-actions button {
+  padding: 6px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+```
 
 
 ## title-layout
@@ -74,15 +96,6 @@ Zone de titre
             <h1 id="appTitle">Automates industriels communicants</h1>
             <span id="appSubtitle">Comparaison, caractéristiques techniques et avis</span>
         </div>
-```
-### style
-- title-layout     : non
-- appTitle         : sur ID
-- appSubtitle      : sur ID
-
-```css
-#appTitle { font-size: 1.1rem; font-weight: bold; }
-#appSubtitle { font-size: 0.8rem; opacity: 0.8; }
 ```
 
 ## actions
@@ -100,18 +113,7 @@ Zone de titre
     <button id="fullscreenBtn" type="button">Plein écran</button>
 </div>
 ```
-### style
-```css
-.header-actions button {
-  padding: 6px 12px;
-  margin-left: 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  border: none;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-}
-```
+
 
 ### JS
 L'evenement onclick de rwdnav est associé a openNav() directement dans html
