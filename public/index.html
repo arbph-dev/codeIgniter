@@ -11,27 +11,41 @@
     <title> Automates industriels - comparaison et caractéristiques</title>
     <meta name="description" content="Comparatif d'automates et contrôleurs industriels communicants : Schneider Modicon M221, WAGO, Crouzet Millenium EVO, Siemens LOGO! 8 et LACROIX Sofrel YDRIX.">
     <meta name="robots" content="index, follow">
-    <link rel="stylesheet" href="/assets/css/uistyle.css" >
+    <link rel="stylesheet" href="/assets/css/ui.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     
-    <!-- Leaflet -->    
+    <!-- Leaflet
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="/assets/css/GpPluginLeaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-tilelayer-wmts@1.0.0/dist/leaflet-tilelayer-wmts.js"></script>
-    <!-- Extension Géoplateforme pour Leaflet -->
+    
     <script src="/assets/js/plugins/GpPluginLeaflet.js"></script>
-
+    -->
 
 
 
 </head>
 
 <body>
-    <!-- ====   HEADER ================================================================ -->
-    <header id="header">
+    <!-- 
+    ====   HEADER ================================================================
+    elements
+    - header
+    - header > div.title-layout => no class css
+    - header > div.title-layout > h1#appTitle
+    - header > div.title-layout > span#appSubtitle
+
+    - header > div.header-actions
+    - header > div.header-actions > button.rwdnav => bouton pour menu sur mobile / caché sur pc
+    - header > div.header-actions > button#themeBtn
+    - header > div.header-actions > button#fullscreenBtn
+    
+    - header > div.header-auth => détail en cours 
+    -->
+    <header>
         <div class="title-layout">
             <h1 id="appTitle">Automates industriels communicants</h1>
             <span id="appSubtitle">Comparaison, caractéristiques techniques et avis</span>
@@ -65,19 +79,7 @@
     <!-- ====  CONTENU PRINCIPAL    ========================== -->
     <main id="stack">
 
-        <!--
-        main
-            div.panel-card  = article
-                h2.panel-title
-                p.panel-description 
-                div.section-tab
-                    div.tab-headers
-                    div.tab-content = section
-                        h3
-                        p
 
-            AUTH BOARDS (hors menu / pagination) 
-        -->
         <div class="panel-card hidden" data-role="admin" data-index="-2">
             <h2 class="panel-title">Administration</h2>
             <p class="panel-description">Tableau de bord administrateur</p>
