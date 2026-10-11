@@ -11,6 +11,23 @@
 - mobile first on gere les spécifictés pc voir tablet
 - les dimensions dans root
 - les couleurs dans root theme
+- on colle a la structure
+
+
+**Coller à la structure**
+on utilise l'élément dom : `main` plutôt que l'id `#stack` 
+
+dans html
+```html
+<!-- <main id="stack">-->
+<main>
+```
+ainsi pour css
+```css
+/* #stack { flex: 1; padding: 28px; overflow-y: auto; } */
+main  { flex: 1; padding: 28px; overflow-y: auto; }
+```
+
 
 **essais** 
 - root avec rwd
@@ -19,6 +36,21 @@
 ```css
 --wb-shadow:     0 2px 12px rgba(0,0,0,.08);
 ```
+
+**travaux** 
+certains styles sont desktop first comme pour la partie auth du header voir [public/assets/css/ui.css](/public/assets/css/ui.css#L323-L330)
+Cela fonctionne mais cela doit être revue.
+
+- .auth-link span
+- .auth-username
+- .auth-link
+- .auth-form input
+- .auth-form button span 
+- .auth-form button
+
+les classes Workbench sont a commentés et a redefinir
+https://github.com/arbph-dev/codeIgniter/blob/a16d182956b00513ec0a4a88e53dde2cd49bbf04/public/assets/css/ui.css#L587-L607
+https://github.com/arbph-dev/codeIgniter/blob/a16d182956b00513ec0a4a88e53dde2cd49bbf04/public/assets/css/ui.css#L609-L620
 
 
 ## Classes
