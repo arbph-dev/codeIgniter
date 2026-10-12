@@ -18,8 +18,9 @@
 
 "use strict";
 
-/*import { qs } from "/assets/js/core/domhelper.js";*/
 import { byId, byName , qs , qsa , create } from '/assets/js/core/domhelper.js'
+//import { readPage } from "/assets/js/core/domelements.js";//this.main
+
 
 export class UiBase {
 
@@ -31,12 +32,13 @@ export class UiBase {
         this.footerStatus = null;
         this.themeButton = null;
         this.fullscreenButton = null;
-
-        // Structure enregistrée par domelements.js
-        this.articles = [];
+        
+        this.articles = []; // ref aux elements de structure necessaire ??
         this.currentPanel = null;
         this.currentSection = 0;
         this.lastContentPanel = null;
+
+        this.pages = [] //  pour menu  <> this.articles 
 
         this.currentTheme = "marine";
     }
@@ -79,57 +81,131 @@ export class UiBase {
     }
 
     /**
-     * Enregistre les articles identifiés par domelements.js.
-     * Les articles doivent être fournis dans l'ordre du document.
+     * List la structure de la page pricnipalement depuis les titres
+     * @param {*} _main reference a `body > main`
+     * @param {*} _pc objet PAGE_CONFIG 
+     * @returns 
+        const PAGE_CONFIG => 
+            _pc.selectorPanel           : "article.panel-card" ,
+            _pc.offsetPanel             : 2 , //PANEL_OFFSET  due a admin et user
+            _pc.classPanelHidden        : "hidden",
+            _pc.selectorPanelTitle      : "h2.panel-title",
+            _pc.selectorSectionTitle    : "div.section-tab  > section.tab-content > h3",
+        }
+    */
+    
+    readPage( _pc ){
+    
+      let panelSections = null
+      let strTemp = null
+      let off_index
+      let articleObj = null  
+      // this.articles
+   
+        if ( this.main && _pc ) { 
+            // this.articles = qsa("div.panel-card" , _main )  // on extrait les informations de la page
+            this.articles = qsa( _pc.selectorPanel , this.main )  // on extrait les informations de la pagearticle
+        
+            this.articles.forEach((  panel , index ) => {
+    
+                // les 2 panels admin et user sont omis
+                if (index >= _pc.offsetPanel ){   
+                    // on recherche le panel actif par defaut 0 n'a pas de classe hidden
+                    if ( !panel.classList.contains( _pc.classPanelHidden ) ) { 
+                        this.currentPanel = index
+                        this.lastContentPanel = index 
+                    }
+    
+                    strTemp = qs( _pc.selectorPanelTitle , panel).innerText       //  on recherche le titre h2 du panel p
+                    
+                    // on recherche les div.section-tab  > div.tab-content > h3 du panel p
+                    panelSections = qsa( _pc.selectorSectionTitle , panel )
+                    
+                    // on construit 1 objet du panel p avec sont titre ets es sections
+    
+                    off_index = ( index - _pc.offsetPanel )  
+                    // les 2 panel admin et user sont omis il faut décaler l'index des page dans _pages
+                    //off_index = ( index )
+                    articleObj = { off_index , title : strTemp , sections : [] } // constuire un objet
+                    
+                    // on stocke l'objet dans _pages
+                    this.pages.push( articleObj )
+                    
+                    //  on ajoute les sections a l'objet
+                    panelSections.forEach((  section , sindex ) => { 
+                        this.pages[ off_index ].sections.push( section.innerText ) 
+                    })      
+                } 
+            })
+    
+        }
+    }
+
+    /** ------------------------------------------------------------------------------------------------------------------
+     * @param {*} _pc objet PAGE_CONFIG
      */
-    setArticles(articles) {
-        this.articles = Array.from(articles ?? []);
+    renderPagination( _pc ){
+        let buttonTemp = null
+        let pagination_buttons = null
 
-        this.currentPanel =
-            this.articles.find(article =>
-                !article.classList.contains("hidden")
-            ) ?? null;
+        pagination_buttons = qs( _pc.selectorPagination  , document )
+  
+        this.pages.forEach((  panel , index ) => { 
 
-        this.lastContentPanel =
-            this.articles.find(article =>
-                !["art-admin", "art-user"].includes(article.id)
-                && !article.classList.contains("hidden")
-            ) ?? this.articles.find(article =>
-                !["art-admin", "art-user"].includes(article.id)
-            ) ?? null;
+            buttonTemp = create( 'button', { type: 'button', class: _pc.classPaginationButton , text: panel.title })
+            buttonTemp.addEventListener('click', () => this.switchPanel(index + _pc.offsetPanel ) ) 
+            pagination_buttons.appendChild( buttonTemp )
+        })
+    }
+    
+    /** ------------------------------------------------------------------------------------------------------------------
+     * @param {*} _pc objet PAGE_CONFIG
+     */
+    renderNavigation( _pc){
+    
+        let buttonTemp = null
+        //on ajoute dans chaque panel la barrre de navigations panel
+        this.pages.forEach((  panel , index ) => { 
+
+            //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
+            //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index] )   // reference sur element 
+
+            let panel_header = qs( _pc.selectorPanelHeader , this.articles[index+_pc.offsetPanel] )   // reference sur element 
+
+            this.pages[ index ].sections.forEach(( section , sindex) => {
+            
+            if (sindex === 0 ){ //par defaut le bouton 0 est actif 
+                buttonTemp = create( 'button', { type: 'button', class: _pc.classPanelHeaderButton + ' active', text: section } )
+            }
+            else{
+                buttonTemp = create( 'button', { type: 'button', class: _pc.classPanelHeaderButton , text: section } )
+            }
+            //switchSection a revoir 
+            panel_header.appendChild( buttonTemp )
+            buttonTemp.addEventListener('click', () => { this.switchSection(sindex) })
+
+            })
+
+        })
+
     }
 
     // ============================================================
     // Navigation entre articles
-    // ============================================================
-
-    /**
-     * Affiche un article identifié par son index dans this.articles.
-     * L'index est celui de la liste complète, boards compris.
-     */
+    // Affiche un article identifié par son index dans this.articles. L'index est celui de la liste complète, boards compris.
+     
     switchPanel(index) {
-        const article = this.articles[index];
+        const article = this.articles[index]
 
-        if (!article) {
-            console.warn(`Article introuvable pour l'index ${index}.`);
-            return false;
-        }
+        if (!article) { console.warn(`Article introuvable pour l'index ${index}.`); return false }
 
-        this.articles.forEach(item => {
-            item.classList.toggle("hidden", item !== article);
-        });
+        this.articles.forEach( (item , i)  => { item.classList.toggle("hidden", i !== index ) })
+        this.currentPanel = index
 
-        this.currentPanel = article;
-
-        if (!["art-admin", "art-user"].includes(article.id)) {
-            this.lastContentPanel = article;
-        }
+        if (!["art-admin", "art-user"].includes(article.id)) { this.lastContentPanel = index }
 
         this.currentSection = 0;
-
-        // Le comportement spécifique est délégué à l'application.
-        this.onPanelShown(article);
-
+        this.onPanelShown(index);// Le comportement spécifique est délégué à l'application.
         return true;
     }
 
@@ -140,81 +216,38 @@ export class UiBase {
         // Implémentation facultative dans app-index.js.
     }
 
-    switchAdmin() {
-        return this.switchPanelById("art-admin");
-    }
+    switchAdmin() { return switchPanel(0) }//return this.switchPanelById("art-admin");
 
-    switchUser() {
-        return this.switchPanelById("art-user");
-    }
-
-    switchPanelById(id) {
-        const index = this.articles.findIndex(article => article.id === id);
-
-        if (index < 0) {
-            console.warn(`Article "${id}" introuvable.`);
-            return false;
-        }
-
-        return this.switchPanel(index);
-    }
-
-    /**
-     * Retourne au dernier article de contenu.
-     */
-    switchContent() {
-        if (!this.lastContentPanel) return false;
-
-        const index = this.articles.indexOf(this.lastContentPanel);
-
-        return index >= 0 ? this.switchPanel(index) : false;
-    }
-
+    switchUser() { return switchPanel(1) } // return this.switchPanelById("art-user");
+    
     // ============================================================
     // Navigation entre sections
-    // ============================================================
-
-    /**
-     * Affiche une section de l'article courant.
-     * Les sections sont des éléments section.tab-content.
-     */
+    // 
+    // Affiche une section de l'article courant. Les sections sont des éléments section.tab-content.
+    
     switchSection(index) {
         if (!this.currentPanel) return false;
-
-        const sections = this.currentPanel.querySelectorAll(
-            ".section-tab > section.tab-content"
-        );
-
-        const buttons = this.currentPanel.querySelectorAll(
-            ".section-tab > .tab-headers > button.tab-btn"
-        );
-
+        const sections = qsa( "div.section-tab > section.tab-content" , this.articles[this.currentPanel] )
+        const buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn" , this.articles[this.currentPanel] )
         const section = sections[index];
 
-        if (!section) {
-            console.warn(`Section introuvable pour l'index ${index}.`);
-            return false;
-        }
+        if (!section) { console.warn(`Section introuvable pour l'index ${index}.`); return false}
 
-        sections.forEach((item, i) => {
-            item.classList.toggle("active", i === index);
-        });
-
-        buttons.forEach((button, i) => {
-            button.classList.toggle("active", i === index);
-            button.setAttribute("aria-selected", String(i === index));
-        });
+        sections.forEach( c => c.classList.remove("active") )
+        sections[index].classList.add("active")
+        
+        buttons.forEach( b => b.classList.remove("active") )
+        buttons[index].classList.add("active")
 
         this.currentSection = index;
-        this.onSectionShown(section);
-
+        this.onSectionShown(this.currentPanel , this.currentSection );
         return true;
     }
 
     /**
      * Point d'extension : Leaflet, graphiques ou autres composants.
      */
-    onSectionShown(section) {
+    onSectionShown(art , sec) {
         // Aucun composant spécifique dans le contrat commun.
     }
 
@@ -251,6 +284,9 @@ export class UiBase {
     statusWrite(message) {
         if (this.footerStatus) {
             this.footerStatus.textContent = message;
+        }
+        else{
+            console.log(message)
         }
     }
 
