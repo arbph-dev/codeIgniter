@@ -44,9 +44,10 @@
         </div>
     </header>
     <!-- ==== SIDEBAR ============================================================== 
-    construction dynamique a voir apres 
+    construction dynamique a voir apres
+    <nav id="sidebar"> 
     -->
-    <nav id="sidebar">
+    <nav>
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" aria-label="Fermer le menu">&times;</a>
 
 
@@ -117,12 +118,17 @@
                 <section id="art0-s0" class="tab-content active">
                     <h3>Dernièrement</h3>
                     <div id="art0-s0-body">
-                        Migration en cours....
-                        <!-- contenu ultérieur -->
+                        Deux décisions à garder en tête
+
+                        - switchPanel(index) utilise l’index dans la liste complète des articles. La pagination et le menu devront donc convertir leur index de page en index d’article, ou appeler une méthode dédiée par référence d’article.
+                        
+                        - Le contrat utilise les identifiants art-admin et art-user déjà présents dans index.html, plutôt que de supposer que les deux premiers articles sont toujours les boards d’authentification.
+                        
+                        Prochaine étape : intégrer cette base dans app-index.js, en conservant initApex(), initCodeVal(), l’initialisation de l’authentification et le comportement Leaflet existants. Avant de brancher la navigation, il faudra vérifier que domelements.js fournit bien les articles dans l’ordre attendu.
                     </div>
                 </section>
 
-                <section id="art0-s1" class="tab-content active">
+                <section id="art0-s1" class="tab-content">
                     <h3>Déploiement</h3>
                     <div id="art0-s1-body">
                         <ul>
@@ -209,7 +215,7 @@ const result = "Volume corrigé = " + V1 + " Nm3 ; F = " + F
                     </div>
                 </section>
 
-                <section id="art2-s1" class="tab-content active">
+                <section id="art2-s1" class="tab-content">
                     <h3>Moteur asynchrone</h3>
                     <div id="art2-s1-body">
 
