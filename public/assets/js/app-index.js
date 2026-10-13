@@ -2,6 +2,8 @@
 /**
  * Étend UiBase
  * implémente boot() et onSectionShown(), puis branche l’authentification et les composants.
+ * 
+ * 2026-10-12 voir ligne 204 /assets/js/uibase.js + ligne 90 /assets/js/app-index.js.js
  */
 "use strict"
 
@@ -62,9 +64,11 @@ class AppIndex extends UiBase {
         bus.subscribe('auth:guest',   () => this.noAuth())
         
         // [X] Separer la creation de l'affichage - mountAdminBoard(authStore.user) dans bus.subscribe('auth:success') ligne 515
-        bus.subscribe( 'auth:success', () => { 
-            mountApplication() ; mountUserBoard(authStore.user) ; mountAdminBoard(authStore.user) 
-        } )
+        bus.subscribe('auth:success', () => {
+            this.mountApplication()
+            this.mountUserBoard(authStore.user)
+            this.mountAdminBoard(authStore.user)
+        })
 
 
         // ── Affichage des boards ──
@@ -83,6 +87,108 @@ class AppIndex extends UiBase {
 
     onSectionShown(artIdx , secIdx){ console.info("AppIndex :: onSectionShown() = artIdx " + artIdx + " secIdx " + secIdx ) }     
     
+
+    // ============================================================
+    // 2026-10-12
+    // Montage applicatif après authentification
+
+    async mountApplication() {
+        console.log('Auth success; app can run')
+    }
+
+    // ============================================================
+    // Badges du profil
+
+    badgeGroups(groups) {
+        if (!groups?.length) {
+            return '<span class="adm-badge adm-badge--none">—</span>'
+        }
+
+        return groups.map(g =>
+            `<span class="adm-badge adm-badge--${g}">${g}</span>`
+        ).join(' ')
+    }
+
+    badgePerms(permissions) {
+        if (!permissions?.length) {
+            return '<span class="adm-badge adm-badge--none">—</span>'
+        }
+
+        return permissions.map(p =>
+            `<span class="adm-badge">${p}</span>`
+        ).join(' ')
+    }
+
+    // ============================================================
+    // Carte utilisateur
+
+    renderUserCard(user, { title = 'Mon profil' } = {}) {
+        const initial = (user?.username?.[0] ?? '?').toUpperCase()
+
+        return `
+            <div class="adm-detail-header">
+                <div class="adm-avatar">${initial}</div>
+                <div>
+                    <h3>${title}</h3>
+                    <p>${user?.username ?? '—'} · ${user?.email ?? '—'}</p>
+                </div>
+            </div>
+
+            <dl class="adm-dl">
+                <dt>ID</dt>
+                <dd>${user?.id ?? '—'}</dd>
+
+                <dt>Username</dt>
+                <dd>${user?.username ?? '—'}</dd>
+
+                <dt>Email</dt>
+                <dd>${user?.email ?? '—'}</dd>
+
+                <dt>Groupes</dt>
+                <dd>${this.badgeGroups(user?.groups)}</dd>
+
+                <dt>Permissions</dt>
+                <dd>${this.badgePerms(user?.permissions)}</dd>
+            </dl>
+
+            <p class="panel-hint">
+                <em>Profils (user_profils) — à venir après seeder + tests register</em>
+            </p>
+        `
+    }
+
+    // ============================================================
+    // Tableau de bord utilisateur
+
+    mountUserBoard(user) {
+        const body = document.querySelector('#art-user-home-body')
+        if (!body) return
+
+        body.innerHTML = this.renderUserCard(user, {
+            title: 'Mon espace'
+        })
+    }
+
+    // ============================================================
+    // Tableau de bord administration
+
+    mountAdminBoard(user) {
+        const body = document.querySelector('#art-admin-home-body')
+        if (!body) return
+
+        const isAdmin = (user?.groups ?? []).some(g =>
+            ['admin', 'superadmin'].includes(g)
+        )
+
+        body.innerHTML = `
+            ${this.renderUserCard(user, { title: 'Administration' })}
+            <hr>
+            <p>${isAdmin
+                ? 'Accès admin OK. Gestion utilisateurs / seeder — prochaine étape.'
+                : 'Accès refusé — groupe admin requis.'
+            }</p>
+        `
+    }    
 }
 
 
