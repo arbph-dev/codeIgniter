@@ -14,6 +14,8 @@
  * - construction de composants DOM : domfactory.js ;
  * - authentification : contrôleur dédié ;
  * - initialisation des bibliothèques : app-index.js ou composants.
+ * 
+ * 2026-10-12 voir ligne 204 /assets/js/uibase.js + ligne 90 /assets/js/app-index.js.js
  */
 
 "use strict";
@@ -99,8 +101,12 @@ export class UiBase {
       let panelSections = null
       let strTemp = null
       let off_index
-      let articleObj = null  
-      // this.articles
+      let articleObj = null
+      //reset  
+      this.pages = []
+      this.articles = []
+      this.currentPanel = null
+      this.lastContentPanel = null
    
         if ( this.main && _pc ) { 
             // this.articles = qsa("div.panel-card" , _main )  // on extrait les informations de la page
@@ -194,6 +200,18 @@ export class UiBase {
     // Navigation entre articles
     // Affiche un article identifié par son index dans this.articles. L'index est celui de la liste complète, boards compris.
      
+/*
+Le problème restant est que switchPanel() remet currentSection à 0, mais ne garantit pas que la première section soit effectivement visible.
+
+CORRIGE 
+    this.currentSection = 0;
+*** this.switchSection(0)
+    this.onPanelShown(index)
+
+return true
+ */
+
+
     switchPanel(index) {
         const article = this.articles[index]
 
@@ -216,9 +234,9 @@ export class UiBase {
         // Implémentation facultative dans app-index.js.
     }
 
-    switchAdmin() { return switchPanel(0) }//return this.switchPanelById("art-admin");
+    switchAdmin() { return this.switchPanel(0) }//return this.switchPanelById("art-admin");
 
-    switchUser() { return switchPanel(1) } // return this.switchPanelById("art-user");
+    switchUser() { return this.switchPanel(1) } // return this.switchPanelById("art-user");
     
     // ============================================================
     // Navigation entre sections
@@ -226,7 +244,7 @@ export class UiBase {
     // Affiche une section de l'article courant. Les sections sont des éléments section.tab-content.
     
     switchSection(index) {
-        if (!this.currentPanel) return false;
+        if (!this.currentPanel === null) return false;
         const sections = qsa( "div.section-tab > section.tab-content" , this.articles[this.currentPanel] )
         const buttons = qsa( "div.section-tab > div.tab-headers > button.tab-btn" , this.articles[this.currentPanel] )
         const section = sections[index];
