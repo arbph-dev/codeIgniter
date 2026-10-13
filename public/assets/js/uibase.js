@@ -43,6 +43,8 @@ export class UiBase {
         this.pages = [] //  pour menu  <> this.articles 
 
         this.currentTheme = "marine";
+        // boot guard: prevent multiple boots across subclasses
+        this._booted = false;        
     }
 
     // ============================================================
@@ -56,7 +58,30 @@ export class UiBase {
     boot() {
         throw new Error("UiBase.boot() doit être implémentée.");
     }
-
+    // ---------------------------
+    // Boot guard helpers
+    // ---------------------------
+    /**
+     * Ensure boot is executed only once for this instance.
+     * Returns true the first time it is called, false afterwards.
+     */
+    ensureBooted() {
+        if (this._booted) return false;
+        this._booted = true;
+        return true;
+    }
+    
+    /**
+     * Read-only check whether instance has been booted.
+     */
+    isBooted() { return !!this._booted; }
+    
+    /**
+     * Test helper to reset boot state (useful in unit tests).
+     */
+    _resetBootForTests() { this._booted = false; }
+    
+    
     /**
      * Initialise les références communes au DOM.
      * La lecture de la structure des pages reste à domelements.js.
