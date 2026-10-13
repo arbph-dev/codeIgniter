@@ -50,6 +50,8 @@ class AppIndex extends UiBase {
     }
 
     boot() {
+        // Guard against multiple boots (uses UiBase.ensureBooted)
+        if (!this.ensureBooted()) return        
         console.info("AppIndex :: boot() = success")
         initApex()
         initCodeVal()
