@@ -1,5 +1,7 @@
 ### Travaux
 - [ ] AUTHENTIFICATION / [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php) / AuthController::logout / Revoir et simplifier
+- [ ] AUTHENTIFICATION / [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php) / AuthController::me / À décider lors du nettoyage : TOKEN uniquement
+
 
 ## Synthèse à réaliser
 - [`notes/2026-10-13.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-13.md)
@@ -98,7 +100,7 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 ###### **AuthController::login**
 Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
-Body 
+ 
 ```json
   { "email": "..." , "password": "..." }
 ```
@@ -162,6 +164,11 @@ demande à Shield de :
 
 ###### **AuthController::register**
 
+```json
+  { "shield_username": "..." , "shield_email": "..." , "shield_password": "..." }
+```
+
+
 Le workflow Shield natif est :
 ```
    RegisterController
@@ -184,6 +191,8 @@ Le workflow Shield natif est :
 Ici nous sommes dans une API JSON , nous ne pouvons pas simplement faire la redirection HTML du RegisterController natif.
 
 Nous préparons donc l'action Shield puis appelons son traitement pour déclencher l'envoi du mail d'activation.
+
+
 
 ---
 
