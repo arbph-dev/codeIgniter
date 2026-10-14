@@ -19,7 +19,7 @@
   - [notes/2026-10-04-001.md#4-authpanelbasejs](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#4-authpanelbasejs)
 - [`app/Config/Routes.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Config/Routes.php)
 
-## Backend
+# Backend
 API d'authentification de l'application.
 
 **IMPORTANT**
@@ -55,13 +55,13 @@ User::generateAccessToken()
   -> identities
 ```
 
-### HISTORIQUE
+## HISTORIQUE
 2026-10-04-002 - register / 
 - [`notes/2026-10-04-002.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-002.md)
 
 
 
-#### routes
+## routes
 authentification :
 
 ```php
@@ -81,23 +81,23 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 });
 ```
 
-#### endpoints 
+### endpoints 
 
-- [`POST /api/auth/login`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerlogin) 
-- [`POST /api/auth/logout`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerlogout)
-- [`GET  /api/auth/me`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerme)
-- [`POST /api/auth/register`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerregister)
-- [`POST /api/auth/activate`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrolleractivate)
-- [`POST /api/auth/resend`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerresend)
+- [`POST /api/auth/login`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrollerlogin) 
+- [`POST /api/auth/logout`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrollerlogout)
+- [`GET  /api/auth/me`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrollerme)
+- [`POST /api/auth/register`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrollerregister)
+- [`POST /api/auth/activate`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrolleractivate)
+- [`POST /api/auth/resend`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/AUTH/README.md#authcontrollerresend)
 
-#### controller
+## controller
 [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php)
 
-##### méthodes
+### méthodes
 
 ---
 
-###### **AuthController::login**
+#### **AuthController::login**
 Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
  
@@ -120,7 +120,7 @@ code http
 
 ---
 
-###### **AuthController::logout**
+#### **AuthController::logout**
 
 Le token API doit être révoqué côté serveur.
 
@@ -148,7 +148,7 @@ peuvent probablement être simplifiés en s'appuyant davantage sur l'authentific
 
 ---
 
-###### **AuthController::me**
+#### **AuthController::me**
 Cette route est destinée à l'authentification TOKEN.
 
 demande à Shield de :
@@ -162,7 +162,7 @@ demande à Shield de :
 ---
 
 
-###### **AuthController::register**
+#### **AuthController::register**
 
 ```json
   { "shield_username": "..." , "shield_email": "..." , "shield_password": "..." }
@@ -200,7 +200,7 @@ code http
 - 500 : 'Erreur serveur lors de l\'inscription.'
 ---
 
-###### **AuthController::activate**
+#### **AuthController::activate**
 ```json
   { "email": "...", "token": "123456" }
 ```
@@ -221,7 +221,7 @@ code http
 
 ---
 
-###### **AuthController::resend**
+#### **AuthController::resend**
 Régénère un code d'activation et renvoie l'email.
 
 ```json
@@ -242,17 +242,137 @@ code http
 - 200 : { message } : 'Si le compte existe et n’est pas activé, un nouveau code a été envoyé.'
 ---
 
-###### **AuthController::sendActivationEmail**
+#### **AuthController::sendActivationEmail**
 
 Envoie l'email d'activation (même gabarit que EmailActivator::show()).
 
 ---
 
-###### **AuthController::tooManyAttempts**
+#### **AuthController::tooManyAttempts**
 Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache configuré). Retourne true si la limite est dépassée
 
 
+# Frontend
 
+## Bus events
+- auth:check
+- auth:login
+- auth:register
+- auth:register:pending
+- auth:activate
+- auth:activated
+- auth:resend
+- auth:success
+- auth:changed
+- auth:logout
+
+
+### auth:check              
+vérifie si un token valide existe (GET /api/auth/me)
+
+#### publisher
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L31)
+
+
+### auth:guest
+
+#### publisher
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L46)
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L50)
+
+---
+
+### auth:loading
+
+#### publisher
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
+
+
+
+---
+
+### auth:login
+seul endroit qui récupère le Personal Access Token
+
+---
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L58)
+
+---
+
+### auth:register
+crée le compte
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L92)
+
+---
+
+### auth:register:pending
+compte non activé : afficher message + saisie du code
+
+---
+
+### auth:activate
+POST /api/auth/activate { email, token }
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+
+---
+
+### auth:activated
+compte activé (aucun token créé, l'utilisateur doit se connecter)
+
+---
+
+### auth:resend
+POST /api/auth/resend { email } → nouveau code par email
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L165)
+
+---
+
+### auth:success
+l'application dispose d'une authentification exploitable
+
+**payload**
+```js
+{ user, token: authStore.token }
+```
+
+#### publisher
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L43)
+
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L213)
+
+---
+
+### auth:changed
+login / register avec connexion immédiate / logout
+
+---
+
+### auth:logout
+
+#### subscriber
+[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L192)
+
+## revoir
+authStore.pendingEmail
+- email du compte en attente d'activation. Renseigné par auth:register et par auth:login (403 non activé), conservé en mémoire seulement (jamais le mot de passe).
+
+Dans [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L102)
+```js
+authStore.pendingEmail = payload.shield_email
+```
 
 
 
