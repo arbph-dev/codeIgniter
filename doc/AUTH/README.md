@@ -82,6 +82,10 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 #### endpoints 
 
 - `POST /api/auth/login`
+  - 422 : `$this->validator->getErrors()`
+  - 401 : 'Email ou mot de passe invalide'
+  - 403 : 'Compte non activé. Vérifiez votre email.'
+  - 200 : json avec 'token','email_verified','user' 
 - `POST /api/auth/logout`
 - `GET  /api/auth/me`
 - `POST /api/auth/register`
@@ -92,8 +96,50 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php)
 
 ##### méthodes
-- AuthController::login
-- AuthController::register
+
+**AuthController::login**, Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
+
+````php
+$authenticator = auth('session')->getAuthenticator();
+
+// auth()->attempt() réalise le login du mécanisme Session.
+$result = $authenticator->check($credentials); // vérifie les **credentials**
+
+  $user = $result->extraInfo();
+
+```
+
+
+    $user->generateAccessToken('webapp')
+
+délègue entièrement la création du token à Shield.
+
+**AuthController::register**
+
+Le workflow Shield natif est :
+```
+   RegisterController
+       ↓
+   création User
+       ↓
+   groupe par défaut
+       ↓
+   Events::trigger('register')
+       ↓
+   startLogin()
+       ↓
+   startUpAction('register')
+       ↓
+   ActionController
+       ↓
+   EmailActivator
+```
+
+Ici nous sommes dans une API JSON , nous ne pouvons pas simplement faire la redirection HTML du RegisterController natif.
+
+Nous préparons donc l'action Shield puis appelons son traitement pour déclencher l'envoi du mail d'activation.
+
+
 - AuthController::activate
 - AuthController::resend
 - AuthController::sendActivationEmail
