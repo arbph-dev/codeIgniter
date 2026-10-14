@@ -102,11 +102,8 @@ Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les 
 
 ```php
 $authenticator = auth('session')->getAuthenticator();
-
 $result = $authenticator->check($credentials); // vérifie les **credentials**
-
 $user = $result->extraInfo();
-
 $user->generateAccessToken('webapp') //délègue entièrement la création du token à Shield.
 ```
 
@@ -136,12 +133,54 @@ Ici nous sommes dans une API JSON , nous ne pouvons pas simplement faire la redi
 Nous préparons donc l'action Shield puis appelons son traitement pour déclencher l'envoi du mail d'activation.
 
 
-- AuthController::activate
-- AuthController::resend
-- AuthController::sendActivationEmail
-- AuthController::tooManyAttempts
-- AuthController::me
-- AuthController::logout
+###### **AuthController::activate**
+
+###### **AuthController::resend**
+
+###### **AuthController::sendActivationEmail**
+
+###### **AuthController::tooManyAttempts**
+Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache configuré). Retourne true si la limite est dépassée
+
+###### **AuthController::me**
+Cette route est destinée à l'authentification TOKEN.
+
+demande à Shield de :
+  - lire Authorization: Bearer ...
+  - retrouver le token dans identities
+  - vérifier expiration
+  - vérifier unusedTokenLifetime
+  - mettre à jour last_used_at
+  - positionner currentAccessToken() sur le User
+
+###### **AuthController::logout**
+
+Le token API doit être révoqué côté serveur.
+
+Shield fournit déjà :
+```
+     User::revokeAccessToken()
+```
+ et AccessTokens sait :
+```
+     Authorization: Bearer <token>
+         -> check()
+         -> User
+         -> AccessToken courant
+```
+
+Le code actuel refait donc manuellement une partie de ce travail.
+À nettoyer :
+```
+     $rawToken
+     str_replace()
+     auth('tokens')->check()
+     extraInfo()
+```
+peuvent probablement être simplifiés en s'appuyant davantage sur l'authentificateur Token de Shield.
+
+
+
 
 
 
