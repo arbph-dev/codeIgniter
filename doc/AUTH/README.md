@@ -192,8 +192,12 @@ Ici nous sommes dans une API JSON , nous ne pouvons pas simplement faire la redi
 
 Nous préparons donc l'action Shield puis appelons son traitement pour déclencher l'envoi du mail d'activation.
 
-
-
+code http
+- 422 : `$this->validator->getErrors()`
+- 500 : 'Impossible de récupérer le compte créé.'
+- 201 : 'Compte créé. Vérifiez votre email pour activer votre compte.'
+- 201 : 'Compte créé avec succès.' (sans email configuré)
+- 500 : 'Erreur serveur lors de l\'inscription.'
 ---
 
 ###### **AuthController::activate**
@@ -209,9 +213,11 @@ Ici on retrouve le User par email et on compare le code stocké dans l'identité
 
 
 code http
-- 200 { message } : compte activé (ou déjà activé)
-- 422 { error | errors }   code invalide / validation
-- 429 { error }            trop d'essais
+- 200 : { message } : 'Compte déjà activé. Vous pouvez vous connecter.'
+- 200 : 'Compte activé. Vous pouvez maintenant vous connecter.'
+- 422 : { error | errors }   code invalide / validation
+- 422 : 'Code d’activation invalide ou expiré.'
+- 429 : { error }            trop d'essais
 
 ---
 
