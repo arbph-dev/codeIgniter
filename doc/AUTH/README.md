@@ -11,9 +11,9 @@
 
 ## inventaire des fichiers
 - [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
+
 - [`/assets/js/ui/workbench/core/AuthPanelBase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/core/AuthPanelBase.js)
-
-
+  - [notes/2026-10-04-001.md#4-authpanelbasejs](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#4-authpanelbasejs)
 
 
 
@@ -21,9 +21,9 @@
 
 [``]()
 https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/auth.controller.js
+  [notes/2026-10-04-001.md#3-authcontrollerjs](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#3-authcontrollerjs)
 https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/auth.service.js
-
-
+  https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#2-authservicejs
 
 [``]()
 
