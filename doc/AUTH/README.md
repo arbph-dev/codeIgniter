@@ -97,7 +97,8 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 
 ##### méthodes
 
-###### **AuthController::login**, Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
+###### **AuthController::login**
+Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
 ```php
 $authenticator = auth('session')->getAuthenticator();
