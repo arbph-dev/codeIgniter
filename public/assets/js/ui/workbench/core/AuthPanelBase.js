@@ -96,7 +96,8 @@ export class AuthPanelBase extends PanelBase
     /** Conteneur du board user */
     _boardBody()
     {
-        return document.querySelector('#user-board-body')
+        //return document.querySelector('#user-board-body')
+        return byId('art-user-home-body')
     }
 
     _mountRegisterForm(error = null)
