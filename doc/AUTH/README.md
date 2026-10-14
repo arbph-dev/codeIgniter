@@ -97,6 +97,8 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 
 ##### méthodes
 
+---
+
 ###### **AuthController::login**
 Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
@@ -106,6 +108,8 @@ $result = $authenticator->check($credentials); // vérifie les **credentials**
 $user = $result->extraInfo();
 $user->generateAccessToken('webapp') //délègue entièrement la création du token à Shield.
 ```
+
+---
 
 ###### **AuthController::register**
 
@@ -132,15 +136,24 @@ Ici nous sommes dans une API JSON , nous ne pouvons pas simplement faire la redi
 
 Nous préparons donc l'action Shield puis appelons son traitement pour déclencher l'envoi du mail d'activation.
 
+---
 
 ###### **AuthController::activate**
 
+---
+
 ###### **AuthController::resend**
+
+---
 
 ###### **AuthController::sendActivationEmail**
 
+---
+
 ###### **AuthController::tooManyAttempts**
 Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache configuré). Retourne true si la limite est dépassée
+
+---
 
 ###### **AuthController::me**
 Cette route est destinée à l'authentification TOKEN.
@@ -152,6 +165,8 @@ demande à Shield de :
   - vérifier unusedTokenLifetime
   - mettre à jour last_used_at
   - positionner currentAccessToken() sur le User
+
+---
 
 ###### **AuthController::logout**
 
