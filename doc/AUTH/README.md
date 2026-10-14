@@ -1,5 +1,5 @@
-# Travaux
-
+### Travaux
+- [ ] AUTHENTIFICATION / [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php) / AuthController::logout / Revoir et simplifier
 
 ## Synthèse à réaliser
 - [`notes/2026-10-13.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-13.md)
