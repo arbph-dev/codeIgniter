@@ -115,15 +115,8 @@ class AuthController extends BaseController
             'password' => $this->request->getVar('password'),
         ];
 
-        /*
-         * IMPORTANT :
-         *
-         * `check()` vérifie les credentials mais ne fait pas le
-         * login Session.
-         *
-         * C'est précisément ce que nous voulons pour cette route API.
-         *
-         * La Session Shield reste donc indépendante du token API.
+        /** IMPORTANT : `check()` vérifie les credentials mais ne fait pas le login Session.
+         * C'est précisément ce que nous voulons pour cette route API.La Session Shield reste donc indépendante du token API.
          */
         /** @var \CodeIgniter\Shield\Authentication\Authenticators\Session $authenticator */
         $authenticator = auth('session')->getAuthenticator();
@@ -219,9 +212,6 @@ class AuthController extends BaseController
      * Nous préparons donc l'action Shield puis appelons son traitement
      * pour déclencher l'envoi du mail d'activation.
      *
-     * IMPORTANT :
-     * user_profils est volontairement absent.
-     * Cette partie sera traitée séparément ultérieurement.
      */
     public function register()
     {
