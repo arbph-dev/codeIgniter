@@ -323,7 +323,7 @@ login / register avec connexion immédiate / logout
   - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L207)
 
 #### subscriber
-
+- [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js#L64)
 
 <!-- ========================================================================================================================================== -->
 
@@ -374,7 +374,7 @@ vérifie si un token valide existe (GET /api/auth/me)
   - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L208)
 
 #### subscriber
-
+- [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js#L66)
 
 <!-- ========================================================================================================================================== -->
 ---
@@ -405,7 +405,7 @@ vérifie si un token valide existe (GET /api/auth/me)
   - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L206) => false
 
 #### subscriber
-
+- [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js#L65)
 
 
 <!-- ========================================================================================================================================== -->
