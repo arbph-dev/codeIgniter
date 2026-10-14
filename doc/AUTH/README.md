@@ -13,7 +13,7 @@
 
 ## inventaire des fichiers
 - [app/Controllers/Api/AuthController.php](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php)
-  - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#1-authcontrollerphp--m%C3%A9thode-resend
+  - https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md
 - [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
 - [`/assets/js/ui/workbench/core/AuthPanelBase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/ui/workbench/core/AuthPanelBase.js)
   - [notes/2026-10-04-001.md#4-authpanelbasejs](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md#4-authpanelbasejs)
