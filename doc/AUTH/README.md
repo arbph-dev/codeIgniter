@@ -279,16 +279,16 @@ vérifie si un token valide existe (GET /api/auth/me)
 ### auth:guest
 
 #### publisher
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L46)
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L50)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L46)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L50)
 
 ---
 
 ### auth:loading
 
 #### publisher
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
 
 
 
@@ -300,7 +300,7 @@ seul endroit qui récupère le Personal Access Token
 ---
 
 #### subscriber
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L58)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L58)
 
 ---
 
@@ -308,7 +308,7 @@ seul endroit qui récupère le Personal Access Token
 crée le compte
 
 #### subscriber
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L92)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L92)
 
 ---
 
@@ -321,7 +321,7 @@ compte non activé : afficher message + saisie du code
 POST /api/auth/activate { email, token }
 
 #### subscriber
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
 
 ---
 
