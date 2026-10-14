@@ -97,24 +97,19 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 
 ##### méthodes
 
-**AuthController::login**, Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
+###### **AuthController::login**, Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
-````php
+```php
 $authenticator = auth('session')->getAuthenticator();
 
-// auth()->attempt() réalise le login du mécanisme Session.
 $result = $authenticator->check($credentials); // vérifie les **credentials**
 
-  $user = $result->extraInfo();
+$user = $result->extraInfo();
 
+$user->generateAccessToken('webapp') //délègue entièrement la création du token à Shield.
 ```
 
-
-    $user->generateAccessToken('webapp')
-
-délègue entièrement la création du token à Shield.
-
-**AuthController::register**
+###### **AuthController::register**
 
 Le workflow Shield natif est :
 ```
@@ -151,7 +146,7 @@ Nous préparons donc l'action Shield puis appelons son traitement pour déclench
 
 
 <!--
-
+######
 
 
 [``]()
