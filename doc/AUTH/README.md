@@ -254,6 +254,19 @@ Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache 
 
 # Frontend
 
+## Fichiers
+- [auth.controller.js](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js)
+  - import : fetchActivate , fetchLogin , fetchLogout , fetchMe , fetchRegister , fetchResend from './auth.service.js'
+  - import : authStore from './auth.store.js'
+
+- [auth.service.js](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.service.js)
+  - export : fetchActivate , fetchLogin , fetchLogout , fetchMe , fetchRegister , fetchResend
+
+- [auth.store.js](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.store.js)
+  - export : authStore
+
+
+
 ## Bus events
 - auth:activate
 - auth:activated
@@ -269,14 +282,19 @@ Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache 
 - auth:resend
 - auth:success
 
+<!-- ========================================================================================================================================== -->
 ---
+
 ### auth:activate
 POST /api/auth/activate { email, token }
 
 #### publisher
 
 #### subscriber
-[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+- [bus.subscribe('auth:activate', async ({ token })](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+  - fetchActivate({ email: authStore.pendingEmail, token }) L148
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
@@ -284,9 +302,12 @@ POST /api/auth/activate { email, token }
 compte activé (aucun token créé, l'utilisateur doit se connecter)
 
 #### publisher
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L151)
+- bus.subscribe('auth:activate', async ({ token })
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L151)
 
 #### subscriber
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
@@ -296,7 +317,11 @@ login / register avec connexion immédiate / logout
 #### publisher
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L73)
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L117)
+
 #### subscriber
+
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
@@ -308,18 +333,22 @@ vérifie si un token valide existe (GET /api/auth/me)
 #### subscriber
 - [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L31)
 
+<!-- ========================================================================================================================================== -->
+
 ---
 ###  auth:error
 
 #### publisher
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L82)
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L128)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L155)
-
+- bus.subscribe('auth:activate', async ({ token })
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L155)
+- bus.subscribe('auth:resend', async () L165
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L183)
 
 #### subscriber
 
-
+<!-- ========================================================================================================================================== -->
 
 ---
 ### auth:guest
@@ -329,6 +358,9 @@ vérifie si un token valide existe (GET /api/auth/me)
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L50)
 
 #### subscriber
+
+
+<!-- ========================================================================================================================================== -->
 ---
 
 ### auth:loading
@@ -337,17 +369,30 @@ vérifie si un token valide existe (GET /api/auth/me)
   bool // (true,false)
 ```
 #### publisher
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L61)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L86)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L95)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L131)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L141)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L159)
-
+- bus.subscribe('auth:check', async () L31
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
+- bus.subscribe('auth:login', async ({ email, password }) L58
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L61)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L86)
+- bus.subscribe('auth:register', async (payload)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L95)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L131)
+- bus.subscribe('auth:activate', async ({ token })
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L141)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L159)
+- bus.subscribe('auth:resend', async () L165
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L168) => true
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L187) => false
+- bus.subscribe('auth:logout', async () L192
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L194) => true
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L206) => false
 
 #### subscriber
+
+
+
+<!-- ========================================================================================================================================== -->
 
 ---
 ### auth:login
@@ -356,15 +401,21 @@ seul endroit qui récupère le Personal Access Token
 #### publisher
 
 #### subscriber
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L58)
+- [bus.subscribe('auth:login', async ({ email, password }](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L58)
+
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
 ### auth:logout
+
 #### publisher
 
 #### subscriber
-- [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L192)
+- [bus.subscribe('auth:logout', async ()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L192)
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
@@ -372,8 +423,11 @@ seul endroit qui récupère le Personal Access Token
 crée le compte
 
 #### publisher
+
 #### subscriber
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L92)
+- [bus.subscribe('auth:register', async (payload)](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L92)
+
+<!-- ========================================================================================================================================== -->
 
 ---
 
@@ -384,11 +438,15 @@ compte non activé : afficher message + saisie du code
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L79)
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L103)
 - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L122)
+- bus.subscribe('auth:resend', async () L165
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L177)
 #### subscriber
+- [bus.subscribe('auth:register', async (payload)](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#92) 
+
+
+<!-- ========================================================================================================================================== -->
 
 ---
-
-
 
 ### auth:resend
 POST /api/auth/resend { email } → nouveau code par email
@@ -396,10 +454,12 @@ POST /api/auth/resend { email } → nouveau code par email
 #### publisher
 
 #### subscriber
-- [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L165)
+- [bus.subscribe('auth:resend', async ()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L165)
+
+
+<!-- ========================================================================================================================================== -->
 
 ---
-
 ### auth:success
 l'application dispose d'une authentification exploitable
 
@@ -409,13 +469,17 @@ l'application dispose d'une authentification exploitable
 ```
 
 #### publisher
-- [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L43)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L72)
-- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L116)
+- bus.subscribe('auth:check', async ()
+  - [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L43)
+- bus.subscribe('auth:login', async ({ email, password })
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L72)
+- bus.subscribe('auth:register', async (payload)
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L116)
+
 #### subscriber
-- [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L213)
+- [bus.subscribe('auth:success', ({ user })](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L213)
 
-
+<!-- ========================================================================================================================================== -->
 
 ## revoir
 authStore.pendingEmail
@@ -426,6 +490,13 @@ Dans [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/maste
 authStore.pendingEmail = payload.shield_email
 ```
 
+<!-- ========================================================================================================================================== -->
+
+## Service
+
+- fetchActivate({ email: authStore.pendingEmail, token }) 
+  - [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L148)
+    
 
 <!--
 ######
