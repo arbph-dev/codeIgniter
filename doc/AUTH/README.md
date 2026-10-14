@@ -261,6 +261,7 @@ Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache 
 - auth:check
 - auth:error
 - auth:guest
+- auth:loading
 - auth:login
 - auth:logout
 - auth:register
