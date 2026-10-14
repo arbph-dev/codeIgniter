@@ -224,7 +224,9 @@ code http
 ###### **AuthController::resend**
 Régénère un code d'activation et renvoie l'email.
 
-Body JSON : { "email": "..." }
+```json
+  { "email": "..."}
+```
 
 On n'utilise PAS EmailActivator::show() ni startLogin() :
 - show() lit le pending user dans la session, et startLogin() lève une LogicException si la session contient déjà un utilisateur.
@@ -233,7 +235,11 @@ On appelle donc createIdentity() (publique, supprime l'ancien code) puis on envo
 
 Réponse identique que le compte existe ou non (pas d'énumération).
 
-
+code http
+- 422 : { error | errors }   code invalide / validation
+- 429 : { error } 'Trop de demandes. Réessayez dans quelques minutes.'
+- 500 : { error } 'Envoi impossible pour le moment.'
+- 200 : { message } : 'Si le compte existe et n’est pas activé, un nouveau code a été envoyé.'
 ---
 
 ###### **AuthController::sendActivationEmail**
