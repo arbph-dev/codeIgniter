@@ -81,7 +81,7 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 
 #### endpoints 
 
-- `POST /api/auth/login`
+- `POST /api/auth/login` - credentials = ['email', 'password' ]
   - 422 : `$this->validator->getErrors()`
   - 401 : 'Email ou mot de passe invalide'
   - 403 : 'Compte non activé. Vérifiez votre email.'
