@@ -81,16 +81,12 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 
 #### endpoints 
 
-- `POST /api/auth/login` - credentials = ['email', 'password' ]
-  - 422 : `$this->validator->getErrors()`
-  - 401 : 'Email ou mot de passe invalide'
-  - 403 : 'Compte non activé. Vérifiez votre email.'
-  - 200 : json avec 'token','email_verified','user' 
-- `POST /api/auth/logout`
-- `GET  /api/auth/me`
-- `POST /api/auth/register`
-- `POST /api/auth/activate`
-- `POST /api/auth/resend`
+- [`POST /api/auth/login`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerlogin) 
+- [`POST /api/auth/logout`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerlogout)
+- [`GET  /api/auth/me`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerme)
+- [`POST /api/auth/register`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerregister)
+- [`POST /api/auth/activate`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrolleractivate)
+- [`POST /api/auth/resend`](https://github.com/arbph-dev/codeIgniter/edit/master/doc/AUTH/README.md#authcontrollerresend)
 
 #### controller
 [`app/Controllers/Api/AuthController.php`](https://github.com/arbph-dev/codeIgniter/blob/master/app/Controllers/Api/AuthController.php)
@@ -102,6 +98,11 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 ###### **AuthController::login**
 Cette méthode ne doit **PAS** établir une session navigateur. On vérifie les **credentials** afin de pouvoir ensuite créer un **AccessToken** Shield. Le résultat de `check()` contient le User dans extraInfo().
 
+Body 
+```json
+  { "email": "..." , "password": "..." }
+```
+
 ```php
 $authenticator = auth('session')->getAuthenticator();
 $result = $authenticator->check($credentials); // vérifie les **credentials**
@@ -109,7 +110,55 @@ $user = $result->extraInfo();
 $user->generateAccessToken('webapp') //délègue entièrement la création du token à Shield.
 ```
 
+code http
+  - 422 : `$this->validator->getErrors()`
+  - 401 : 'Email ou mot de passe invalide'
+  - 403 : 'Compte non activé. Vérifiez votre email.'
+  - 200 : json avec 'token','email_verified','user' 
+
 ---
+
+###### **AuthController::logout**
+
+Le token API doit être révoqué côté serveur.
+
+Shield fournit déjà :
+```
+     User::revokeAccessToken()
+```
+ et AccessTokens sait :
+```
+     Authorization: Bearer <token>
+         -> check()
+         -> User
+         -> AccessToken courant
+```
+
+Le code actuel refait donc manuellement une partie de ce travail.
+À nettoyer :
+```
+     $rawToken
+     str_replace()
+     auth('tokens')->check()
+     extraInfo()
+```
+peuvent probablement être simplifiés en s'appuyant davantage sur l'authentificateur Token de Shield.
+
+---
+
+###### **AuthController::me**
+Cette route est destinée à l'authentification TOKEN.
+
+demande à Shield de :
+  - lire Authorization: Bearer ...
+  - retrouver le token dans identities
+  - vérifier expiration
+  - vérifier unusedTokenLifetime
+  - mettre à jour last_used_at
+  - positionner currentAccessToken() sur le User
+
+---
+
 
 ###### **AuthController::register**
 
@@ -139,60 +188,47 @@ Nous préparons donc l'action Shield puis appelons son traitement pour déclench
 ---
 
 ###### **AuthController::activate**
+```json
+  { "email": "...", "token": "123456" }
+```
+
+ACTIVATION API (sans dépendance à la session Shield)
+
+/auth/a/verify (ActionController) exige l'action "pending" dans la SESSION PHP : après fermeture du navigateur il répond 404.
+
+Ici on retrouve le User par email et on compare le code stocké dans l'identité "email_activate" créée par EmailActivator::createIdentity().
+
+
+code http
+- 200 { message } : compte activé (ou déjà activé)
+- 422 { error | errors }   code invalide / validation
+- 429 { error }            trop d'essais
 
 ---
 
 ###### **AuthController::resend**
+Régénère un code d'activation et renvoie l'email.
+
+Body JSON : { "email": "..." }
+
+On n'utilise PAS EmailActivator::show() ni startLogin() :
+- show() lit le pending user dans la session, et startLogin() lève une LogicException si la session contient déjà un utilisateur.
+
+On appelle donc createIdentity() (publique, supprime l'ancien code) puis on envoie nous-mêmes l'email.
+
+Réponse identique que le compte existe ou non (pas d'énumération).
+
 
 ---
 
 ###### **AuthController::sendActivationEmail**
 
+Envoie l'email d'activation (même gabarit que EmailActivator::show()).
+
 ---
 
 ###### **AuthController::tooManyAttempts**
 Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache configuré). Retourne true si la limite est dépassée
-
----
-
-###### **AuthController::me**
-Cette route est destinée à l'authentification TOKEN.
-
-demande à Shield de :
-  - lire Authorization: Bearer ...
-  - retrouver le token dans identities
-  - vérifier expiration
-  - vérifier unusedTokenLifetime
-  - mettre à jour last_used_at
-  - positionner currentAccessToken() sur le User
-
----
-
-###### **AuthController::logout**
-
-Le token API doit être révoqué côté serveur.
-
-Shield fournit déjà :
-```
-     User::revokeAccessToken()
-```
- et AccessTokens sait :
-```
-     Authorization: Bearer <token>
-         -> check()
-         -> User
-         -> AccessToken courant
-```
-
-Le code actuel refait donc manuellement une partie de ce travail.
-À nettoyer :
-```
-     $rawToken
-     str_replace()
-     auth('tokens')->check()
-     extraInfo()
-```
-peuvent probablement être simplifiés en s'appuyant davantage sur l'authentificateur Token de Shield.
 
 
 
