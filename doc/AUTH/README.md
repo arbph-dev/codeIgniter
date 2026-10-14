@@ -6,7 +6,7 @@
 - [`notes/2026-10-10.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-10.md) * non concerné
 - [`notes/2026-10-04.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04.md)
 - [`notes/2026-10-04-001`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-001.md)
-- [`doc/notes/2026-10-04-002.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-002.md)
+- [`notes/2026-10-04-002.md`](https://github.com/arbph-dev/codeIgniter/blob/master/doc/notes/2026-10-04-002.md)
 
 
 ## inventaire des fichiers
