@@ -255,26 +255,54 @@ Limiteur simple basé sur le service Throttler de CodeIgniter (utilise le cache 
 # Frontend
 
 ## Bus events
-- auth:check
-- auth:login
-- auth:register
-- auth:register:pending
 - auth:activate
 - auth:activated
+- auth:changed
+- auth:check
+- auth:error
+- auth:login
+- auth:logout
+- auth:register
+- auth:register:pending
 - auth:resend
 - auth:success
-- auth:changed
-- auth:logout
 
+
+### auth:activate
+POST /api/auth/activate { email, token }
+
+#### subscriber
+[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+
+---
+
+### auth:activated
+compte activé (aucun token créé, l'utilisateur doit se connecter)
+
+---
+
+### auth:changed
+login / register avec connexion immédiate / logout
+
+#### publisher
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L73)
+
+---
 
 ### auth:check              
 vérifie si un token valide existe (GET /api/auth/me)
 
-#### publisher
+#### 📲 publisher
 
 #### subscriber
 [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L31)
 
+---
+
+
+
+
+---
 
 ### auth:guest
 
@@ -287,9 +315,9 @@ vérifie si un token valide existe (GET /api/auth/me)
 ### auth:loading
 
 #### publisher
-[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
-[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
-
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L34)
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L53)
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L61)
 
 
 ---
@@ -315,20 +343,12 @@ crée le compte
 ### auth:register:pending
 compte non activé : afficher message + saisie du code
 
----
-
-### auth:activate
-POST /api/auth/activate { email, token }
-
-#### subscriber
-[initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L138)
+#### publisher
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L79)
 
 ---
 
-### auth:activated
-compte activé (aucun token créé, l'utilisateur doit se connecter)
 
----
 
 ### auth:resend
 POST /api/auth/resend { email } → nouveau code par email
@@ -347,18 +367,15 @@ l'application dispose d'une authentification exploitable
 ```
 
 #### publisher
-[initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L43)
-
+- [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L43)
+- [initAuthController()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L72)
 
 #### subscriber
 [initAuthController() ](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L213)
 
 ---
 
-### auth:changed
-login / register avec connexion immédiate / logout
 
----
 
 ### auth:logout
 
