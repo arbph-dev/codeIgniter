@@ -333,10 +333,16 @@ login / register avec connexion immédiate / logout
 vérifie si un token valide existe (GET /api/auth/me)
 
 #### publisher
+- [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js#L83)
 
 #### subscriber
 - [bus.subscribe('auth:check', async ()](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/features/auth/auth.controller.js#L31)
   - fetchMe(authStore.token) L37
+
+#### notes
+- https://github.com/arbph-dev/codeIgniter/blob/01ea54acea2c0d02df81bb8828f98fabe44a0cbb/doc/notes/2026-10-04-002.md?plain=1#L142
+- https://github.com/arbph-dev/codeIgniter/blob/01ea54acea2c0d02df81bb8828f98fabe44a0cbb/doc/notes/2026-10-03-001.md?plain=1#L24
+- https://github.com/arbph-dev/codeIgniter/blob/01ea54acea2c0d02df81bb8828f98fabe44a0cbb/doc/notes/2026-10-03-001.md?plain=1#L128
 
 <!-- ========================================================================================================================================== -->
 
