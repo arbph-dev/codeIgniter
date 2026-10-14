@@ -1,6 +1,78 @@
 # codeIgniter
 
 ## UI
+2026-10-14 : refonte application
+
+## Taches
+
+- [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
+- [X] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
+- [X] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
+- [ ] auth : Valider register et register-pending
+
+### fichiers
+
+
+### application
+- html
+  - [`/index.html`](/public/index.html)
+  - [`/ui-components/apex.html`](/public/ui-components/apex.html)
+- css
+  - [`/assets/css/ui.css`](/public/assets/css/ui.css)
+- js
+  - [`/assets/js/app-index.js`](/public/assets/js/app-index.js)
+  - [`/assets/js/uibase.js`](/public/assets/js/uibase.js)
+
+### components
+- [`/assets/js/components/apex.js`](/public/assets/js/components/apex.js)
+- [`/assets/js/components/codeval.js`](/public/assets/js/components/codeval.js)
+- [`/assets/js/components/callout.js`](/public/assets/js/components/callout.js)
+
+### core
+- [`/assets/js/core/domhelper.js`](/public/assets/js/core/domhelper.js)
+- [`/assets/js/core/eventBus.js`](/public//assets/js/core/eventBus.js)
+
+### features
+- [`/assets/js/features/auth/auth.controller.js`](/public/assets/js/features/auth/auth.controller.js)
+- [`/assets/js/features/auth/auth.store.js`](/public/assets/js/features/auth/auth.store.js)
+- [`/assets/js/features/auth/auth.service.js`](/public/assets/js/features/auth/auth.service.js)
+
+### workbench (partie a revoir)
+- [`/assets/js/ui/workbench/auth/ToolbarAuthPanel.js`](/public/assets/js/ui/workbench/auth/ToolbarAuthPanel.js)
+- [`/assets/js/ui/workbench/core/AuthPanelBase.js`](/public/assets/js/ui/workbench/core/AuthPanelBase.js)
+
+## Backend
+- [`app/Config/Filters.php`](/app/Config/Filters.php)
+- [`app/Config/Routes.php`](/app/Config/Routes.php)
+- [`app/Controllers/Api/AuthController.php`](/app/Controllers/Api/AuthController.php)
+
+
+
+
+
+
+<!-- 
+- [``]()
+- [``](/)
+import { initAuthController } from '/assets/js/features/auth/auth.controller.js'
+import { authStore } from '/assets/js/features/auth/auth.store.js'
+import ToolbarAuthPanel       from '/assets/js/ui/workbench/auth/ToolbarAuthPanel.js'
+import { UiBase } from '/assets/js/uibase.js'
+import { initApex } from '/assets/js/components/apex.js'
+import { initCodeVal } from '/assets/js/components/codeval.js'
+import { initCallout} from '/assets/js/components/callout.js'
+import { bus } from '/assets/js/core/eventBus.js'
+--> 
+
+
+
+
+
+
+<!-- 
+
+
+## UI
 - [2026-10-01 : Remise a plat uiapp.js](/doc/notes/2026-10-01.md#cUI)
 
 ## Gestion Authentification
@@ -24,11 +96,7 @@
     - [solution-retenue](/doc/notes/2026-10-04-001.md#solution-retenue) auth/register/inscription en attente nécessite un endpoint
     - [2026-10-04-002](/doc/notes/2026-10-04-002.md) register / inscription en attente et magik link
 
-## Taches
 
-- [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
-- [ ] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
-- [ ] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
 
 
 
@@ -116,7 +184,7 @@ https://www.w3schools.com/howto/default.asp
 
 
 
-
+--> 
 
 
 
