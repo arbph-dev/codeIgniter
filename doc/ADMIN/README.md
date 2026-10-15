@@ -9,8 +9,7 @@
 
 
 
-## Version 1
-🎯 ✅ ⚠️  
+# Version 1
 - 🎯 app/Services/Users/UserService.php
 - 🎯 Admin/UsersController.php fichier : Admin_UsersController.php => app/Controllers/Api/Admin/UsersController.php
     - contrôleur mince : autorisation Admin → lecture des paramètres HTTP → appel UserService → ApiResponse.
@@ -19,7 +18,7 @@
 ⚠️ Point important : Shield v1.3.0 enrichit les User avec groupes/permissions via withGroups() / withPermissions(), mais l’email reste une identité séparée.
 
 
-UserService.php V1.05 : fix
+**UserService.php V1.05 : fix**
 - Auth::$tables est utilisé, donc aucun nom de table Shield n'est codé en dur.
 - q cherche username, id et email uniquement sur l'identité email_password.
 - group, permission et active sont appliqués en SQL avant LIMIT/OFFSET.
@@ -43,8 +42,6 @@ $routes->group('api/admin', static function ($routes) {
     $routes->get('users/(:num)', 'Api\Admin\UsersController::show/$1');
 });
 
-
-
 $routes->group('api/team', static function ($routes) {
     $routes->get('users', 'Team\UsersController::index');
     $routes->get('users/search', 'Team\UsersController::search');
@@ -52,14 +49,11 @@ $routes->group('api/team', static function ($routes) {
 });
 ```
 
-
-
 ---
 
-# 🎯 Intégration Version 1
+## 🎯 Intégration Version 1
 
-**fichiers**
-G:\WWW\REFACTOR\OVH\temp\USER\
+**fichiers** : G:\WWW\REFACTOR\OVH\temp\USER\
 
 - ✅ upload : app/Services/Users/UserService.php
 - ✅ upload : app/Controllers/Api/Admin/UsersController.php
@@ -86,7 +80,7 @@ G:\WWW\REFACTOR\OVH\temp\USER\
 ```
 
 
-## 📊 Version 2
+# 📊 Version 2
 
 Endpoint : GET /api/admin/users - Version 2
 ```
