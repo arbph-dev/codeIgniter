@@ -28,6 +28,25 @@ $routes->group('api/auth', ['namespace' => 'App\Controllers\Api'], function($rou
 });
 
 //$routes->get('api/debug/token', 'Api\AuthController::debugToken');
+/* 
+    2026-10-15 
+    - Ajout des routes Users Admin et Team
+    - Ajout des deux controller
+    - Ajout du service : app/Services/Users/UserService.php
+    
+*/
+$routes->group('api/admin', static function ($routes) {
+    $routes->get('users', 'Api\Admin\UsersController::index');
+    $routes->get('users/search', 'Api\Admin\UsersController::search');
+    $routes->get('users/(:num)', 'Api\Admin\UsersController::show/$1');
+});
+
+$routes->group('api/team', static function ($routes) {
+    $routes->get('users', 'Team\UsersController::index');
+    $routes->get('users/search', 'Team\UsersController::search');
+    $routes->get('users/(:num)', 'Team\UsersController::show/$1');
+});
+// fin 2026-10-15
 
 
 
