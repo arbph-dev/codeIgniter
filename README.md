@@ -10,6 +10,8 @@
 - [X] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
 - [X] auth : Valider register et register-pending
 - [ ] auth : bouton resend et essai voir [notes/2026-10-14-001](/doc/notes/2026-10-14-001.md)
+- [ ] admin regrouper les notes :
+  - [TODO.md](/TODO.md)
 ### fichiers
 
 
