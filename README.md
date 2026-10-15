@@ -8,8 +8,8 @@
 - [ ] Headers / js : Faire un choix affectation event ui dans html ou dans le code js
 - [X] Revoir nécessité des id sur les éléments de structure main, header, nav ; but simplifier les selectors et le code css
 - [X] Panels - Onglets / Structure : panel-card a faire évoluer en article et div.section-tab en sections
-- [ ] auth : Valider register et register-pending
-
+- [X] auth : Valider register et register-pending
+- [ ] auth : bouton resend et essai voir [notes/2026-10-14-001](/doc/notes/2026-10-14-001.md)
 ### fichiers
 
 
