@@ -13,14 +13,32 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 
 ### Fichiers
 
-[`index.html`](https://github.com/arbph-dev/codeIgniter/blob/master/public/index.html)
+#### [`index.html`](https://github.com/arbph-dev/codeIgniter/blob/master/public/index.html)
 - Structure de l'application révisée
 
-[`/assets/css/ui.css`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/css/ui.css)
+#### [`/assets/css/ui.css`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/css/ui.css)
 - Styles
 
-[`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js)
+#### [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js)
 - Initialisation et comportements spécifiques de `/index.html`
+
+```js
+class AppIndex extends UiBase {
+    /**
+     * this.setPageRef() initiliase les références voir UiBase
+     * - this.main -> html > body > main 
+     * this.readPage(PAGE_CONFIG) lit la strucutre de la page
+    */
+    constructor() {
+        super()
+        this.setPageRef() 
+        this.readPage(PAGE_CONFIG) 
+        console.table(this.pages)
+        this.renderPagination(PAGE_CONFIG)
+        this.renderNavigation(PAGE_CONFIG)
+    }
+```
+
 
 
 ```js
@@ -37,7 +55,7 @@ const PAGE_CONFIG = {
 }
 ```
 
-[`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
+#### [`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
 - Contrat commun, état de navigation, cycle de vie et points d'extension
 - gestion menu
 
