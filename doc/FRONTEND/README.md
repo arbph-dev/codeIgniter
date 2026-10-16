@@ -2,6 +2,7 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 - on modifie les documents html
 - on scinde les scripts applications
 
+## Structure
 
 - main
 - nav
@@ -10,7 +11,7 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 - footer
 
 
-
+### Fichiers
 
 [`index.html`](https://github.com/arbph-dev/codeIgniter/blob/master/public/index.html)
 - Structure de l'application révisée
@@ -21,9 +22,31 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 [`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js)
 - Initialisation et comportements spécifiques de `/index.html`
 
+
+```js
+const PAGE_CONFIG = { 
+    selectorPanel           : "article.panel-card" ,
+    offsetPanel             : 2 , //PANEL_OFFSET  due a admin et user
+    classPanelHidden        : "hidden",
+    selectorPanelTitle      : "h2.panel-title",
+    selectorSectionTitle    : "div.section-tab  > section.tab-content > h3",
+    selectorPagination      : "div.pagination-buttons" ,
+    classPaginationButton   : "primary-button switch-tab-btn",
+    selectorPanelHeader     : "div.section-tab > div.tab-headers",
+    classPanelHeaderButton  : "tab-btn"
+}
+```
+
 [`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
 - Contrat commun, état de navigation, cycle de vie et points d'extension
 - gestion menu
+
+
+
+
+## Taches
+
+### gestion menu
 
 ```js
 /*  ======================================================================================================================  */
