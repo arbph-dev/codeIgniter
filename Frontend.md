@@ -1,3 +1,68 @@
+```
+doc/
+├── ADMIN
+│   ├── README.md
+│   ├── UserService-update.md
+│   └── index.md
+├── AUTH
+│   └── README.md
+├── FRONTEND
+│   ├── CSS
+│   │   ├── README.md
+│   │   ├── buttons.md
+│   │   └── root.md
+│   ├── JS
+│   │   ├── Events.md
+│   │   └── README.md
+│   ├── JS-uiapp.md
+│   ├── README.md
+│   ├── UI
+│   │   └── COMPONENTS
+│   │       └── APEX.md
+│   ├── UI-components.md
+│   ├── UI-footer.md
+│   ├── UI-header.md
+│   ├── UI-nav.md
+│   ├── UI-panels.md
+│   └── UI.md
+├── README.md
+├── REFERENTIELS
+│   └── README.md
+├── administration.md
+├── frontend.txt
+├── notes
+│   ├── 2026-09-30.md
+│   ├── 2026-10-01.md
+│   ├── 2026-10-02.md
+│   ├── 2026-10-03-001-05.md
+│   ├── 2026-10-03-001.md
+│   ├── 2026-10-03.md
+│   ├── 2026-10-04-001.md
+│   ├── 2026-10-04-002.md
+│   ├── 2026-10-04.md
+│   ├── 2026-10-10.md
+│   ├── 2026-10-13.md
+│   ├── 2026-10-14-001.md
+│   ├── 2026-10-15.md
+│   └── 2026-10-16.md
+└── projects.md
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
 **Fichiers**
 - REPO : [/ui.html](/public/ui.html)
 - RESSOURCES :
@@ -47,7 +112,7 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
  [/assets/js/uiapp.js#L185](public/assets/js/uiapp.js#L185)
  
-
+-->
 
 Survol / Sortie de la souris (mouseleave) : 
  Sur écran d'ordinateur (largeur > 768px), le panneau se ferme automatiquement dès que la souris quitte sa zone.
