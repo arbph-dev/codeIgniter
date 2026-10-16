@@ -16,6 +16,12 @@
  * - initialisation des bibliothèques : app-index.js ou composants.
  * 
  * 2026-10-12 voir ligne 204 /assets/js/uibase.js + ligne 90 /assets/js/app-index.js.js
+ * 2026-10-15 : 
+ * - modifier renderNavigation pour ajout de navigation de niveau article, menu des sections en haut
+ * 
+ * 
+ * TODO
+ * - menu a ajouter avec pages pas les articles
  */
 
 "use strict";
@@ -50,30 +56,20 @@ export class UiBase {
     // ============================================================
     // Cycle de vie
     // ============================================================
-
-    /**
-     * Point d'entrée obligatoire de l'application concrète.
-     * Doit être implémenté dans app-index.js.
-     */
-    boot() {
-        throw new Error("UiBase.boot() doit être implémentée.");
-    }
+    
+    /* Point d'entrée obligatoire de l'application concrète. DOIT  être implémenté dans app-index.js.     */
+    boot() { throw new Error("UiBase.boot() doit être implémentée.") }
+    
     // ---------------------------
     // Boot guard helpers
-    // ---------------------------
-    /**
-     * Ensure boot is executed only once for this instance.
-     * Returns true the first time it is called, false afterwards.
-     */
+    /** Ensure boot is executed only once for this instance. Returns true the first time it is called, false afterwards.     */
     ensureBooted() {
         if (this._booted) return false;
         this._booted = true;
         return true;
     }
     
-    /**
-     * Read-only check whether instance has been booted.
-     */
+    /** Read-only check whether instance has been booted. */
     isBooted() { return !!this._booted; }
     
     /**
@@ -190,16 +186,20 @@ export class UiBase {
     }
     
     /** ------------------------------------------------------------------------------------------------------------------
+     * ajoute les buttons pour naviguer entre les sections d'un article, dans chaque articles de main
      * @param {*} _pc objet PAGE_CONFIG
+     * 2026-10-15 :
+     * - on a structure les board user et admin comme les autres on peut donc employer this.articles ici mais pas pour les menus a ajouter
+     * 
      */
     renderNavigation( _pc){
     
         let buttonTemp = null
+        
+        /*
         //on ajoute dans chaque panel la barrre de navigations panel
         this.pages.forEach((  panel , index ) => { 
 
-            //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index+PANEL_OFFSET] )   // reference sur element 
-            //let panel_header = qs( "div.section-tab > div.tab-headers" , _main_panels[index] )   // reference sur element 
 
             let panel_header = qs( _pc.selectorPanelHeader , this.articles[index+_pc.offsetPanel] )   // reference sur element 
 
@@ -216,6 +216,33 @@ export class UiBase {
             buttonTemp.addEventListener('click', () => { this.switchSection(sindex) })
 
             })
+
+        })
+        
+        2026-10-15 :
+        */
+        if (!this.articles) 
+            return
+        
+        this.articles.forEach((  panel , index ) => {
+            let panel_header = qs( _pc.selectorPanelHeader , this.articles[index] )   // reference sur element article
+            // on recherche les div.section-tab  > div.tab-content > h3 du panel p
+            let panelSections = qsa( _pc.selectorSectionTitle , panel )
+            //  on parcours les sections de  l'article
+
+            panelSections.forEach((  section , sindex ) => { 
+
+                if (sindex === 0 ){ //par defaut le bouton 0 est actif 
+                    buttonTemp = create( 'button', { type: 'button', class: _pc.classPanelHeaderButton + ' active', text: section.innerText } )
+                }
+                else{
+                    buttonTemp = create( 'button', { type: 'button', class: _pc.classPanelHeaderButton , text: section.innerText } )
+                }
+                //switchSection a revoir 
+                panel_header.appendChild( buttonTemp )
+                buttonTemp.addEventListener('click', () => { this.switchSection(sindex) })
+
+            })  
 
         })
 
