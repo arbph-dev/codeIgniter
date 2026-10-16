@@ -1,9 +1,6 @@
 # Panels - Onglets
 
-- main
-- nav
-- header
-- footer
+
 
 ## Structure
 
@@ -112,7 +109,7 @@ réserve des éléments
 - https://github.com/arbph-dev/codeIgniter/blob/master/Frontend.md
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/JS-uiapp.md
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-footer.md
-- https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-header.md
+
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-nav.md
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI-panels.md
 - https://github.com/arbph-dev/codeIgniter/blob/master/doc/FRONTEND/UI.md
@@ -162,75 +159,6 @@ header#header > div.header-actions > button#themeBtn
 
 
 
-## structure
-
-
-
-
-
-
-```html
-<div class="panel-card">
-    <h2 class="panel-title">...</h2>
-
-    <p class="panel-description">.....</p>
-
-    <div class="section-tab">
-        <div class="tab-headers">
-          <button class="tab-btn active">...</button>
-          <button class="tab-btn" data-tab="info-0">Informations</button>
-        </div>
-
-
-        <div id="..." class="tab-content active">
-        </div>
-
-        <div id="..." class="tab-content">
-        </div>
-    </div>
-
-</div>   
-```
-
-
-
-```
-<div id="admin-board-body">
-    <!-- contenu ultérieur -->
-</div>
-```
-
-```
-<div class="panel-card hidden" data-role="admin" data-index="-2">
-    <h2 class="panel-title">Administration</h2>
-    <p class="panel-description">Tableau de bord administrateur</p>
-    <div class="section-tab">
-        <div class="tab-headers"></div>
-        <div id="admin-home" class="tab-content active">
-            <h3>Admin</h3>
-            <div id="admin-board-body"><!-- contenu ultérieur --></div>
-        </div>
-    </div>
-</div>
-```
-
-### Panel user
-
-
-
-```
-<div class="panel-card hidden" data-role="user" data-index="-1">
-    <h2 class="panel-title">Mon espace</h2>
-    <p class="panel-description">Profil et inscription</p>
-    <div class="section-tab">
-        <div class="tab-headers"></div>
-        <div id="user-home" class="tab-content active">
-            <h3>Espace utilisateur</h3>
-            <div id="user-board-body"><!-- formulaire register OU dashboard user --></div>
-        </div>
-    </div>
-</div>
-```
 -->
 
 
