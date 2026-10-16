@@ -57,7 +57,29 @@ const PAGE_CONFIG = {
 
 #### [`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
 - Contrat commun, état de navigation, cycle de vie et points d'extension
-- gestion menu
+- améliorer
+	- stocker PAGE_CONFIG
+ 	- reference depuis PAGE_CONFIG
+  
+```js
+    setPageRef() {
+        /* utiliser byName
+        this.main = qs("main"); this.menu = qs("nav#sidebar"); this.footer = qs("footer");
+        */
+        this.main = byName("main")[0]
+        this.menu = byName( "nav", document )[0]
+        this.footer = byName("footer" , document )[0]        
+        this.footerStatus = qs("#statusBar", this.footer)
+
+        this.themeButton = qs("#themeBtn")
+        this.themeButton?.addEventListener("click", () => this.themeSwitch() )
+        
+        this.fullscreenButton = qs("#fullscreenBtn")
+        this.fullscreenButton?.addEventListener( "click", () => this.fullscreenSwitch() )
+
+```
+
+- [ ] gestion menu 
 
 
 
