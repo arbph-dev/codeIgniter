@@ -19,6 +19,32 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 
 
 
+[`index.html`](https://github.com/arbph-dev/codeIgniter/blob/master/public/index.html)
+- Structure de l'application révisée
+
+[`/assets/css/ui.css`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/css/ui.css)
+- Styles
+
+[`/assets/js/app-index.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/app-index.js)
+- Initialisation et comportements spécifiques de `/index.html`
+
+[`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
+- Contrat commun, état de navigation, cycle de vie et points d'extension
+
+
+`domhelper.js`
+- Fonctions DOM élémentaires, thèmes et plein écran si elles y sont déjà bien intégrées
+ 
+`domfactory.js`
+- Construction et montage des composants DOM|
+`domelements.js`
+- Navigation, pagination, menus et lecture de la structure des pages
+`domutils.js`
+- Utilitaires génériques, notamment `typeofObj`
+`shared/templates.js`
+- `TemplateFactory` et gestion centralisée des templates|
+`shared/templates/tpl-user.js`
+- Rendu des cartes utilisateur, badges de groupes et permissions|
 
 
 
