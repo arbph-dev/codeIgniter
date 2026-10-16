@@ -36,13 +36,13 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 - Fonctions DOM élémentaires, thèmes et plein écran si elles y sont déjà bien intégrées
  
 `domfactory.js`
-- Construction et montage des composants DOM|
+- Construction et montage des composants DOM
 `domelements.js`
 - Navigation, pagination, menus et lecture de la structure des pages
 `domutils.js`
 - Utilitaires génériques, notamment `typeofObj`
 `shared/templates.js`
-- `TemplateFactory` et gestion centralisée des templates|
+- `TemplateFactory` et gestion centralisée des templates
 `shared/templates/tpl-user.js`
 - Rendu des cartes utilisateur, badges de groupes et permissions|
 
