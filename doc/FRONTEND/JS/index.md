@@ -7,8 +7,8 @@
 2026-10-16 : 55 directories, 208 files
 
 
-[`/assets/js/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets)
-- [`/assets/js/admin/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets/admin)
+[`/assets/js/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets/)
+- [`/assets/js/admin/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets/admin/)
 
 ```
 public/assets/js/
