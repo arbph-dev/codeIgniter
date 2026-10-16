@@ -1,8 +1,16 @@
 <!-- 
   base https://github.com/arbph-dev/codeIgniter/tree/master/public/assets 
-  
+  [``](/)
+  [``]()
 -->
 
+2026-10-16 : 55 directories, 208 files
+
+
+[`/assets/js/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets)
+- [`/assets/js/admin/`](https://github.com/arbph-dev/codeIgniter/tree/master/public/assets/admin)
+
+```
 public/assets/js/
 ├── admin
 │   └── bootstrap.js
@@ -266,5 +274,5 @@ public/assets/js/
 ├── uiapp2.js
 ├── uibase.js
 └── wbapp.js
+```
 
-55 directories, 208 files
