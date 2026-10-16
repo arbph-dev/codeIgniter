@@ -30,6 +30,91 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
 
 [`/assets/js/uibase.js`](https://github.com/arbph-dev/codeIgniter/blob/master/public/assets/js/uibase.js)
 - Contrat commun, état de navigation, cycle de vie et points d'extension
+- gestion menu
+
+```js
+/*  ======================================================================================================================  */
+function openMenuPanel(index) {
+
+  const menuPanels = qsa('.nav-article', _menu )
+
+  menuPanels.forEach((menupanel, i) => {
+    menupanel.classList.toggle('open', i === index)
+  })
+
+  //switchPanel(index)
+}
+
+/*  ======================================================================================================================  */
+function initMenu(){
+
+  _pages.forEach((  panel , index ) => { 
+    const menu_panel = create('div', { class: 'nav-article' })
+    const menu_panel_item = create('div', { class: 'nav-header-row  primary-button'  , text: panel.title  })
+    const menu_panel_item_button = create('button', { class: 'nav-toggle', type: 'button' })
+    
+    menu_panel_item_button.setAttribute( 'aria-expanded', false)
+    const menu_panel_item_i = create('i', { class: 'fa fa-fw fa-cogs' }) 
+
+    const sub_menu = create( 'ul', { class: 'nav-toc'}) // ****
+
+    
+    panel.sections.forEach(( section , sindex) => {
+      const subitem  = create( 'li', { text: section } )
+      sub_menu.appendChild(subitem)
+
+      subitem.addEventListener('click', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        // on utilse _pages donc + PANEL_OFFSET
+        //console.log( "initMenu index = " + index )
+        //console.log( "initMenu index + OFFSET = " + index + PANEL_OFFSET)
+        switchPanel(index + PANEL_OFFSET )
+        statusWrite( `Onglet actif : ${_pages[index].title}` )
+        switchSection(sindex)
+        
+        if (window.innerWidth > 768){
+          menu_panel.classList.remove('open')
+        }
+        else{ 
+          //closeSidebar()
+          closeNav() 
+        }           
+      })
+    })
+
+    menu_panel_item_button.appendChild(menu_panel_item_i)
+    menu_panel_item.appendChild(menu_panel_item_button)
+    menu_panel.appendChild(menu_panel_item)
+    menu_panel.appendChild(sub_menu)
+  
+    _menu.appendChild(menu_panel)
+    // on utilse _pages donc + PANEL_OFFSET
+    menu_panel.addEventListener('click', () => {
+      console.log(`menu clic panel : ${index}`)
+      openMenuPanel(index)      
+      //openMenuPanel(index + PANEL_OFFSET)
+    })
+
+    menu_panel.addEventListener('mouseleave', () => {
+      console.log(`leave menu : ${index}`)
+      if (window.innerWidth > 768){ menu_panel.classList.remove('open') }
+    })
+    /*
+      if (window.innerWidth > 768){ menu_panel.classList.remove('open') }
+
+    */
+
+  })
+}
+
+```
+
+
+
+
+
 
 
 `domhelper.js`
@@ -37,12 +122,16 @@ l'arborescence evolue, on sépare le code des composants pour les évoloutions
  
 `domfactory.js`
 - Construction et montage des composants DOM
+
 `domelements.js`
 - Navigation, pagination, menus et lecture de la structure des pages
+
 `domutils.js`
 - Utilitaires génériques, notamment `typeofObj`
+
 `shared/templates.js`
 - `TemplateFactory` et gestion centralisée des templates
+
 `shared/templates/tpl-user.js`
 - Rendu des cartes utilisateur, badges de groupes et permissions|
 
