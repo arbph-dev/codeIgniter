@@ -111,8 +111,9 @@ Pour l affichage une div panel-card est dans la liste des pages, on utilise un o
 
 
  [/assets/js/uiapp.js#L185](public/assets/js/uiapp.js#L185)
- 
--->
+
 
 Survol / Sortie de la souris (mouseleave) : 
  Sur écran d'ordinateur (largeur > 768px), le panneau se ferme automatiquement dès que la souris quitte sa zone.
+ 
+-->
