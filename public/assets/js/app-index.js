@@ -19,6 +19,9 @@ import { initAuthController } from '/assets/js/features/auth/auth.controller.js'
 import { authStore } from '/assets/js/features/auth/auth.store.js'
 import ToolbarAuthPanel       from '/assets/js/ui/workbench/auth/ToolbarAuthPanel.js'
 
+// 2026-10-15 - ajout admin /users    
+import { initUsersRenderer } from '/assets/js/features/admin/renderer.js'
+
 
 const PAGE_CONFIG = { 
     selectorPanel           : "article.panel-card" ,
@@ -51,7 +54,9 @@ class AppIndex extends UiBase {
 
     boot() {
         // Guard against multiple boots (uses UiBase.ensureBooted)
-        if (!this.ensureBooted()) return        
+        if (!this.ensureBooted()) return
+            
+
         console.info("AppIndex :: boot() = success")
         initApex()
         initCodeVal()
@@ -96,6 +101,7 @@ class AppIndex extends UiBase {
 
     async mountApplication() {
         console.log('Auth success; app can run')
+        
     }
 
     // ============================================================
@@ -190,6 +196,8 @@ class AppIndex extends UiBase {
                 : 'Accès refusé — groupe admin requis.'
             }</p>
         `
+        // 2026-10-15 - ajout admin /users    
+        if (isAdmin){ initUsersRenderer() }
     }    
 }
 
