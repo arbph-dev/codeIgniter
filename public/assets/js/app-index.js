@@ -50,6 +50,7 @@ class AppIndex extends UiBase {
         console.table(this.pages)
         this.renderPagination(PAGE_CONFIG)
         this.renderNavigation(PAGE_CONFIG)
+        this.renderMenu(PAGE_CONFIG)
     }
 
     boot() {
